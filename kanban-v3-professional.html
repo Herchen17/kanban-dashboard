@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪖 Medical Research Project Management</title>
+    <link rel="stylesheet" href="../../medical-kanban-design-system.css">
+    <link rel="stylesheet" href="../../medical-kanban-components.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-family-system);
+            background: var(--color-neutral-50);
+            color: var(--text-primary);
+            line-height: var(--line-height-normal);
+            min-height: 100vh;
+        }
+
+        /* Header - Professional Medical Aesthetic */
+        .header {
+            background: var(--color-neutral-white);
+            border-bottom: 1px solid var(--color-neutral-200);
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin-bottom: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .header-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            font-weight: var(--font-weight-normal);
+        }
+
+        /* Statistics Bar - Clinical Data Style */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-6);
+            margin-top: var(--spacing-4);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: var(--color-neutral-100);
+            border: 1px solid var(--color-neutral-200);
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .stat-value {
+            color: var(--color-primary-600);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        /* Controls - Professional Button System */
+        .controls {
+            background: var(--color-neutral-white);
+            border-bottom: 1px solid var(--color-neutral-200);
+            padding: var(--spacing-4) var(--spacing-6);
+        }
+
+        .controls-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-3);
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--color-primary-600);
+            color: var(--color-neutral-white);
+            border: none;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 150ms ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .control-btn:hover {
+            background: var(--color-primary-700);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .control-btn:active {
+            background: var(--color-primary-800);
+            transform: translateY(0);
+        }
+
+        .control-btn-secondary {
+            background: var(--color-neutral-white);
+            color: var(--text-primary);
+            border: 1px solid var(--color-neutral-300);
+        }
+
+        .control-btn-secondary:hover {
+            background: var(--color-neutral-50);
+            border-color: var(--color-neutral-400);
+        }
+
+        /* Board Layout - Optimized for Information Density */
+        .board-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--spacing-6);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--spacing-4);
+            min-height: calc(100vh - 200px);
+        }
+
+        @media (max-width: 1400px) {
+            .board { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            .board { grid-template-columns: 1fr; }
+        }
+
+        /* Column Design - Professional Cards */
+        .column {
+            background: var(--color-neutral-white);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+        }
+
+        .column-header {
+            padding: var(--spacing-4);
+            border-bottom: 1px solid var(--color-neutral-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--color-neutral-50);
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        }
+
+        .column-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .column-count {
+            background: var(--color-primary-100);
+            color: var(--color-primary-700);
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* Status-Specific Column Styling */
+        .column-todo .column-title { color: var(--color-warning-600); }
+        .column-todo .column-count { 
+            background: var(--color-warning-100); 
+            color: var(--color-warning-700); 
+        }
+
+        .column-in-progress .column-title { color: var(--color-primary-600); }
+        .column-in-progress .column-count { 
+            background: var(--color-primary-100); 
+            color: var(--color-primary-700); 
+        }
+
+        .column-review .column-title { color: var(--color-info-600); }
+        .column-review .column-count { 
+            background: var(--color-info-100); 
+            color: var(--color-info-700); 
+        }
+
+        .column-blocked .column-title { color: var(--color-error-600); }
+        .column-blocked .column-count { 
+            background: var(--color-error-100); 
+            color: var(--color-error-700); 
+        }
+
+        .column-done .column-title { color: var(--color-success-600); }
+        .column-done .column-count { 
+            background: var(--color-success-100); 
+            color: var(--color-success-700); 
+        }
+
+        /* Task List Area */
+        .task-list {
+            flex: 1;
+            padding: var(--spacing-3);
+            overflow-y: auto;
+            min-height: 400px;
+        }
+
+        /* Task Cards - High Information Density */
+        .task {
+            background: var(--color-neutral-white);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-3);
+            margin-bottom: var(--spacing-3);
+            cursor: grab;
+            transition: all 150ms ease;
+            border-left: 4px solid var(--color-neutral-300);
+            position: relative;
+        }
+
+        .task:hover {
+            border-color: var(--color-neutral-300);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .task:active {
+            cursor: grabbing;
+        }
+
+        .task.dragging {
+            opacity: 0.7;
+            transform: rotate(2deg) scale(0.98);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Task Status Border Colors */
+        .task[data-status="todo"] { border-left-color: var(--color-warning-400); }
+        .task[data-status="in-progress"] { border-left-color: var(--color-primary-400); }
+        .task[data-status="review"] { border-left-color: var(--color-info-400); }
+        .task[data-status="blocked"] { border-left-color: var(--color-error-400); }
+        .task[data-status="done"] { border-left-color: var(--color-success-400); }
+
+        /* Task Content - Medical Research Optimized */
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .task-id {
+            font-size: var(--font-size-xs);
+            font-family: var(--font-family-mono);
+            color: var(--text-tertiary);
+            background: var(--color-neutral-100);
+            padding: 2px var(--spacing-1);
+            border-radius: var(--border-radius-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .task-priority {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-neutral-300);
+        }
+
+        .task-priority.high { background: var(--color-error-400); }
+        .task-priority.medium { background: var(--color-warning-400); }
+        .task-priority.low { background: var(--color-success-400); }
+
+        .task-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            line-height: var(--line-height-tight);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .task-project {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-1);
+        }
+
+        .project-badge {
+            padding: 2px var(--spacing-1);
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            background: var(--color-neutral-100);
+            color: var(--text-secondary);
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-2);
+            padding-top: var(--spacing-2);
+            border-top: 1px solid var(--color-neutral-100);
+        }
+
+        .task-owner {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            padding: 2px var(--spacing-1);
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .owner-soldier {
+            background: var(--color-primary-100);
+            color: var(--color-primary-700);
+        }
+
+        .owner-alex {
+            background: var(--color-warning-100);
+            color: var(--color-warning-700);
+        }
+
+        .owner-shared {
+            background: var(--color-info-100);
+            color: var(--color-info-700);
+        }
+
+        .task-meta {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* Add Task Button */
+        .add-task-btn {
+            margin: var(--spacing-3);
+            padding: var(--spacing-3);
+            background: var(--color-neutral-50);
+            border: 2px dashed var(--color-neutral-300);
+            border-radius: var(--border-radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-align: center;
+            transition: all 150ms ease;
+            font-size: var(--font-size-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-2);
+        }
+
+        .add-task-btn:hover {
+            background: var(--color-primary-50);
+            border-color: var(--color-primary-300);
+            color: var(--color-primary-600);
+        }
+
+        /* Modal System - Medical Professional */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--color-neutral-white);
+            margin: 2% auto;
+            padding: var(--spacing-6);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        .modal h2 {
+            color: var(--text-primary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .close {
+            position: absolute;
+            right: var(--spacing-4);
+            top: var(--spacing-4);
+            color: var(--text-tertiary);
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-full);
+            transition: all 150ms ease;
+        }
+
+        .close:hover {
+            color: var(--text-primary);
+            background: var(--color-neutral-100);
+        }
+
+        /* Form Components - Professional Medical Style */
+        .form-group {
+            margin-bottom: var(--spacing-4);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-1);
+            color: var(--text-primary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-2) var(--spacing-3);
+            background: var(--color-neutral-white);
+            border: 1px solid var(--color-neutral-300);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            font-size: var(--font-size-sm);
+            transition: all 150ms ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary-500);
+            box-shadow: 0 0 0 3px var(--color-primary-100);
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: var(--spacing-3);
+            justify-content: flex-end;
+            margin-top: var(--spacing-6);
+        }
+
+        .btn {
+            padding: var(--spacing-2) var(--spacing-4);
+            border: none;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-sm);
+            transition: all 150ms ease;
+        }
+
+        .btn-primary {
+            background: var(--color-primary-600);
+            color: var(--color-neutral-white);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-700);
+        }
+
+        .btn-secondary {
+            background: var(--color-neutral-white);
+            color: var(--text-primary);
+            border: 1px solid var(--color-neutral-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-neutral-50);
+        }
+
+        /* Drag and Drop Visual Feedback */
+        .column.drag-over {
+            border-color: var(--color-primary-400);
+            background: var(--color-primary-25);
+        }
+
+        .task-list.drag-over {
+            background: var(--color-primary-25);
+            border-radius: var(--border-radius-md);
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Success/Error States */
+        .success-message {
+            background: var(--color-success-50);
+            border: 1px solid var(--color-success-200);
+            color: var(--color-success-700);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius-md);
+            margin: var(--spacing-3) 0;
+        }
+
+        .error-message {
+            background: var(--color-error-50);
+            border: 1px solid var(--color-error-200);
+            color: var(--color-error-700);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius-md);
+            margin: var(--spacing-3) 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>
+                🪖 Medical Research Project Management
+            </h1>
+            <p class="header-subtitle">Orthopaedics • Digital Health • AI in Medicine • Class of 2027</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    📋 Total Tasks: <span class="stat-value" id="total-tasks">0</span>
+                </div>
+                <div class="stat-item">
+                    🔥 In Progress: <span class="stat-value" id="in-progress-count">0</span>
+                </div>
+                <div class="stat-item">
+                    ⏸️ Blocked: <span class="stat-value" id="blocked-count">0</span>
+                </div>
+                <div class="stat-item">
+                    ✅ Completed: <span class="stat-value" id="done-count">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="controls-content">
+            <button class="control-btn" onclick="addNewTask()">
+                ➕ Add Task
+            </button>
+            <button class="control-btn control-btn-secondary" onclick="saveToFile()">
+                💾 Export Data
+            </button>
+            <button class="control-btn control-btn-secondary" onclick="loadFromFile()">
+                📂 Import Data
+            </button>
+            <button class="control-btn control-btn-secondary" onclick="generateReport()">
+                📊 Generate Report
+            </button>
+            <button class="control-btn control-btn-secondary" onclick="clearCompleted()">
+                🗑️ Archive Done
+            </button>
+        </div>
+    </div>
+
+    <div class="board-container">
+        <div class="board">
+            <div class="column column-todo" data-status="todo">
+                <div class="column-header">
+                    <div class="column-title">📋 To Do</div>
+                    <div class="column-count" id="todo-count">0</div>
+                </div>
+                <div class="task-list" id="todo-list"></div>
+                <div class="add-task-btn" onclick="addTaskToColumn('todo')">
+                    ➕ Add Task
+                </div>
+            </div>
+
+            <div class="column column-in-progress" data-status="in-progress">
+                <div class="column-header">
+                    <div class="column-title">🔥 In Progress</div>
+                    <div class="column-count" id="in-progress-count-display">0</div>
+                </div>
+                <div class="task-list" id="in-progress-list"></div>
+                <div class="add-task-btn" onclick="addTaskToColumn('in-progress')">
+                    ➕ Add Task
+                </div>
+            </div>
+
+            <div class="column column-review" data-status="review">
+                <div class="column-header">
+                    <div class="column-title">👁️ Review</div>
+                    <div class="column-count" id="review-count">0</div>
+                </div>
+                <div class="task-list" id="review-list"></div>
+                <div class="add-task-btn" onclick="addTaskToColumn('review')">
+                    ➕ Add Task
+                </div>
+            </div>
+
+            <div class="column column-blocked" data-status="blocked">
+                <div class="column-header">
+                    <div class="column-title">⛔ Blocked</div>
+                    <div class="column-count" id="blocked-count-display">0</div>
+                </div>
+                <div class="task-list" id="blocked-list"></div>
+                <div class="add-task-btn" onclick="addTaskToColumn('blocked')">
+                    ➕ Add Task
+                </div>
+            </div>
+
+            <div class="column column-done" data-status="done">
+                <div class="column-header">
+                    <div class="column-title">✅ Done</div>
+                    <div class="column-count" id="done-count-display">0</div>
+                </div>
+                <div class="task-list" id="done-list"></div>
+                <div class="add-task-btn" onclick="addTaskToColumn('done')">
+                    ➕ Add Task
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">Add New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-id">Task ID:</label>
+                    <input type="text" id="task-id" placeholder="e.g., SOLDIER-PM-001" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-title">Title:</label>
+                    <input type="text" id="task-title" placeholder="Brief description of the task" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-project">Project:</label>
+                    <select id="task-project" required>
+                        <option value="">Select Project</option>
+                        <option value="Project Management">🏗️ Project Management</option>
+                        <option value="BitClaw Protocol">🪙 BitClaw Protocol</option>
+                        <option value="Cost Optimization">💰 Cost Optimization</option>
+                        <option value="Medical Research">🏥 Medical Research</option>
+                        <option value="UGC Creator Agent">🎨 UGC Creator Agent</option>
+                        <option value="AI Agent Ecosystem">🤖 AI Agent Ecosystem</option>
+                        <option value="Kanban UI Overhaul">🎨 Kanban UI Overhaul</option>
+                        <option value="Opportunity Scouting">🎯 Opportunity Scouting</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-owner">Owner:</label>
+                    <select id="task-owner" required>
+                        <option value="Soldier">🪖 Soldier (AI)</option>
+                        <option value="Alex">👨‍💼 Alex</option>
+                        <option value="Shared">🤝 Shared</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-status">Status:</label>
+                    <select id="task-status" required>
+                        <option value="todo">📋 To Do</option>
+                        <option value="in-progress">🔥 In Progress</option>
+                        <option value="review">👁️ Review</option>
+                        <option value="blocked">⛔ Blocked</option>
+                        <option value="done">✅ Done</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-priority">Priority:</label>
+                    <select id="task-priority">
+                        <option value="">Normal</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-notes">Notes:</label>
+                    <textarea id="task-notes" placeholder="Additional context, requirements, or dependencies"></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="kanban-current-tasks.js"></script>
+    <script>
+        // Global state
+        let tasks = [];
+        let currentTaskId = null;
+        let draggedElement = null;
+                status: 'todo',
+                priority: 'medium',
+                notes: 'Test smart contract deployment using new blockchain tools'
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('medical-kanban-tasks')) {
+                loadTasks();
+            } else {
+                // Load all current tasks from PROJECTS.md
+                tasks = allCurrentTasks;
+                renderTasks();
+                saveTasks(); // Save to localStorage for persistence
+            }
+            setupDragAndDrop();
+        });
+
+        function renderTasks() {
+            // Clear all columns
+            document.querySelectorAll('.task-list').forEach(list => {
+                list.innerHTML = '';
+            });
+
+            // Group tasks by status
+            const tasksByStatus = tasks.reduce((acc, task) => {
+                if (!acc[task.status]) acc[task.status] = [];
+                acc[task.status].push(task);
+                return acc;
+            }, {});
+
+            // Render tasks in each column
+            Object.keys(tasksByStatus).forEach(status => {
+                const list = document.getElementById(status + '-list');
+                if (list) {
+                    tasksByStatus[status].forEach(task => {
+                        list.appendChild(createTaskElement(task));
+                    });
+                }
+            });
+
+            updateStats();
+        }
+
+        function createTaskElement(task) {
+            const taskEl = document.createElement('div');
+            taskEl.className = 'task';
+            taskEl.draggable = true;
+            taskEl.dataset.taskId = task.id;
+            taskEl.dataset.status = task.status;
+
+            const priorityIndicator = task.priority ? 
+                `<div class="task-priority ${task.priority}"></div>` : '';
+
+            taskEl.innerHTML = `
+                <div class="task-header">
+                    <div class="task-id">${task.id}</div>
+                    ${priorityIndicator}
+                </div>
+                <div class="task-title">${task.title}</div>
+                <div class="task-project">
+                    <div class="project-badge">${task.project}</div>
+                </div>
+                <div class="task-footer">
+                    <div class="task-owner owner-${task.owner.toLowerCase()}">${task.owner}</div>
+                    <div class="task-meta">Updated now</div>
+                </div>
+            `;
+
+            taskEl.addEventListener('click', () => editTask(task.id));
+            taskEl.addEventListener('dragstart', handleDragStart);
+            taskEl.addEventListener('dragend', handleDragEnd);
+
+            return taskEl;
+        }
+
+        function updateStats() {
+            const stats = tasks.reduce((acc, task) => {
+                acc.total++;
+                acc[task.status] = (acc[task.status] || 0) + 1;
+                return acc;
+            }, { total: 0 });
+
+            document.getElementById('total-tasks').textContent = stats.total;
+            document.getElementById('in-progress-count').textContent = stats['in-progress'] || 0;
+            document.getElementById('blocked-count').textContent = stats.blocked || 0;
+            document.getElementById('done-count').textContent = stats.done || 0;
+
+            // Update column counts
+            ['todo', 'in-progress', 'review', 'blocked', 'done'].forEach(status => {
+                const countEl = document.getElementById(status + '-count') || 
+                              document.getElementById(status + '-count-display');
+                if (countEl) {
+                    countEl.textContent = stats[status] || 0;
+                }
+            });
+        }
+
+        // Modal functions
+        function addNewTask() {
+            currentTaskId = null;
+            document.getElementById('modal-title').textContent = 'Add New Task';
+            document.getElementById('task-form').reset();
+            document.getElementById('task-modal').style.display = 'block';
+        }
+
+        function addTaskToColumn(status) {
+            addNewTask();
+            document.getElementById('task-status').value = status;
+        }
+
+        function editTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            currentTaskId = taskId;
+            document.getElementById('modal-title').textContent = 'Edit Task';
+            document.getElementById('task-id').value = task.id;
+            document.getElementById('task-title').value = task.title;
+            document.getElementById('task-project').value = task.project;
+            document.getElementById('task-owner').value = task.owner;
+            document.getElementById('task-status').value = task.status;
+            document.getElementById('task-priority').value = task.priority || '';
+            document.getElementById('task-notes').value = task.notes || '';
+            document.getElementById('task-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('task-modal').style.display = 'none';
+        }
+
+        // Form submission
+        document.getElementById('task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: document.getElementById('task-id').value,
+                title: document.getElementById('task-title').value,
+                project: document.getElementById('task-project').value,
+                owner: document.getElementById('task-owner').value,
+                status: document.getElementById('task-status').value,
+                priority: document.getElementById('task-priority').value,
+                notes: document.getElementById('task-notes').value
+            };
+
+            if (currentTaskId) {
+                // Edit existing task
+                const taskIndex = tasks.findIndex(t => t.id === currentTaskId);
+                if (taskIndex !== -1) {
+                    tasks[taskIndex] = formData;
+                }
+            } else {
+                // Add new task
+                tasks.push(formData);
+            }
+
+            saveTasks();
+            renderTasks();
+            closeModal();
+        });
+
+        // Drag and Drop
+        function setupDragAndDrop() {
+            document.querySelectorAll('.column').forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+                column.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedElement = null;
+            // Remove drag-over class from all columns
+            document.querySelectorAll('.column').forEach(col => {
+                col.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            if (draggedElement) {
+                const taskId = draggedElement.dataset.taskId;
+                const newStatus = e.currentTarget.dataset.status;
+                
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = newStatus;
+                    saveTasks();
+                    renderTasks();
+                }
+            }
+        }
+
+        // Data persistence
+        function saveTasks() {
+            localStorage.setItem('medical-kanban-tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            const saved = localStorage.getItem('medical-kanban-tasks');
+            if (saved) {
+                tasks = JSON.parse(saved);
+                renderTasks();
+            }
+        }
+
+        function saveToFile() {
+            const dataStr = JSON.stringify(tasks, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'medical-research-tasks-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+        }
+
+        function loadFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            tasks = JSON.parse(e.target.result);
+                            saveTasks();
+                            renderTasks();
+                            showMessage('Tasks imported successfully!', 'success');
+                        } catch (error) {
+                            showMessage('Error importing file: ' + error.message, 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function generateReport() {
+            const report = {
+                generatedAt: new Date().toISOString(),
+                totalTasks: tasks.length,
+                tasksByStatus: tasks.reduce((acc, task) => {
+                    acc[task.status] = (acc[task.status] || 0) + 1;
+                    return acc;
+                }, {}),
+                tasksByOwner: tasks.reduce((acc, task) => {
+                    acc[task.owner] = (acc[task.owner] || 0) + 1;
+                    return acc;
+                }, {}),
+                tasksByProject: tasks.reduce((acc, task) => {
+                    acc[task.project] = (acc[task.project] || 0) + 1;
+                    return acc;
+                }, {}),
+                highPriorityTasks: tasks.filter(t => t.priority === 'high').length,
+                blockedTasks: tasks.filter(t => t.status === 'blocked'),
+                tasks: tasks
+            };
+
+            console.log('📊 Medical Research Project Report:', report);
+            showMessage('Report generated successfully! Check browser console for details.', 'success');
+        }
+
+        function clearCompleted() {
+            if (confirm('Archive all completed tasks? This will permanently remove them from the board.')) {
+                tasks = tasks.filter(task => task.status !== 'done');
+                saveTasks();
+                renderTasks();
+                showMessage('Completed tasks archived successfully!', 'success');
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `${type}-message`;
+            messageEl.textContent = message;
+            
+            const container = document.querySelector('.board-container');
+            container.insertBefore(messageEl, container.firstChild);
+            
+            setTimeout(() => {
+                messageEl.remove();
+            }, 3000);
+        }
+
+        // Click outside modal to close
+        window.onclick = function(event) {
+            const modal = document.getElementById('task-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Keyboard shortcuts for power users
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'n':
+                        e.preventDefault();
+                        addNewTask();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        saveTasks();
+                        showMessage('Tasks saved!', 'success');
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        generateReport();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

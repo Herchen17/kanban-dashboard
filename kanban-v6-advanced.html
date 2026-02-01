@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪖 Medical Research Project Management</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            /* Premium Medical Color System */
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            
+            --surface-primary: #ffffff;
+            --surface-secondary: #f8fafc;
+            --surface-tertiary: #f1f5f9;
+            --surface-accent: #e2e8f0;
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            
+            /* Enhanced Status Colors */
+            --status-todo: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            --status-progress: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --status-review: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --status-blocked: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --status-done: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            
+            /* Priority Colors */
+            --priority-critical: #dc2626;
+            --priority-high: #ea580c;
+            --priority-medium: #2563eb;
+            --priority-low: #059669;
+            
+            /* Animations */
+            --transition-base: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 150ms ease;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--surface-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ADVANCED HEADER with Progress Visualization */
+        .main-header {
+            background: var(--surface-primary);
+            border-bottom: 1px solid var(--surface-accent);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .primary-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* Enhanced Search & Filter with Auto-complete */
+        .controls-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--surface-tertiary) 0%, var(--surface-secondary) 100%);
+            border-radius: 1rem;
+            border: 1px solid var(--surface-accent);
+        }
+
+        .search-filter-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex: 1;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.5rem;
+            border: 1px solid var(--surface-accent);
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1), var(--shadow-md);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 1rem;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--surface-accent);
+            border-radius: 0.5rem;
+            background: var(--surface-primary);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-select:hover {
+            border-color: var(--text-tertiary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Advanced Sort Controls */
+        .sort-section {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .sort-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--surface-accent);
+            border-radius: 0.5rem;
+            background: var(--surface-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-btn.active {
+            background: var(--primary-600);
+            color: white;
+            border-color: var(--primary-600);
+        }
+
+        .sort-btn:hover:not(.active) {
+            background: var(--surface-tertiary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--surface-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--surface-accent);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-tertiary);
+            border-color: var(--text-tertiary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Progress Visualization */
+        .progress-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--surface-accent);
+        }
+
+        .progress-bars {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .progress-bar {
+            text-align: center;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .progress-visual {
+            height: 8px;
+            background: var(--surface-accent);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 500ms ease;
+        }
+
+        .progress-fill.todo { background: var(--status-todo); }
+        .progress-fill.in-progress { background: var(--status-progress); }
+        .progress-fill.review { background: var(--status-review); }
+        .progress-fill.blocked { background: var(--status-blocked); }
+        .progress-fill.done { background: var(--status-done); }
+
+        .progress-count {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stats-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .completion-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary-600) 0deg,
+                var(--primary-600) calc(var(--completion-percentage) * 3.6deg),
+                var(--surface-accent) calc(var(--completion-percentage) * 3.6deg),
+                var(--surface-accent) 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .completion-circle::after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: var(--surface-primary);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .completion-text {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* ENHANCED BOARD LAYOUT */
+        .board-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            min-height: calc(100vh - 500px);
+        }
+
+        @media (max-width: 1400px) {
+            .board { grid-template-columns: repeat(3, 1fr); }
+            .controls-row { grid-template-columns: 1fr; }
+            .progress-row { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .board { grid-template-columns: 1fr; }
+            .title-row { flex-direction: column; gap: 1rem; }
+            .search-filter-section { flex-direction: column; align-items: stretch; }
+            .search-container { max-width: none; }
+        }
+
+        /* PREMIUM COLUMNS */
+        .column {
+            background: var(--surface-primary);
+            border: 1px solid var(--surface-accent);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+        }
+
+        .column:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .column-header {
+            padding: 1.5rem;
+            background: var(--surface-tertiary);
+            border-bottom: 1px solid var(--surface-accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .column[data-status="todo"] .column-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        .column[data-status="in-progress"] .column-header {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+        .column[data-status="review"] .column-header {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        }
+        .column[data-status="blocked"] .column-header {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+        }
+        .column[data-status="done"] .column-header {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .column-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .column-count {
+            background: var(--surface-primary);
+            color: var(--text-secondary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--surface-accent);
+        }
+
+        /* AUTO-SAVE INDICATOR */
+        .auto-save-indicator {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 60;
+            transition: var(--transition-fast);
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .auto-save-indicator.saving {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fbbf24;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .auto-save-indicator.saved {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* PREMIUM TASK LIST */
+        .task-list {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 250px;
+        }
+
+        .task-list.sortable-over {
+            background: var(--primary-50);
+        }
+
+        .task-list:empty::after {
+            content: "Drop tasks here or click + to add";
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            border: 2px dashed var(--surface-accent);
+            border-radius: 0.75rem;
+            font-style: italic;
+            background: var(--surface-secondary);
+        }
+
+        /* LUXURY TASK CARDS */
+        .task {
+            background: var(--surface-primary);
+            border: 1px solid var(--surface-accent);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition-base);
+            position: relative;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .task::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            transition: var(--transition-fast);
+        }
+
+        .task.priority-critical::before { background: var(--priority-critical); }
+        .task.priority-high::before { background: var(--priority-high); }
+        .task.priority-medium::before { background: var(--priority-medium); }
+        .task.priority-low::before { background: var(--priority-low); }
+
+        .task:hover {
+            border-color: var(--primary-500);
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        .task.selected {
+            border-color: var(--primary-600);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), var(--shadow-lg);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .task-id {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-700);
+            background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--primary-200);
+        }
+
+        .task-priority {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 2px solid var(--surface-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .task-priority.critical { background: var(--priority-critical); }
+        .task-priority.high { background: var(--priority-high); }
+        .task-priority.medium { background: var(--priority-medium); }
+        .task-priority.low { background: var(--priority-low); }
+
+        .task-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            gap: 0.75rem;
+        }
+
+        .project-badge {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: linear-gradient(135deg, var(--surface-tertiary), var(--surface-accent));
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: 1px solid var(--surface-accent);
+            flex-shrink: 0;
+        }
+
+        .task-owner {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .task-owner.owner-soldier {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .task-owner.owner-alex {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .task-owner.owner-shared {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #b45309;
+            border: 1px solid #fbbf24;
+        }
+
+        /* Advanced Bulk Actions */
+        .bulk-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--surface-primary);
+            padding: 1.25rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--surface-accent);
+            display: none;
+            gap: 1rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .bulk-actions.active {
+            display: flex;
+        }
+
+        .bulk-count {
+            background: var(--primary-600);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        /* ENHANCED MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: var(--surface-primary);
+            margin: 2% auto;
+            padding: 2.5rem;
+            border-radius: 1.25rem;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--surface-accent);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: var(--text-tertiary);
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            transition: var(--transition-fast);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .close:hover {
+            color: var(--text-primary);
+            background: var(--surface-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--surface-accent);
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), var(--shadow-md);
+        }
+
+        /* Drag states with premium effects */
+        .column.drag-over {
+            border-color: var(--primary-500);
+            background: linear-gradient(135deg, var(--primary-50), var(--surface-primary));
+            box-shadow: var(--shadow-lg);
+            transform: scale(1.02);
+        }
+
+        .task.dragging {
+            opacity: 0.8;
+            transform: rotate(2deg) scale(0.95);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Premium Messages */
+        .message {
+            position: fixed;
+            top: 7rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            z-index: 60;
+            animation: slideInAdvanced 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(8px);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fecaca);
+            color: #dc2626;
+            border: 1px solid #f87171;
+        }
+
+        @keyframes slideInAdvanced {
+            from { 
+                transform: translateX(100%) translateY(-10px); 
+                opacity: 0; 
+                scale: 0.9;
+            }
+            to { 
+                transform: translateX(0) translateY(0); 
+                opacity: 1; 
+                scale: 1;
+            }
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: -0.75rem 0 0 -0.75rem;
+            border: 3px solid var(--surface-accent);
+            border-top: 3px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Quick add floating button */
+        .quick-add {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-base);
+            z-index: 40;
+        }
+
+        .quick-add:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+    </style>
+</head>
+<body>
+    <div class="auto-save-indicator" id="auto-save-indicator">Saved</div>
+
+    <header class="main-header">
+        <div class="header-content">
+            <div class="title-row">
+                <h1 class="page-title">
+                    🪖 Medical Research Project Management
+                </h1>
+                <div class="primary-actions">
+                    <button class="btn-primary" onclick="addNewTask()">
+                        ➕ Add Task
+                    </button>
+                    <button class="btn-secondary" onclick="saveToFile()">💾 Export</button>
+                    <button class="btn-secondary" onclick="loadFromFile()">📂 Import</button>
+                    <button class="btn-secondary" onclick="generateAdvancedReport()">📊 Report</button>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div class="search-filter-section">
+                    <div class="search-container">
+                        <div class="search-icon">🔍</div>
+                        <input type="text" class="search-input" id="search-input" 
+                               placeholder="Search tasks, projects, or IDs..." 
+                               oninput="handleAdvancedSearch(this.value)">
+                    </div>
+                    <div class="filter-section">
+                        <select class="filter-select" id="owner-filter" onchange="applyAdvancedFilters()">
+                            <option value="">All Owners</option>
+                            <option value="Soldier">🪖 Soldier</option>
+                            <option value="Alex">👨‍💼 Alex</option>
+                            <option value="Shared">🤝 Shared</option>
+                        </select>
+                        <select class="filter-select" id="priority-filter" onchange="applyAdvancedFilters()">
+                            <option value="">All Priorities</option>
+                            <option value="critical">🔴 Critical</option>
+                            <option value="high">🟡 High</option>
+                            <option value="medium">🔵 Medium</option>
+                            <option value="low">🟢 Low</option>
+                        </select>
+                        <select class="filter-select" id="project-filter" onchange="applyAdvancedFilters()">
+                            <option value="">All Projects</option>
+                            <option value="Project Management">🏗️ Project Management</option>
+                            <option value="BitClaw Protocol">🪙 BitClaw Protocol</option>
+                            <option value="Cost Optimization">💰 Cost Optimization</option>
+                            <option value="Medical Research">🏥 Medical Research</option>
+                            <option value="UGC Creator Agent">🎨 UGC Creator Agent</option>
+                            <option value="AI Agent Ecosystem">🤖 AI Agent Ecosystem</option>
+                            <option value="Kanban UI Overhaul">🎨 Kanban UI Overhaul</option>
+                            <option value="Opportunity Scouting">🎯 Opportunity Scouting</option>
+                        </select>
+                        <button class="btn-secondary" onclick="clearAdvancedFilters()">Clear</button>
+                    </div>
+                </div>
+                <div class="sort-section">
+                    <button class="sort-btn" onclick="sortTasks('priority')" id="sort-priority">Priority</button>
+                    <button class="sort-btn" onclick="sortTasks('project')" id="sort-project">Project</button>
+                    <button class="sort-btn" onclick="sortTasks('owner')" id="sort-owner">Owner</button>
+                </div>
+            </div>
+
+            <div class="progress-row">
+                <div class="progress-bars">
+                    <div class="progress-bar">
+                        <div class="progress-label">📋 To Do</div>
+                        <div class="progress-visual">
+                            <div class="progress-fill todo" id="progress-todo"></div>
+                        </div>
+                        <div class="progress-count" id="count-todo">0</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-label">🔥 Active</div>
+                        <div class="progress-visual">
+                            <div class="progress-fill in-progress" id="progress-in-progress"></div>
+                        </div>
+                        <div class="progress-count" id="count-in-progress">0</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-label">👁️ Review</div>
+                        <div class="progress-visual">
+                            <div class="progress-fill review" id="progress-review"></div>
+                        </div>
+                        <div class="progress-count" id="count-review">0</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-label">⏸️ Blocked</div>
+                        <div class="progress-visual">
+                            <div class="progress-fill blocked" id="progress-blocked"></div>
+                        </div>
+                        <div class="progress-count" id="count-blocked">0</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-label">✅ Done</div>
+                        <div class="progress-visual">
+                            <div class="progress-fill done" id="progress-done"></div>
+                        </div>
+                        <div class="progress-count" id="count-done">0</div>
+                    </div>
+                </div>
+                <div class="stats-summary">
+                    <div class="completion-circle" id="completion-circle">
+                        <div class="completion-text" id="completion-text">0%</div>
+                    </div>
+                    <p style="text-align: center; color: var(--text-tertiary); font-size: 0.875rem;">
+                        Orthopaedics • Digital Health • AI in Medicine • Class of 2027
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="board-container">
+        <div class="board" id="kanban-board">
+            <div class="column" data-status="todo">
+                <div class="column-header">
+                    <div class="column-title">📋 To Do</div>
+                    <div class="column-count" id="todo-count">0</div>
+                </div>
+                <div class="task-list" id="todo-list"></div>
+            </div>
+
+            <div class="column" data-status="in-progress">
+                <div class="column-header">
+                    <div class="column-title">🔥 In Progress</div>
+                    <div class="column-count" id="in-progress-count-display">0</div>
+                </div>
+                <div class="task-list" id="in-progress-list"></div>
+            </div>
+
+            <div class="column" data-status="review">
+                <div class="column-header">
+                    <div class="column-title">👁️ Review</div>
+                    <div class="column-count" id="review-count">0</div>
+                </div>
+                <div class="task-list" id="review-list"></div>
+            </div>
+
+            <div class="column" data-status="blocked">
+                <div class="column-header">
+                    <div class="column-title">⛔ Blocked</div>
+                    <div class="column-count" id="blocked-count-display">0</div>
+                </div>
+                <div class="task-list" id="blocked-list"></div>
+            </div>
+
+            <div class="column" data-status="done">
+                <div class="column-header">
+                    <div class="column-title">✅ Done</div>
+                    <div class="column-count" id="done-count-display">0</div>
+                </div>
+                <div class="task-list" id="done-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Add Button -->
+    <button class="quick-add" onclick="addNewTask()" title="Quick Add Task">➕</button>
+
+    <!-- Enhanced Bulk Actions -->
+    <div class="bulk-actions" id="bulk-actions">
+        <div class="bulk-count" id="bulk-count">0 selected</div>
+        <button class="btn-secondary" onclick="bulkChangeStatus()">Status</button>
+        <button class="btn-secondary" onclick="bulkChangePriority()">Priority</button>
+        <button class="btn-secondary" onclick="bulkChangeOwner()">Owner</button>
+        <button class="btn-secondary" onclick="bulkDelete()">Delete</button>
+        <button class="btn-secondary" onclick="clearSelection()">Clear</button>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">Add New Task</h2>
+            <form id="task-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="task-id">Task ID:</label>
+                        <input type="text" id="task-id" placeholder="e.g., SOLDIER-PM-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-priority">Priority:</label>
+                        <select id="task-priority">
+                            <option value="">None</option>
+                            <option value="critical">🔴 Critical</option>
+                            <option value="high">🟡 High</option>
+                            <option value="medium">🔵 Medium</option>
+                            <option value="low">🟢 Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-title">Title:</label>
+                    <input type="text" id="task-title" placeholder="Brief description of the task" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="task-project">Project:</label>
+                        <select id="task-project" required>
+                            <option value="">Select Project</option>
+                            <option value="Project Management">🏗️ Project Management</option>
+                            <option value="BitClaw Protocol">🪙 BitClaw Protocol</option>
+                            <option value="Cost Optimization">💰 Cost Optimization</option>
+                            <option value="Medical Research">🏥 Medical Research</option>
+                            <option value="UGC Creator Agent">🎨 UGC Creator Agent</option>
+                            <option value="AI Agent Ecosystem">🤖 AI Agent Ecosystem</option>
+                            <option value="Kanban UI Overhaul">🎨 Kanban UI Overhaul</option>
+                            <option value="Opportunity Scouting">🎯 Opportunity Scouting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-owner">Owner:</label>
+                        <select id="task-owner" required>
+                            <option value="Soldier">🪖 Soldier (AI)</option>
+                            <option value="Alex">👨‍💼 Alex</option>
+                            <option value="Shared">🤝 Shared</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-status">Status:</label>
+                        <select id="task-status" required>
+                            <option value="todo">📋 To Do</option>
+                            <option value="in-progress">🔥 In Progress</option>
+                            <option value="review">👁️ Review</option>
+                            <option value="blocked">⛔ Blocked</option>
+                            <option value="done">✅ Done</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-notes">Notes:</label>
+                    <textarea id="task-notes" rows="4" placeholder="Additional details or context"></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="kanban-current-tasks.js"></script>
+    <script>
+        let tasks = [];
+        let currentTaskId = null;
+        let draggedElement = null;
+        let filteredTasks = [];
+        let selectedTasks = new Set();
+        let currentSort = null;
+        let autoSaveTimeout;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('medical-kanban-tasks-v6')) {
+                loadTasks();
+            } else {
+                tasks = allCurrentTasks;
+                filteredTasks = [...tasks];
+                renderTasks();
+                saveTasks();
+            }
+            setupDragAndDrop();
+            setupAdvancedKeyboardShortcuts();
+            startAutoSave();
+        });
+
+        function renderTasks() {
+            document.querySelectorAll('.task-list').forEach(list => {
+                list.innerHTML = '';
+            });
+
+            const tasksByStatus = filteredTasks.reduce((acc, task) => {
+                if (!acc[task.status]) acc[task.status] = [];
+                acc[task.status].push(task);
+                return acc;
+            }, {});
+
+            Object.keys(tasksByStatus).forEach(status => {
+                const list = document.getElementById(status + '-list');
+                if (list) {
+                    tasksByStatus[status].forEach(task => {
+                        list.appendChild(createAdvancedTaskElement(task));
+                    });
+                }
+            });
+
+            updateAdvancedStats();
+        }
+
+        function createAdvancedTaskElement(task) {
+            const taskEl = document.createElement('div');
+            taskEl.className = `task ${task.priority ? 'priority-' + task.priority : ''}`;
+            taskEl.draggable = true;
+            taskEl.dataset.taskId = task.id;
+            taskEl.dataset.status = task.status;
+
+            const priorityIndicator = task.priority ? 
+                `<div class="task-priority ${task.priority}" title="${task.priority} priority"></div>` : '';
+
+            taskEl.innerHTML = `
+                <div class="task-header">
+                    <div class="task-id">${task.id}</div>
+                    ${priorityIndicator}
+                </div>
+                <div class="task-title">${task.title}</div>
+                <div class="task-footer">
+                    <div class="project-badge">${task.project}</div>
+                    <div class="task-owner owner-${task.owner.toLowerCase()}">${task.owner}</div>
+                </div>
+            `;
+
+            taskEl.addEventListener('click', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    toggleTaskSelection(task.id);
+                } else {
+                    editTask(task.id);
+                }
+            });
+            taskEl.addEventListener('dragstart', handleDragStart);
+            taskEl.addEventListener('dragend', handleDragEnd);
+
+            return taskEl;
+        }
+
+        function handleAdvancedSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
+            applyAdvancedFilters();
+        }
+
+        function applyAdvancedFilters() {
+            const ownerFilter = document.getElementById('owner-filter').value;
+            const priorityFilter = document.getElementById('priority-filter').value;
+            const projectFilter = document.getElementById('project-filter').value;
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+
+            let filtered = [...tasks];
+
+            if (searchTerm) {
+                filtered = filtered.filter(task => 
+                    task.id.toLowerCase().includes(searchTerm) ||
+                    task.title.toLowerCase().includes(searchTerm) ||
+                    task.project.toLowerCase().includes(searchTerm) ||
+                    task.owner.toLowerCase().includes(searchTerm) ||
+                    (task.notes && task.notes.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            if (ownerFilter) {
+                filtered = filtered.filter(task => task.owner === ownerFilter);
+            }
+
+            if (priorityFilter) {
+                filtered = filtered.filter(task => task.priority === priorityFilter);
+            }
+
+            if (projectFilter) {
+                filtered = filtered.filter(task => task.project === projectFilter);
+            }
+
+            if (currentSort) {
+                filtered = sortTasksArray(filtered, currentSort);
+            }
+
+            filteredTasks = filtered;
+            renderTasks();
+        }
+
+        function sortTasks(field) {
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`sort-${field}`).classList.add('active');
+            
+            currentSort = field;
+            filteredTasks = sortTasksArray(filteredTasks, field);
+            renderTasks();
+        }
+
+        function sortTasksArray(tasksArray, field) {
+            return [...tasksArray].sort((a, b) => {
+                if (field === 'priority') {
+                    const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1, '': 0 };
+                    return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+                }
+                if (field === 'project') {
+                    return a.project.localeCompare(b.project);
+                }
+                if (field === 'owner') {
+                    return a.owner.localeCompare(b.owner);
+                }
+                return 0;
+            });
+        }
+
+        function clearAdvancedFilters() {
+            document.getElementById('owner-filter').value = '';
+            document.getElementById('priority-filter').value = '';
+            document.getElementById('project-filter').value = '';
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            currentSort = null;
+            filteredTasks = [...tasks];
+            renderTasks();
+        }
+
+        function toggleTaskSelection(taskId) {
+            if (selectedTasks.has(taskId)) {
+                selectedTasks.delete(taskId);
+            } else {
+                selectedTasks.add(taskId);
+            }
+            
+            const taskEl = document.querySelector(`[data-task-id="${taskId}"]`);
+            if (taskEl) {
+                taskEl.classList.toggle('selected', selectedTasks.has(taskId));
+            }
+            
+            updateBulkActions();
+        }
+
+        function updateBulkActions() {
+            const bulkActions = document.getElementById('bulk-actions');
+            const bulkCount = document.getElementById('bulk-count');
+            
+            if (selectedTasks.size > 0) {
+                bulkActions.classList.add('active');
+                bulkCount.textContent = `${selectedTasks.size} selected`;
+            } else {
+                bulkActions.classList.remove('active');
+            }
+        }
+
+        function clearSelection() {
+            selectedTasks.clear();
+            document.querySelectorAll('.task.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+            updateBulkActions();
+        }
+
+        function updateAdvancedStats() {
+            const stats = filteredTasks.reduce((acc, task) => {
+                acc.total++;
+                acc[task.status] = (acc[task.status] || 0) + 1;
+                return acc;
+            }, { total: 0 });
+
+            const totalTasks = tasks.length;
+            const completionPercentage = totalTasks > 0 ? Math.round((stats.done || 0) / totalTasks * 100) : 0;
+
+            // Update progress bars
+            ['todo', 'in-progress', 'review', 'blocked', 'done'].forEach(status => {
+                const count = stats[status] || 0;
+                const percentage = totalTasks > 0 ? (count / totalTasks) * 100 : 0;
+                
+                const progressFill = document.getElementById(`progress-${status}`);
+                const countEl = document.getElementById(`count-${status}`);
+                const columnCountEl = document.getElementById(`${status}-count`) || 
+                                    document.getElementById(`${status}-count-display`);
+                
+                if (progressFill) progressFill.style.width = `${percentage}%`;
+                if (countEl) countEl.textContent = count;
+                if (columnCountEl) columnCountEl.textContent = count;
+            });
+
+            // Update completion circle
+            const completionCircle = document.getElementById('completion-circle');
+            const completionText = document.getElementById('completion-text');
+            
+            completionCircle.style.setProperty('--completion-percentage', completionPercentage);
+            completionText.textContent = `${completionPercentage}%`;
+        }
+
+        function startAutoSave() {
+            // Auto-save every 30 seconds if changes detected
+            setInterval(() => {
+                if (autoSaveTimeout) {
+                    clearTimeout(autoSaveTimeout);
+                }
+                showAutoSaveIndicator('saving');
+                saveTasks();
+                setTimeout(() => showAutoSaveIndicator('saved'), 500);
+            }, 30000);
+        }
+
+        function showAutoSaveIndicator(state) {
+            const indicator = document.getElementById('auto-save-indicator');
+            indicator.className = `auto-save-indicator ${state}`;
+            indicator.textContent = state === 'saving' ? 'Saving...' : 'Saved';
+            
+            if (state === 'saved') {
+                setTimeout(() => {
+                    indicator.classList.remove('saved');
+                }, 2000);
+            }
+        }
+
+        function setupAdvancedKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'n':
+                            e.preventDefault();
+                            addNewTask();
+                            break;
+                        case 'f':
+                            e.preventDefault();
+                            document.getElementById('search-input').focus();
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            showAutoSaveIndicator('saving');
+                            saveTasks();
+                            setTimeout(() => showAutoSaveIndicator('saved'), 300);
+                            break;
+                        case 'a':
+                            e.preventDefault();
+                            // Select all visible tasks
+                            filteredTasks.forEach(task => {
+                                selectedTasks.add(task.id);
+                                const taskEl = document.querySelector(`[data-task-id="${task.id}"]`);
+                                if (taskEl) taskEl.classList.add('selected');
+                            });
+                            updateBulkActions();
+                            break;
+                        case '1':
+                            e.preventDefault();
+                            sortTasks('priority');
+                            break;
+                        case '2':
+                            e.preventDefault();
+                            sortTasks('project');
+                            break;
+                        case '3':
+                            e.preventDefault();
+                            sortTasks('owner');
+                            break;
+                    }
+                }
+                if (e.key === 'Escape') {
+                    closeModal();
+                    clearSelection();
+                }
+                if (e.key === 'Delete' && selectedTasks.size > 0) {
+                    bulkDelete();
+                }
+            });
+        }
+
+        // Enhanced bulk operations
+        function bulkChangeStatus() {
+            const statuses = [
+                { value: 'todo', label: '📋 To Do' },
+                { value: 'in-progress', label: '🔥 In Progress' },
+                { value: 'review', label: '👁️ Review' },
+                { value: 'blocked', label: '⛔ Blocked' },
+                { value: 'done', label: '✅ Done' }
+            ];
+            
+            const newStatus = prompt('Select new status:\n' + 
+                statuses.map((s, i) => `${i + 1}. ${s.label}`).join('\n') + 
+                '\n\nEnter number (1-5):');
+            
+            const statusIndex = parseInt(newStatus) - 1;
+            if (statusIndex >= 0 && statusIndex < statuses.length) {
+                const selectedStatus = statuses[statusIndex].value;
+                const count = selectedTasks.size;
+                
+                selectedTasks.forEach(taskId => {
+                    const task = tasks.find(t => t.id === taskId);
+                    if (task) task.status = selectedStatus;
+                });
+                
+                applyAdvancedFilters();
+                saveTasks();
+                clearSelection();
+                showMessage(`${count} tasks moved to ${statuses[statusIndex].label}!`, 'success');
+            }
+        }
+
+        function bulkChangePriority() {
+            const priorities = [
+                { value: 'critical', label: '🔴 Critical' },
+                { value: 'high', label: '🟡 High' },
+                { value: 'medium', label: '🔵 Medium' },
+                { value: 'low', label: '🟢 Low' },
+                { value: '', label: '⚪ None' }
+            ];
+            
+            const newPriority = prompt('Select new priority:\n' + 
+                priorities.map((p, i) => `${i + 1}. ${p.label}`).join('\n') + 
+                '\n\nEnter number (1-5):');
+            
+            const priorityIndex = parseInt(newPriority) - 1;
+            if (priorityIndex >= 0 && priorityIndex < priorities.length) {
+                const selectedPriority = priorities[priorityIndex].value;
+                const count = selectedTasks.size;
+                
+                selectedTasks.forEach(taskId => {
+                    const task = tasks.find(t => t.id === taskId);
+                    if (task) task.priority = selectedPriority;
+                });
+                
+                applyAdvancedFilters();
+                saveTasks();
+                clearSelection();
+                showMessage(`${count} tasks priority updated to ${priorities[priorityIndex].label}!`, 'success');
+            }
+        }
+
+        function bulkChangeOwner() {
+            const owners = [
+                { value: 'Soldier', label: '🪖 Soldier' },
+                { value: 'Alex', label: '👨‍💼 Alex' },
+                { value: 'Shared', label: '🤝 Shared' }
+            ];
+            
+            const newOwner = prompt('Select new owner:\n' + 
+                owners.map((o, i) => `${i + 1}. ${o.label}`).join('\n') + 
+                '\n\nEnter number (1-3):');
+            
+            const ownerIndex = parseInt(newOwner) - 1;
+            if (ownerIndex >= 0 && ownerIndex < owners.length) {
+                const selectedOwner = owners[ownerIndex].value;
+                const count = selectedTasks.size;
+                
+                selectedTasks.forEach(taskId => {
+                    const task = tasks.find(t => t.id === taskId);
+                    if (task) task.owner = selectedOwner;
+                });
+                
+                applyAdvancedFilters();
+                saveTasks();
+                clearSelection();
+                showMessage(`${count} tasks assigned to ${owners[ownerIndex].label}!`, 'success');
+            }
+        }
+
+        function bulkDelete() {
+            const count = selectedTasks.size;
+            if (confirm(`Delete ${count} selected tasks? This cannot be undone.`)) {
+                tasks = tasks.filter(task => !selectedTasks.has(task.id));
+                filteredTasks = [...tasks];
+                applyAdvancedFilters();
+                saveTasks();
+                clearSelection();
+                showMessage(`${count} tasks deleted!`, 'success');
+            }
+        }
+
+        // Standard functions with enhancements
+        function addNewTask() {
+            currentTaskId = null;
+            document.getElementById('modal-title').textContent = 'Add New Task';
+            document.getElementById('task-form').reset();
+            document.getElementById('task-modal').style.display = 'block';
+            document.getElementById('task-id').focus();
+        }
+
+        function editTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            currentTaskId = taskId;
+            document.getElementById('modal-title').textContent = 'Edit Task';
+            document.getElementById('task-id').value = task.id;
+            document.getElementById('task-title').value = task.title;
+            document.getElementById('task-project').value = task.project;
+            document.getElementById('task-owner').value = task.owner;
+            document.getElementById('task-status').value = task.status;
+            document.getElementById('task-priority').value = task.priority || '';
+            document.getElementById('task-notes').value = task.notes || '';
+            document.getElementById('task-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('task-modal').style.display = 'none';
+        }
+
+        function saveTasks() {
+            localStorage.setItem('medical-kanban-tasks-v6', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            const saved = localStorage.getItem('medical-kanban-tasks-v6');
+            if (saved) {
+                tasks = JSON.parse(saved);
+                filteredTasks = [...tasks];
+                renderTasks();
+            }
+        }
+
+        function saveToFile() {
+            const dataStr = JSON.stringify(tasks, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'medical-research-tasks-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            showMessage('Tasks exported successfully!', 'success');
+        }
+
+        function loadFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            tasks = JSON.parse(e.target.result);
+                            filteredTasks = [...tasks];
+                            saveTasks();
+                            renderTasks();
+                            showMessage('Tasks imported successfully!', 'success');
+                        } catch (error) {
+                            showMessage('Error importing file: ' + error.message, 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function generateAdvancedReport() {
+            const report = {
+                generatedAt: new Date().toISOString(),
+                summary: {
+                    totalTasks: tasks.length,
+                    completionRate: tasks.length > 0 ? Math.round((tasks.filter(t => t.status === 'done').length / tasks.length) * 100) : 0
+                },
+                tasksByStatus: tasks.reduce((acc, task) => {
+                    acc[task.status] = (acc[task.status] || 0) + 1;
+                    return acc;
+                }, {}),
+                tasksByOwner: tasks.reduce((acc, task) => {
+                    acc[task.owner] = (acc[task.owner] || 0) + 1;
+                    return acc;
+                }, {}),
+                tasksByProject: tasks.reduce((acc, task) => {
+                    acc[task.project] = (acc[task.project] || 0) + 1;
+                    return acc;
+                }, {}),
+                tasksByPriority: tasks.reduce((acc, task) => {
+                    const priority = task.priority || 'none';
+                    acc[priority] = (acc[priority] || 0) + 1;
+                    return acc;
+                }, {}),
+                criticalTasks: tasks.filter(t => t.priority === 'critical'),
+                blockedTasks: tasks.filter(t => t.status === 'blocked'),
+                recentlyCompleted: tasks.filter(t => t.status === 'done').slice(0, 10),
+                tasks: tasks
+            };
+
+            console.log('📊 Advanced Medical Research Project Report:', report);
+            showMessage('Advanced report generated! Check browser console.', 'success');
+            
+            // Also show summary in UI
+            alert(`📊 Project Summary:\n\nTotal Tasks: ${report.summary.totalTasks}\nCompletion Rate: ${report.summary.completionRate}%\nCritical Tasks: ${report.criticalTasks.length}\nBlocked Tasks: ${report.blockedTasks.length}\n\nFull report in console.`);
+        }
+
+        function showMessage(message, type) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}-message`;
+            messageEl.textContent = message;
+            
+            document.body.appendChild(messageEl);
+            
+            setTimeout(() => {
+                messageEl.remove();
+            }, 4000);
+        }
+
+        document.getElementById('task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const taskData = {
+                id: document.getElementById('task-id').value,
+                title: document.getElementById('task-title').value,
+                project: document.getElementById('task-project').value,
+                owner: document.getElementById('task-owner').value,
+                status: document.getElementById('task-status').value,
+                priority: document.getElementById('task-priority').value,
+                notes: document.getElementById('task-notes').value
+            };
+
+            if (currentTaskId) {
+                const taskIndex = tasks.findIndex(t => t.id === currentTaskId);
+                if (taskIndex !== -1) {
+                    tasks[taskIndex] = { ...tasks[taskIndex], ...taskData };
+                }
+            } else {
+                tasks.push(taskData);
+            }
+
+            applyAdvancedFilters();
+            showAutoSaveIndicator('saving');
+            saveTasks();
+            setTimeout(() => showAutoSaveIndicator('saved'), 300);
+            closeModal();
+            showMessage(currentTaskId ? 'Task updated!' : 'Task added!', 'success');
+        });
+
+        // Drag and Drop (same as V5 but enhanced)
+        function setupDragAndDrop() {
+            const columns = document.querySelectorAll('.column');
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+                column.addEventListener('dragenter', handleDragEnter);
+                column.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.drag-over').forEach(el => {
+                el.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            if (e.target.classList.contains('column') || e.target.closest('.column')) {
+                const column = e.target.closest('.column');
+                column.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            if (e.target.classList.contains('column')) {
+                e.target.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const column = e.target.closest('.column');
+            if (column && draggedElement) {
+                const newStatus = column.dataset.status;
+                const taskId = draggedElement.dataset.taskId;
+                
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = newStatus;
+                    applyAdvancedFilters();
+                    showAutoSaveIndicator('saving');
+                    saveTasks();
+                    setTimeout(() => showAutoSaveIndicator('saved'), 300);
+                    showMessage(`Task moved to ${newStatus}!`, 'success');
+                }
+            }
+            
+            column.classList.remove('drag-over');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('task-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
