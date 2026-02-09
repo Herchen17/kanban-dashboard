@@ -3,48 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex's Project Dashboard</title>
-    <meta http-equiv="refresh" content="0; url=./kanban-live.html">
+    <title>Alex's Projects</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: #f8f9fa;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            padding: 20px;
         }
-        .redirect-message {
+
+        h1 {
+            font-size: 36px;
+            color: #000000;
+            margin-bottom: 20px;
             text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-weight: 700;
         }
-        .redirect-message h1 {
-            color: #212529;
-            margin-bottom: 16px;
+
+        .board {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            overflow-x: auto;
         }
-        .redirect-message p {
-            color: #6c757d;
-            margin-bottom: 24px;
+
+        .column {
+            flex: 0 0 300px;
+            background: #f8f8f8;
+            border: 2px solid #333333;
+            border-radius: 8px;
+            padding: 20px;
         }
-        .redirect-message a {
-            color: #0d6efd;
-            text-decoration: none;
+
+        .column h2 {
+            font-size: 20px;
+            color: #000000;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333333;
+        }
+
+        .task {
+            background: #ffffff;
+            border: 2px solid #666666;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-size: 16px;
             font-weight: 600;
+            color: #000000;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
-        .redirect-message a:hover {
-            text-decoration: underline;
+
+        .task-meta {
+            font-size: 14px;
+            color: #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .priority-high {
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .priority-critical {
+            background: #ff0000;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .priority-medium {
+            background: #4ecdc4;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .board {
+                flex-direction: column;
+            }
+            .column {
+                flex: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="redirect-message">
-        <h1>🪖 Redirecting to Dashboard</h1>
-        <p>Taking you to the latest version...</p>
-        <p>If not redirected automatically, <a href="./kanban-live.html">click here</a></p>
+    <h1>🪖 Alex's Project Dashboard</h1>
+
+    <div class="board">
+        <div class="column">
+            <h2>🔴 URGENT - Need Alex</h2>
+            
+            <div class="task">
+                <div class="task-title">DECISION: BitClaw Protocol migration vs new deployment</div>
+                <div class="task-meta">
+                    <span>BitClaw Protocol</span>
+                    <span class="priority-critical">CRITICAL</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Define UGC Creator Agent business priorities and target market</div>
+                <div class="task-meta">
+                    <span>$24K/month opportunity</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Define medical research priorities for Q1 2026</div>
+                <div class="task-meta">
+                    <span>Medical Research</span>
+                    <span class="priority-medium">MEDIUM</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>⚡ READY TO WORK</h2>
+            
+            <div class="task">
+                <div class="task-title">Implement actionable step requirement for every plan</div>
+                <div class="task-meta">
+                    <span>Project Management</span>
+                    <span class="priority-critical">CRITICAL</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Create "refer to Alex" workflow for unclear items</div>
+                <div class="task-meta">
+                    <span>Project Management</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Develop creator database structure (10K-100K followers)</div>
+                <div class="task-meta">
+                    <span>UGC Creator Agent</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Create comprehensive AI ecosystem strategy document</div>
+                <div class="task-meta">
+                    <span>AI Ecosystem</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🔧 IN PROGRESS</h2>
+            
+            <div class="task">
+                <div class="task-title">Advanced filtering and search for kanban board</div>
+                <div class="task-meta">
+                    <span>UI Overhaul</span>
+                    <span class="priority-critical">CRITICAL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🚫 BLOCKED</h2>
+            
+            <div class="task">
+                <div class="task-title">Enhanced CLAWNCH research + Warren-deploy testing</div>
+                <div class="task-meta">
+                    <span>Awaiting Alex decision</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">Smart contract deployment strategy comparison</div>
+                <div class="task-meta">
+                    <span>Depends on migration decision</span>
+                    <span class="priority-high">HIGH</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>✅ COMPLETED</h2>
+            
+            <div class="task">
+                <div class="task-title">Create systematic planning methodology</div>
+                <div class="task-meta">
+                    <span>Project Management</span>
+                    <span class="priority-critical">DONE</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">UGC market research (28+ platforms)</div>
+                <div class="task-meta">
+                    <span>$24K opportunity validated</span>
+                    <span class="priority-high">DONE</span>
+                </div>
+            </div>
+
+            <div class="task">
+                <div class="task-title">UI/UX audit with screenshots</div>
+                <div class="task-meta">
+                    <span>Kanban UI Overhaul</span>
+                    <span class="priority-critical">DONE</span>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
