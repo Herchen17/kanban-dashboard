@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex's Projects</title>
+    <title>Alex's Projects - Interactive Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -56,6 +56,14 @@
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task:hover {
+            border-color: #007bff;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+            transform: translateY(-1px);
         }
 
         .task-title {
@@ -101,12 +109,188 @@
             font-weight: bold;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            margin: 2% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        .project-header {
+            border-bottom: 3px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .project-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .meta-item {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-blocked { background: #f8d7da; color: #721c24; }
+        .status-planning { background: #fff3cd; color: #856404; }
+        .status-ready { background: #cce5ff; color: #004085; }
+
+        .objective {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            font-size: 20px;
+            color: #000;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-status {
+            font-size: 18px;
+            width: 20px;
+        }
+
+        .task-done { color: #28a745; }
+        .task-blocked { color: #dc3545; }
+        .task-todo { color: #6c757d; }
+        .task-progress { color: #007bff; }
+
+        .task-description {
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .task-owner {
+            font-size: 12px;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .next-steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .next-steps h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 768px) {
             .board {
                 flex-direction: column;
             }
             .column {
                 flex: none;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+                margin: 5% auto;
+            }
+            .project-meta {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -118,7 +302,7 @@
         <div class="column">
             <h2>🔴 URGENT - Need Alex</h2>
             
-            <div class="task">
+            <div class="task" onclick="openProject('bitclaw')">
                 <div class="task-title">DECISION: BitClaw Protocol migration vs new deployment</div>
                 <div class="task-meta">
                     <span>BitClaw Protocol</span>
@@ -126,7 +310,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('ugc')">
                 <div class="task-title">Define UGC Creator Agent business priorities and target market</div>
                 <div class="task-meta">
                     <span>$24K/month opportunity</span>
@@ -134,7 +318,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('medical')">
                 <div class="task-title">Define medical research priorities for Q1 2026</div>
                 <div class="task-meta">
                     <span>Medical Research</span>
@@ -146,7 +330,7 @@
         <div class="column">
             <h2>⚡ READY TO WORK</h2>
             
-            <div class="task">
+            <div class="task" onclick="openProject('project-mgmt')">
                 <div class="task-title">Implement actionable step requirement for every plan</div>
                 <div class="task-meta">
                     <span>Project Management</span>
@@ -154,7 +338,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('project-mgmt')">
                 <div class="task-title">Create "refer to Alex" workflow for unclear items</div>
                 <div class="task-meta">
                     <span>Project Management</span>
@@ -162,7 +346,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('ugc')">
                 <div class="task-title">Develop creator database structure (10K-100K followers)</div>
                 <div class="task-meta">
                     <span>UGC Creator Agent</span>
@@ -170,7 +354,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('ai-ecosystem')">
                 <div class="task-title">Create comprehensive AI ecosystem strategy document</div>
                 <div class="task-meta">
                     <span>AI Ecosystem</span>
@@ -182,7 +366,7 @@
         <div class="column">
             <h2>🔧 IN PROGRESS</h2>
             
-            <div class="task">
+            <div class="task" onclick="openProject('kanban-ui')">
                 <div class="task-title">Advanced filtering and search for kanban board</div>
                 <div class="task-meta">
                     <span>UI Overhaul</span>
@@ -194,7 +378,7 @@
         <div class="column">
             <h2>🚫 BLOCKED</h2>
             
-            <div class="task">
+            <div class="task" onclick="openProject('bitclaw')">
                 <div class="task-title">Enhanced CLAWNCH research + Warren-deploy testing</div>
                 <div class="task-meta">
                     <span>Awaiting Alex decision</span>
@@ -202,7 +386,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('bitclaw')">
                 <div class="task-title">Smart contract deployment strategy comparison</div>
                 <div class="task-meta">
                     <span>Depends on migration decision</span>
@@ -214,7 +398,7 @@
         <div class="column">
             <h2>✅ COMPLETED</h2>
             
-            <div class="task">
+            <div class="task" onclick="openProject('project-mgmt')">
                 <div class="task-title">Create systematic planning methodology</div>
                 <div class="task-meta">
                     <span>Project Management</span>
@@ -222,7 +406,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('ugc')">
                 <div class="task-title">UGC market research (28+ platforms)</div>
                 <div class="task-meta">
                     <span>$24K opportunity validated</span>
@@ -230,7 +414,7 @@
                 </div>
             </div>
 
-            <div class="task">
+            <div class="task" onclick="openProject('kanban-ui')">
                 <div class="task-title">UI/UX audit with screenshots</div>
                 <div class="task-meta">
                     <span>Kanban UI Overhaul</span>
@@ -239,5 +423,252 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Project data
+        const projects = {
+            'project-mgmt': {
+                title: "🏗️ Systematic Planning & Execution Core",
+                objective: "Make rigorous systematic planning the fundamental operating system for all work",
+                owner: "Soldier (AI)",
+                priority: "CRITICAL",
+                status: "ACTIVE_DEVELOPMENT",
+                progress: 65,
+                completed: [
+                    "SOLDIER-PM-001: Audit all existing project directories",
+                    "SOLDIER-PM-002: Create editable kanban interface (Alex + AI access)",
+                    "SOLDIER-PM-003: Implement job categorization system",
+                    "SOLDIER-PM-009: Create rigorous systematic planning methodology documentation"
+                ],
+                inProgress: [
+                    "SOLDIER-PM-011A: Advanced filtering system (Owner, Project, Priority, Status)",
+                    "SOLDIER-PM-011B: Search functionality (Job ID, Title, Notes, Project)"
+                ],
+                todo: [
+                    "SOLDIER-PM-010: Implement actionable step requirement for every plan/discussion",
+                    "SOLDIER-PM-013: Create 'refer to Alex' workflow for unclear action items",
+                    "ALEX-PM-001: Review systematic planning approach and kanban functionality"
+                ],
+                blocked: [],
+                nextSteps: "Focus on SOLDIER-PM-010 (actionable step requirement) as it's foundational for all other systematic planning work."
+            },
+            'bitclaw': {
+                title: "🪙 BitClaw Protocol",
+                objective: "Complete professional token deployment with correct tokenomics",
+                owner: "Shared",
+                priority: "HIGH",
+                status: "BLOCKED",
+                progress: 15,
+                completed: [],
+                inProgress: [],
+                todo: [
+                    "SOLDIER-BC-002: Smart contract deployment strategy comparison (multiple chains)",
+                    "SOLDIER-BC-003: Test tokenomics implementation using warren-deploy",
+                    "SOLDIER-BC-004: Execute approved deployment plan",
+                    "SOLDIER-BC-005: Complete brand rollout (logo implementation)"
+                ],
+                blocked: [
+                    "SOLDIER-BC-001: Enhanced CLAWNCH research + Warren-deploy testing on MegaETH",
+                    "ALEX-BC-001: DECISION NEEDED - Migration strategy vs new deployment"
+                ],
+                nextSteps: "Alex needs to decide on migration strategy vs new deployment. This is blocking 3 other tasks."
+            },
+            'ugc': {
+                title: "🎨 UGC Creator Agent",
+                objective: "Build automated creator outreach system ($24k+/month revenue potential)",
+                owner: "Shared",
+                priority: "HIGH",
+                status: "READY_TO_START",
+                progress: 45,
+                completed: [
+                    "SOLDIER-UGC-001: Enhanced market research using Postiz (28+ platform analysis) - AU$24K+/month opportunity validated",
+                    "SOLDIER-UGC-002: Creator ecosystem mapping across all major platforms - 100+ creators mapped",
+                    "SOLDIER-UGC-003: LinkedIn automation setup for B2B creator outreach - 50+ target companies identified"
+                ],
+                inProgress: [],
+                todo: [
+                    "SOLDIER-UGC-004: Develop creator database structure (10K-100K followers)",
+                    "SOLDIER-UGC-005: Design multi-platform outreach automation system",
+                    "ALEX-UGC-001: Define business priorities and target market specifics",
+                    "ALEX-UGC-002: Review automation level requirements (targeting 95%+)"
+                ],
+                blocked: [],
+                nextSteps: "Ready to build! Need Alex to define business priorities and target market specifics. High-value opportunity with validated $24K+/month potential."
+            },
+            'medical': {
+                title: "🏥 Medical Research Pipeline",
+                objective: "Support Alex's academic research (orthopaedics, digital health, AI in medicine)",
+                owner: "Alex (primary) + AI (analysis support)",
+                priority: "MEDIUM",
+                status: "ONGOING_RESEARCH",
+                progress: 20,
+                completed: [],
+                inProgress: [],
+                todo: [
+                    "SOLDIER-MR-001: Inventory current research assets and R analysis scripts",
+                    "SOLDIER-MR-002: Organize current orthopaedics data and publications",
+                    "ALEX-MR-001: Define research priorities for Q1 2026",
+                    "SOLDIER-MR-003: Optimize R analysis pipeline for publication-ready outputs",
+                    "ALEX-MR-002: Clinical rotation preparation requirements"
+                ],
+                blocked: [],
+                nextSteps: "Alex to define research priorities for Q1 2026, then Soldier can inventory and organize current research assets."
+            },
+            'kanban-ui': {
+                title: "🎨 Kanban UI/UX Overhaul",
+                objective: "Transform functional kanban into FULLY FUNCTIONAL project management system",
+                owner: "Soldier (AI) + Sub-Agents",
+                priority: "CRITICAL",
+                status: "PHASE_4_COMPLETE",
+                progress: 85,
+                completed: [
+                    "SOLDIER-UI-001: UI/UX audit with detailed screenshots and issue catalog",
+                    "SOLDIER-UI-002: Research professional kanban designs (Linear, Notion, Jira)",
+                    "SOLDIER-UI-003: Create design requirements based on workflow needs",
+                    "SOLDIER-UI-008: Fix container spacing and text overflow issues",
+                    "SOLDIER-UI-009: Optimize mobile responsiveness",
+                    "SOLDIER-UI-013: Advanced filtering and search functionality",
+                    "SOLDIER-UI-015: Bulk operations (multi-select, batch status changes)"
+                ],
+                inProgress: [
+                    "Making kanban board functional with click-to-view project details"
+                ],
+                todo: [
+                    "SOLDIER-UI-016: Automated job creation from systematic plans",
+                    "SOLDIER-UI-017: Integration with cron job system",
+                    "ALEX-UI-001: User testing and feedback on enhanced functionality"
+                ],
+                blocked: [],
+                nextSteps: "Currently implementing clickable project details. Next: automated job creation from systematic plans."
+            },
+            'ai-ecosystem': {
+                title: "🤖 AI Agent Ecosystem",
+                objective: "Establish dominant position in emerging agent economy",
+                owner: "Shared",
+                priority: "HIGH",
+                status: "STRATEGIC_PLANNING",
+                progress: 10,
+                completed: [],
+                inProgress: [],
+                todo: [
+                    "SOLDIER-AI-001: Create comprehensive ecosystem strategy document",
+                    "SOLDIER-AI-002: Identify key partnerships and integrations needed",
+                    "ALEX-AI-001: Review strategy and provide direction",
+                    "SOLDIER-AI-003: Execute approved strategy elements"
+                ],
+                blocked: [],
+                nextSteps: "Start with comprehensive ecosystem strategy document, then get Alex's strategic direction."
+            }
+        };
+
+        function openProject(projectKey) {
+            const project = projects[projectKey];
+            if (!project) return;
+
+            const statusClass = project.status.toLowerCase().replace(/_/g, '-');
+            
+            const modalContent = `
+                <div class="project-header">
+                    <div class="project-title">${project.title}</div>
+                    <div class="project-meta">
+                        <div class="meta-item">Owner: ${project.owner}</div>
+                        <div class="meta-item priority-${project.priority.toLowerCase()}">${project.priority}</div>
+                        <div class="meta-item status-${statusClass.includes('active') ? 'active' : statusClass.includes('blocked') ? 'blocked' : statusClass.includes('planning') ? 'planning' : 'ready'}">${project.status.replace(/_/g, ' ')}</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${project.progress}%">${project.progress}%</div>
+                    </div>
+                </div>
+
+                <div class="objective">
+                    <strong>Objective:</strong> ${project.objective}
+                </div>
+
+                ${project.completed.length > 0 ? `
+                <div class="section">
+                    <h3>✅ Completed (${project.completed.length})</h3>
+                    <ul class="task-list">
+                        ${project.completed.map(task => `
+                            <li class="task-item">
+                                <span class="task-status task-done">✓</span>
+                                <span class="task-description">${task}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${project.inProgress.length > 0 ? `
+                <div class="section">
+                    <h3>🔧 In Progress (${project.inProgress.length})</h3>
+                    <ul class="task-list">
+                        ${project.inProgress.map(task => `
+                            <li class="task-item">
+                                <span class="task-status task-progress">⚡</span>
+                                <span class="task-description">${task}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${project.blocked.length > 0 ? `
+                <div class="section">
+                    <h3>🚫 Blocked (${project.blocked.length})</h3>
+                    <ul class="task-list">
+                        ${project.blocked.map(task => `
+                            <li class="task-item">
+                                <span class="task-status task-blocked">⛔</span>
+                                <span class="task-description">${task}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${project.todo.length > 0 ? `
+                <div class="section">
+                    <h3>📋 To Do (${project.todo.length})</h3>
+                    <ul class="task-list">
+                        ${project.todo.map(task => `
+                            <li class="task-item">
+                                <span class="task-status task-todo">○</span>
+                                <span class="task-description">${task}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                <div class="next-steps">
+                    <h4>🎯 Next Steps</h4>
+                    <p>${project.nextSteps}</p>
+                </div>
+            `;
+
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('projectModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
