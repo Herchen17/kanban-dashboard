@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Research Project Management</title>
+    <title>Alex's Project Command Center</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -53,272 +53,212 @@
             align-items: center;
         }
 
-        .header-title {
+        .logo-section {
             display: flex;
             align-items: center;
             gap: var(--space-3);
         }
 
-        .logo {
-            width: 32px;
-            height: 32px;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
             background: var(--primary-600);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
             font-weight: 700;
-            font-size: 16px;
         }
 
-        .header-text {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-900);
+        .logo-text p {
+            font-size: 14px;
+            color: var(--text-600);
         }
 
-        .header-actions {
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 10px 40px 10px 16px;
+            border: 2px solid var(--surface-200);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--surface-50);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-600);
+            background: white;
+        }
+
+        .filters {
             display: flex;
             gap: var(--space-3);
         }
 
-        .btn {
-            border: none;
+        .filter-select {
+            padding: 8px 12px;
+            border: 2px solid var(--surface-200);
             border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 150ms ease;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-2);
-            text-decoration: none;
+            background: white;
+            font-size: 14px;
+            color: var(--text-600);
         }
 
         .btn-primary {
             background: var(--primary-600);
             color: white;
-            padding: var(--space-2) var(--space-4);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .btn-primary:hover {
             background: var(--primary-700);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-secondary {
-            background: white;
-            color: var(--text-600);
-            border: 1px solid var(--surface-200);
-            padding: var(--space-2) var(--space-4);
-        }
-
-        .btn-secondary:hover {
-            background: var(--surface-50);
-            color: var(--text-900);
-        }
-
-        /* Enhanced Toolbar */
-        .toolbar {
-            background: white;
-            border-bottom: 1px solid var(--surface-200);
-            padding: var(--space-4) var(--space-8);
-        }
-
-        .toolbar-content {
+        .main-content {
             max-width: 1600px;
             margin: 0 auto;
+            padding: var(--space-8);
+        }
+
+        .status-bar {
+            background: white;
+            border-radius: 12px;
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .search-filters {
+        .status-stats {
             display: flex;
-            gap: var(--space-4);
-            align-items: center;
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            width: 320px;
-            padding: var(--space-2) var(--space-3) var(--space-2) 2.5rem;
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
-            font-size: 0.875rem;
-            background: white;
-            transition: all 150ms ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-600);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: var(--space-3);
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-400);
-        }
-
-        .filter-select {
-            padding: var(--space-2) var(--space-3);
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
-            background: white;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 150ms ease;
-        }
-
-        .filter-select:hover {
-            border-color: var(--text-400);
-        }
-
-        /* Quick Stats Bar */
-        .quick-stats {
-            display: flex;
-            gap: var(--space-6);
-            align-items: center;
-        }
-
-        .quick-stat {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            font-size: 0.875rem;
-            color: var(--text-600);
-        }
-
-        .stat-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .stat-todo { background: var(--text-400); }
-        .stat-progress { background: var(--primary-600); }
-        .stat-review { background: #7c3aed; }
-        .stat-blocked { background: var(--error); }
-        .stat-done { background: var(--success); }
-
-        /* Main Layout */
-        .main-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: var(--space-6) var(--space-8);
-            display: grid;
-            grid-template-columns: 1fr 320px;
             gap: var(--space-8);
         }
 
-        /* Enhanced Kanban Board */
-        .kanban-board {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(280px, 1fr));
-            gap: var(--space-6);
-            min-height: 600px;
-        }
-
-        .column {
-            background: white;
-            border-radius: 8px;
-            border: 1px solid var(--surface-200);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: all 200ms ease;
-        }
-
-        .column:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .column-header {
-            padding: var(--space-4);
-            border-bottom: 1px solid var(--surface-200);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--surface-50);
-        }
-
-        .column-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-900);
+        .stat-item {
             display: flex;
             align-items: center;
             gap: var(--space-2);
         }
 
-        .status-indicator {
+        .stat-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .stat-color.todo { background: var(--text-400); }
+        .stat-color.active { background: var(--primary-600); }
+        .stat-color.blocked { background: var(--error); }
+        .stat-color.done { background: var(--success); }
+
+        .kanban-board {
+            display: flex;
+            gap: var(--space-6);
+            overflow-x: auto;
+            padding-bottom: var(--space-4);
+        }
+
+        .kanban-column {
+            flex: 0 0 320px;
+            background: var(--surface-100);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            background: white;
+            padding: var(--space-4) var(--space-6);
+            border-bottom: 1px solid var(--surface-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .column-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
 
-        .column[data-status="todo"] .status-indicator { background: var(--text-400); }
-        .column[data-status="in-progress"] .status-indicator { background: var(--primary-600); }
-        .column[data-status="review"] .status-indicator { background: #7c3aed; }
-        .column[data-status="blocked"] .status-indicator { background: var(--error); }
-        .column[data-status="done"] .status-indicator { background: var(--success); }
+        .column-dot.todo { background: var(--text-400); }
+        .column-dot.in-progress { background: var(--primary-600); }
+        .column-dot.review { background: var(--warning); }
+        .column-dot.blocked { background: var(--error); }
+        .column-dot.done { background: var(--success); }
 
         .column-count {
             background: var(--surface-200);
             color: var(--text-600);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 12px;
             font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 12px;
+            min-width: 24px;
+            text-align: center;
         }
 
-        .task-list {
-            flex: 1;
+        .column-content {
             padding: var(--space-4);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-3);
+            min-height: 400px;
             max-height: 70vh;
             overflow-y: auto;
         }
 
-        /* Professional Task Cards */
         .task-card {
             background: white;
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            border: 1px solid var(--surface-200);
             cursor: pointer;
-            transition: all 200ms ease;
-            position: relative;
+            transition: all 0.2s;
         }
 
         .task-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-color: var(--primary-600);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
         }
 
         .task-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: var(--space-3);
+            margin-bottom: var(--space-2);
         }
 
         .task-id {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 12px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
             color: var(--text-400);
             background: var(--surface-100);
             padding: 2px 6px;
@@ -326,699 +266,366 @@
         }
 
         .task-title {
-            font-size: 0.875rem;
             font-weight: 600;
-            color: var(--text-900);
+            font-size: 14px;
             line-height: 1.4;
-            margin-bottom: var(--space-2);
+            margin: var(--space-2) 0;
         }
 
-        .task-footer {
+        .task-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: var(--space-2);
             margin-top: var(--space-3);
         }
 
-        .task-labels {
-            display: flex;
-            gap: var(--space-1);
-        }
-
-        .task-label {
-            font-size: 0.75rem;
-            padding: 1px 6px;
+        .task-project {
+            font-size: 12px;
+            padding: 4px 8px;
             border-radius: 4px;
             font-weight: 500;
-            background: var(--surface-100);
-            color: var(--text-600);
         }
 
-        .task-assignee {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--primary-600);
-            color: white;
-            font-size: 0.75rem;
+        .project-pm { background: #e0f2fe; color: #0277bd; }
+        .project-bc { background: #f3e5f5; color: #7b1fa2; }
+        .project-co { background: #e8f5e8; color: #388e3c; }
+        .project-ugc { background: #fff3e0; color: #f57c00; }
+        .project-ui { background: #fce4ec; color: #c2185b; }
+        .project-mr { background: #e1f5fe; color: #0288d1; }
+        .project-ai { background: #f1f8e9; color: #689f38; }
+        .project-op { background: #fafafa; color: #424242; }
+
+        .priority-badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
             font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-critical {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .priority-high {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .priority-medium {
+            background: #f1f8e9;
+            color: #558b2f;
+        }
+
+        .task-owner {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* Enhanced Sidebar */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-6);
-        }
-
-        .sidebar-section {
-            background: white;
-            border: 1px solid var(--surface-200);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar-header {
-            padding: var(--space-4);
-            border-bottom: 1px solid var(--surface-200);
-            background: var(--surface-50);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-title {
-            font-size: 0.875rem;
+            font-size: 11px;
             font-weight: 600;
-            color: var(--text-900);
+            color: white;
         }
 
-        .sidebar-content {
-            padding: var(--space-4);
-        }
+        .owner-soldier { background: var(--primary-600); }
+        .owner-alex { background: var(--warning); }
+        .owner-shared { background: var(--text-400); }
 
-        /* Project Items with Real Links */
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--space-3);
-            border-radius: 6px;
-            margin-bottom: var(--space-2);
-            cursor: pointer;
-            transition: all 150ms ease;
-        }
-
-        .project-item:hover {
-            background: var(--surface-50);
-        }
-
-        .project-info {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .project-status {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--success);
-        }
-
-        .project-name {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-900);
-        }
-
-        .project-actions {
-            display: flex;
-            gap: var(--space-1);
-        }
-
-        .project-btn {
-            padding: var(--space-1) var(--space-2);
-            border: 1px solid var(--surface-200);
-            background: white;
+        .task-notes {
+            font-size: 12px;
             color: var(--text-600);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 150ms ease;
+            margin-top: var(--space-2);
+            padding-top: var(--space-2);
+            border-top: 1px solid var(--surface-100);
         }
 
-        .project-btn:hover {
-            background: var(--surface-50);
-            color: var(--text-900);
+        @media (max-width: 1400px) {
+            .kanban-column { flex: 0 0 280px; }
         }
 
-        /* Analytics Grid */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-4);
-        }
-
-        .analytics-item {
-            text-align: center;
-            padding: var(--space-4);
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 150ms ease;
-        }
-
-        .analytics-item:hover {
-            background: var(--surface-50);
-            border-color: var(--primary-600);
-        }
-
-        .analytics-number {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-900);
-            margin-bottom: var(--space-1);
-        }
-
-        .analytics-label {
-            font-size: 0.75rem;
-            color: var(--text-600);
-            font-weight: 500;
-        }
-
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            top: var(--space-4);
-            right: var(--space-4);
-            padding: var(--space-3) var(--space-4);
-            background: white;
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            animation: slideInToast 300ms ease;
-            max-width: 350px;
-        }
-
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--error); }
-        .toast.warning { border-left: 4px solid var(--warning); }
-
-        @keyframes slideInToast {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Loading States */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        /* Context Menu */
-        .context-menu {
-            position: fixed;
-            background: white;
-            border: 1px solid var(--surface-200);
-            border-radius: 6px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            padding: var(--space-2) 0;
-            min-width: 160px;
-            display: none;
-        }
-
-        .context-menu-item {
-            padding: var(--space-2) var(--space-4);
-            font-size: 0.875rem;
-            color: var(--text-600);
-            cursor: pointer;
-            transition: all 150ms ease;
-        }
-
-        .context-menu-item:hover {
-            background: var(--surface-50);
-            color: var(--text-900);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                padding: var(--space-4);
-            }
-            
-            .kanban-board {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-input {
-                width: 200px;
-            }
-        }
-
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --surface-50: #0f172a;
-                --surface-100: #1e293b;
-                --surface-200: #334155;
-                --text-900: #f1f5f9;
-                --text-600: #cbd5e1;
-                --text-400: #64748b;
-            }
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: var(--space-4); }
+            .search-box input { width: 100%; }
+            .main-content { padding: var(--space-4); }
+            .kanban-column { flex: 0 0 300px; }
+            .status-stats { flex-wrap: wrap; gap: var(--space-4); }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="header-title">
-                <div class="logo">MR</div>
-                <h1 class="header-text">Medical Research Projects</h1>
+            <div class="logo-section">
+                <div class="logo-icon">🪖</div>
+                <div class="logo-text">
+                    <h1>Alex's Projects</h1>
+                    <p>Command Center</p>
+                </div>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="showKeyboardShortcuts()">
-                    <span>⌘K</span> Shortcuts
-                </button>
-                <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="main-search" placeholder="Search tasks..." onkeyup="handleSearch(this.value)">
+                </div>
+                <div class="filters">
+                    <select class="filter-select" id="owner-filter" onchange="applyFilters()">
+                        <option value="">All assignees</option>
+                        <option value="Alex">Alex</option>
+                        <option value="Soldier">Soldier</option>
+                        <option value="Shared">Shared</option>
+                    </select>
+                    <select class="filter-select" id="project-filter" onchange="applyFilters()">
+                        <option value="">All projects</option>
+                        <option value="Project Management">Project Management</option>
+                        <option value="BitClaw Protocol">BitClaw Protocol</option>
+                        <option value="UGC Creator Agent">UGC Creator Agent</option>
+                        <option value="Medical Research">Medical Research</option>
+                        <option value="Kanban UI Overhaul">Kanban UI Overhaul</option>
+                        <option value="Cost Optimization">Cost Optimization</option>
+                        <option value="AI Agent Ecosystem">AI Agent Ecosystem</option>
+                        <option value="Opportunity Scouting">Opportunity Scouting</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="addTask()">Add Task</button>
             </div>
         </div>
     </header>
 
-    <div class="toolbar">
-        <div class="toolbar-content">
-            <div class="search-filters">
-                <div class="search-container">
-                    <div class="search-icon">🔍</div>
-                    <input type="text" class="search-input" placeholder="Search tasks..." 
-                           oninput="handleSearch(this.value)" id="main-search">
+    <main class="main-content">
+        <div class="status-bar">
+            <div class="status-stats">
+                <div class="stat-item">
+                    <div class="stat-color todo"></div>
+                    <span id="todo-count">0</span> To Do
                 </div>
-                <select class="filter-select" onchange="filterByOwner(this.value)">
-                    <option value="">All assignees</option>
-                    <option value="soldier">Soldier</option>
-                    <option value="alex">Alex</option>
-                    <option value="shared">Shared</option>
-                </select>
-                <select class="filter-select" onchange="filterByProject(this.value)">
-                    <option value="">All projects</option>
-                    <option value="bitclaw">BitClaw Protocol</option>
-                    <option value="ugc">UGC Creator Agent</option>
-                    <option value="medical">Medical Research</option>
-                </select>
-            </div>
-            <div class="quick-stats">
-                <div class="quick-stat">
-                    <div class="stat-indicator stat-todo"></div>
-                    <span id="stat-todo">0</span> To Do
+                <div class="stat-item">
+                    <div class="stat-color active"></div>
+                    <span id="active-count">0</span> Active
                 </div>
-                <div class="quick-stat">
-                    <div class="stat-indicator stat-progress"></div>
-                    <span id="stat-progress">0</span> Active
+                <div class="stat-item">
+                    <div class="stat-color blocked"></div>
+                    <span id="blocked-count">0</span> Blocked
                 </div>
-                <div class="quick-stat">
-                    <div class="stat-indicator stat-blocked"></div>
-                    <span id="stat-blocked">0</span> Blocked
-                </div>
-                <div class="quick-stat">
-                    <div class="stat-indicator stat-done"></div>
-                    <span id="stat-done">0</span> Done
+                <div class="stat-item">
+                    <div class="stat-color done"></div>
+                    <span id="done-count">0</span> Done
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <div class="kanban-board">
-            <div class="column" data-status="todo">
-                <div class="column-header">
-                    <div class="column-title">
-                        <div class="status-indicator"></div>
-                        To Do
-                    </div>
-                    <div class="column-count" id="todo-count">0</div>
-                </div>
-                <div class="task-list" id="todo-list"></div>
-            </div>
-
-            <div class="column" data-status="in-progress">
-                <div class="column-header">
-                    <div class="column-title">
-                        <div class="status-indicator"></div>
-                        In Progress
-                    </div>
-                    <div class="column-count" id="progress-count">0</div>
-                </div>
-                <div class="task-list" id="progress-list">
-                    <div class="task-card">
-                        <div class="task-header">
-                            <div class="task-id">UI-009</div>
-                        </div>
-                        <div class="task-title">V9.1 Enhanced Kanban Interface</div>
-                        <div class="task-footer">
-                            <div class="task-labels">
-                                <span class="task-label">UI Enhancement</span>
-                                <span class="task-label">High Priority</span>
-                            </div>
-                            <div class="task-assignee">S</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column" data-status="review">
-                <div class="column-header">
-                    <div class="column-title">
-                        <div class="status-indicator"></div>
-                        Review
-                    </div>
-                    <div class="column-count" id="review-count">0</div>
-                </div>
-                <div class="task-list" id="review-list"></div>
-            </div>
-
-            <div class="column" data-status="blocked">
-                <div class="column-header">
-                    <div class="column-title">
-                        <div class="status-indicator"></div>
-                        Blocked
-                    </div>
-                    <div class="column-count" id="blocked-count">0</div>
-                </div>
-                <div class="task-list" id="blocked-list"></div>
-            </div>
-
-            <div class="column" data-status="done">
-                <div class="column-header">
-                    <div class="column-title">
-                        <div class="status-indicator"></div>
-                        Done
-                    </div>
-                    <div class="column-count" id="done-count">0</div>
-                </div>
-                <div class="task-list" id="done-list"></div>
+            <div>
+                <strong>Total: <span id="total-count">0</span> tasks</strong>
             </div>
         </div>
 
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <div class="sidebar-header">
-                    <h3 class="sidebar-title">Active Projects</h3>
+        <div class="kanban-board" id="kanban-board">
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="column-dot todo"></div>
+                        <h3>To Do</h3>
+                    </div>
+                    <div class="column-count" id="column-todo-count">0</div>
                 </div>
-                <div class="sidebar-content">
-                    <div class="project-item" onclick="openProject('bitclaw')">
-                        <div class="project-info">
-                            <div class="project-status"></div>
-                            <span class="project-name">BitClaw Protocol</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/bitclaw" class="project-btn" target="_blank">Repo</a>
-                            <button class="project-btn" onclick="deployProject('bitclaw')">Deploy</button>
-                        </div>
-                    </div>
-                    <div class="project-item" onclick="openProject('ugc')">
-                        <div class="project-info">
-                            <div class="project-status"></div>
-                            <span class="project-name">UGC Creator Agent</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/ugc-creator" class="project-btn" target="_blank">Repo</a>
-                            <button class="project-btn" onclick="deployProject('ugc')">Deploy</button>
-                        </div>
-                    </div>
-                    <div class="project-item" onclick="openProject('medical')">
-                        <div class="project-info">
-                            <div class="project-status"></div>
-                            <span class="project-name">Medical Research</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/medical-research" class="project-btn" target="_blank">Repo</a>
-                            <button class="project-btn" onclick="analyzeProject('medical')">Analyze</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="column-content" id="column-todo"></div>
             </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-header">
-                    <h3 class="sidebar-title">Analytics</h3>
-                </div>
-                <div class="sidebar-content">
-                    <div class="analytics-grid">
-                        <div class="analytics-item" onclick="showVelocityChart()">
-                            <div class="analytics-number" id="velocity">12</div>
-                            <div class="analytics-label">Tasks/Week</div>
-                        </div>
-                        <div class="analytics-item" onclick="showBurndown()">
-                            <div class="analytics-number" id="completion-rate">73%</div>
-                            <div class="analytics-label">Complete</div>
-                        </div>
-                        <div class="analytics-item" onclick="showCycleTime()">
-                            <div class="analytics-number" id="cycle-time">2.3</div>
-                            <div class="analytics-label">Avg Days</div>
-                        </div>
-                        <div class="analytics-item" onclick="showEfficiency()">
-                            <div class="analytics-number" id="efficiency">89%</div>
-                            <div class="analytics-label">Efficiency</div>
-                        </div>
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="column-dot in-progress"></div>
+                        <h3>In Progress</h3>
                     </div>
+                    <div class="column-count" id="column-in-progress-count">0</div>
                 </div>
+                <div class="column-content" id="column-in-progress"></div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="column-dot review"></div>
+                        <h3>Review</h3>
+                    </div>
+                    <div class="column-count" id="column-review-count">0</div>
+                </div>
+                <div class="column-content" id="column-review"></div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="column-dot blocked"></div>
+                        <h3>Blocked</h3>
+                    </div>
+                    <div class="column-count" id="column-blocked-count">0</div>
+                </div>
+                <div class="column-content" id="column-blocked"></div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="column-dot done"></div>
+                        <h3>Done</h3>
+                    </div>
+                    <div class="column-count" id="column-done-count">0</div>
+                </div>
+                <div class="column-content" id="column-done"></div>
             </div>
         </div>
-    </div>
-
-    <!-- Context Menu -->
-    <div class="context-menu" id="context-menu">
-        <div class="context-menu-item" onclick="editTask()">Edit Task</div>
-        <div class="context-menu-item" onclick="duplicateTask()">Duplicate</div>
-        <div class="context-menu-item" onclick="moveTask()">Move to...</div>
-        <div class="context-menu-item" onclick="deleteTask()">Delete</div>
-    </div>
+    </main>
 
     <script src="kanban-current-tasks.js"></script>
     <script>
-        let tasks = [];
+        let allTasks = [];
         let filteredTasks = [];
-        let contextMenuTask = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the kanban board
+        function initializeKanban() {
+            // Load tasks from the external file
             if (typeof allCurrentTasks !== 'undefined') {
-                tasks = allCurrentTasks;
-                filteredTasks = [...tasks];
-                renderTasks();
+                allTasks = allCurrentTasks;
+                filteredTasks = [...allTasks];
+                renderKanban();
+                updateStats();
+            } else {
+                console.error('Tasks data not loaded');
             }
-            setupKeyboardShortcuts();
-            setupContextMenu();
-        });
+        }
 
-        function renderTasks() {
-            // Clear lists except progress (keep sample)
-            ['todo', 'review', 'blocked', 'done'].forEach(status => {
-                document.getElementById(status + '-list').innerHTML = '';
+        // Render the kanban board
+        function renderKanban() {
+            // Clear all columns
+            ['todo', 'in-progress', 'review', 'blocked', 'done'].forEach(status => {
+                const column = document.getElementById(`column-${status}`);
+                if (column) column.innerHTML = '';
             });
 
-            const tasksByStatus = filteredTasks.reduce((acc, task) => {
-                if (!acc[task.status]) acc[task.status] = [];
-                acc[task.status].push(task);
-                return acc;
-            }, {});
-
-            ['todo', 'review', 'blocked', 'done'].forEach(status => {
-                const list = document.getElementById(status + '-list');
-                if (tasksByStatus[status]) {
-                    tasksByStatus[status].forEach(task => {
-                        list.appendChild(createTaskElement(task));
-                    });
+            // Render tasks
+            filteredTasks.forEach(task => {
+                const taskElement = createTaskElement(task);
+                const columnId = `column-${task.status}`;
+                const column = document.getElementById(columnId);
+                if (column) {
+                    column.appendChild(taskElement);
                 }
             });
 
-            updateAllCounts();
+            // Update column counts
+            ['todo', 'in-progress', 'review', 'blocked', 'done'].forEach(status => {
+                const count = filteredTasks.filter(task => task.status === status).length;
+                const countElement = document.getElementById(`column-${status}-count`);
+                if (countElement) countElement.textContent = count;
+            });
         }
 
+        // Create a task element
         function createTaskElement(task) {
             const taskEl = document.createElement('div');
             taskEl.className = 'task-card';
             taskEl.dataset.taskId = task.id;
-            
-            const assignee = task.owner ? task.owner.charAt(0).toUpperCase() : 'S';
-            
+
+            // Get project class
+            const projectClass = getProjectClass(task.project);
+            const ownerClass = getOwnerClass(task.owner);
+            const priorityClass = `priority-${task.priority}`;
+
             taskEl.innerHTML = `
                 <div class="task-header">
                     <div class="task-id">${task.id}</div>
                 </div>
                 <div class="task-title">${task.title}</div>
-                <div class="task-footer">
-                    <div class="task-labels">
-                        <span class="task-label">${task.project}</span>
-                        ${task.priority ? `<span class="task-label">${task.priority}</span>` : ''}
-                    </div>
-                    <div class="task-assignee">${assignee}</div>
+                <div class="task-meta">
+                    <div class="task-project ${projectClass}">${task.project}</div>
+                    <div class="priority-badge ${priorityClass}">${task.priority}</div>
+                    <div class="task-owner ${ownerClass}">${task.owner.charAt(0)}</div>
                 </div>
+                ${task.notes ? `<div class="task-notes">${task.notes}</div>` : ''}
             `;
-            
-            taskEl.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                showContextMenu(e, task);
-            });
-            
+
             return taskEl;
         }
 
-        function updateAllCounts() {
-            const counts = filteredTasks.reduce((acc, task) => {
-                acc[task.status] = (acc[task.status] || 0) + 1;
-                return acc;
-            }, {});
-
-            // Column counts
-            Object.keys(counts).forEach(status => {
-                const countId = status === 'in-progress' ? 'progress-count' : status + '-count';
-                const element = document.getElementById(countId);
-                if (element) element.textContent = counts[status] || 0;
-            });
-
-            // Quick stats
-            document.getElementById('stat-todo').textContent = counts.todo || 0;
-            document.getElementById('stat-progress').textContent = counts['in-progress'] || 0;
-            document.getElementById('stat-blocked').textContent = counts.blocked || 0;
-            document.getElementById('stat-done').textContent = counts.done || 0;
+        // Helper functions
+        function getProjectClass(project) {
+            const projectMap = {
+                'Project Management': 'project-pm',
+                'BitClaw Protocol': 'project-bc',
+                'Cost Optimization': 'project-co',
+                'UGC Creator Agent': 'project-ugc',
+                'Kanban UI Overhaul': 'project-ui',
+                'Medical Research': 'project-mr',
+                'AI Agent Ecosystem': 'project-ai',
+                'Opportunity Scouting': 'project-op'
+            };
+            return projectMap[project] || 'project-default';
         }
 
-        function handleSearch(query) {
-            const searchTerm = query.toLowerCase().trim();
-            if (!searchTerm) {
-                filteredTasks = [...tasks];
+        function getOwnerClass(owner) {
+            return `owner-${owner.toLowerCase()}`;
+        }
+
+        // Search functionality
+        function handleSearch(searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
+            if (searchTerm === '') {
+                filteredTasks = [...allTasks];
             } else {
-                filteredTasks = tasks.filter(task => 
+                filteredTasks = allTasks.filter(task => 
                     task.title.toLowerCase().includes(searchTerm) ||
                     task.id.toLowerCase().includes(searchTerm) ||
-                    task.project.toLowerCase().includes(searchTerm)
+                    task.project.toLowerCase().includes(searchTerm) ||
+                    (task.notes && task.notes.toLowerCase().includes(searchTerm))
                 );
             }
-            renderTasks();
+            applyFilters();
         }
 
-        function filterByOwner(owner) {
-            if (!owner) {
-                filteredTasks = [...tasks];
-            } else {
-                filteredTasks = tasks.filter(task => 
-                    task.owner && task.owner.toLowerCase() === owner
-                );
+        // Filter functionality
+        function applyFilters() {
+            let filtered = [...filteredTasks];
+
+            const ownerFilter = document.getElementById('owner-filter').value;
+            const projectFilter = document.getElementById('project-filter').value;
+
+            if (ownerFilter) {
+                filtered = filtered.filter(task => task.owner === ownerFilter);
             }
-            renderTasks();
-        }
 
-        function filterByProject(project) {
-            if (!project) {
-                filteredTasks = [...tasks];
-            } else {
-                filteredTasks = tasks.filter(task => 
-                    task.project.toLowerCase().includes(project)
-                );
+            if (projectFilter) {
+                filtered = filtered.filter(task => task.project === projectFilter);
             }
-            renderTasks();
+
+            filteredTasks = filtered;
+            renderKanban();
+            updateStats();
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.remove(), 3000);
+        // Update stats
+        function updateStats() {
+            const stats = {
+                todo: filteredTasks.filter(t => t.status === 'todo').length,
+                active: filteredTasks.filter(t => t.status === 'in-progress').length,
+                blocked: filteredTasks.filter(t => t.status === 'blocked').length,
+                done: filteredTasks.filter(t => t.status === 'done').length,
+                total: filteredTasks.length
+            };
+
+            document.getElementById('todo-count').textContent = stats.todo;
+            document.getElementById('active-count').textContent = stats.active;
+            document.getElementById('blocked-count').textContent = stats.blocked;
+            document.getElementById('done-count').textContent = stats.done;
+            document.getElementById('total-count').textContent = stats.total;
         }
 
-        function setupContextMenu() {
-            document.addEventListener('click', () => {
-                document.getElementById('context-menu').style.display = 'none';
-            });
-        }
-
-        function showContextMenu(e, task) {
-            const menu = document.getElementById('context-menu');
-            contextMenuTask = task;
-            
-            menu.style.display = 'block';
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-        }
-
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', function(e) {
-                // Cmd/Ctrl + K for search
-                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                    e.preventDefault();
-                    document.getElementById('main-search').focus();
-                }
-                
-                // Cmd/Ctrl + N for new task
-                if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
-                    e.preventDefault();
-                    addTask();
-                }
-                
-                // Escape to clear search
-                if (e.key === 'Escape') {
-                    document.getElementById('main-search').value = '';
-                    handleSearch('');
-                }
-            });
-        }
-
-        // Functional implementations
+        // Add task functionality
         function addTask() {
-            showToast('Add task modal opening...', 'info');
+            alert('Add task functionality would go here. For now, edit the kanban-current-tasks.js file to add tasks.');
         }
 
-        function showKeyboardShortcuts() {
-            showToast('⌘K Search, ⌘N New Task, ESC Clear', 'info');
-        }
-
-        function openProject(project) {
-            showToast(`Opening ${project} project overview`, 'success');
-        }
-
-        function deployProject(project) {
-            showToast(`Deploying ${project}...`, 'warning');
-        }
-
-        function analyzeProject(project) {
-            showToast(`Running analysis for ${project}`, 'info');
-        }
-
-        function showVelocityChart() {
-            showToast('Velocity chart: 12 tasks/week average', 'info');
-        }
-
-        function showBurndown() {
-            showToast('Burndown chart: On track for sprint goals', 'success');
-        }
-
-        function showCycleTime() {
-            showToast('Average cycle time: 2.3 days per task', 'info');
-        }
-
-        function showEfficiency() {
-            showToast('Team efficiency: 89% (above target)', 'success');
-        }
-
-        function editTask() {
-            if (contextMenuTask) {
-                showToast(`Editing ${contextMenuTask.id}`, 'info');
-            }
-            document.getElementById('context-menu').style.display = 'none';
-        }
-
-        function duplicateTask() {
-            if (contextMenuTask) {
-                showToast(`Duplicating ${contextMenuTask.id}`, 'info');
-            }
-            document.getElementById('context-menu').style.display = 'none';
-        }
-
-        function moveTask() {
-            if (contextMenuTask) {
-                showToast(`Move ${contextMenuTask.id} to...`, 'info');
-            }
-            document.getElementById('context-menu').style.display = 'none';
-        }
-
-        function deleteTask() {
-            if (contextMenuTask) {
-                showToast(`Deleted ${contextMenuTask.id}`, 'warning');
-            }
-            document.getElementById('context-menu').style.display = 'none';
-        }
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeKanban);
     </script>
 </body>
 </html>
