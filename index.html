@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex's Project Dashboard - Live</title>
+    <title>Alex's Project Command Center</title>
     <style>
         * {
             margin: 0;
@@ -18,168 +18,216 @@
             line-height: 1.6;
         }
 
+        /* COMPACT HEADER */
         .header {
             background: #ffffff;
-            border-bottom: 3px solid #dee2e6;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #dee2e6;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .header h1 {
-            font-size: 32px;
+        .header-left h1 {
+            font-size: 20px;
             color: #212529;
-            margin-bottom: 8px;
             font-weight: 700;
         }
 
-        .header p {
+        .header-left p {
             color: #6c757d;
-            font-size: 18px;
+            font-size: 14px;
         }
 
-        .search-section {
-            margin: 0 24px 24px 24px;
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        .search-section input {
-            width: 100%;
-            max-width: 500px;
-            padding: 16px 20px;
-            border: 2px solid #ced4da;
-            border-radius: 8px;
-            font-size: 18px;
-            background: #ffffff;
+        .view-toggle {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 2px;
         }
 
-        .search-section input:focus {
+        .view-toggle button {
+            background: none;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-toggle button.active {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 8px 16px;
+            border: 1px solid #ced4da;
+            border-radius: 20px;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+
+        .search-box input:focus {
             outline: none;
             border-color: #0d6efd;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+            background: white;
         }
 
+        /* COMPACT PRIORITY SECTION */
+        .priority-section {
+            background: #fff3cd;
+            border-bottom: 1px solid #ffeaa7;
+            padding: 8px 24px;
+        }
+
+        .priority-items {
+            display: flex;
+            gap: 32px;
+            font-size: 13px;
+            color: #664d03;
+        }
+
+        .priority-item strong {
+            color: #856404;
+        }
+
+        /* STATS SECTION */
         .stats {
             background: #ffffff;
-            border-radius: 12px;
-            padding: 24px;
-            margin: 0 24px 24px 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 16px 24px;
+            border-bottom: 1px solid #dee2e6;
         }
 
         .stats-grid {
             display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
+            gap: 32px;
             align-items: center;
         }
 
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .stat-dot {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            flex-shrink: 0;
         }
-
-        .dot-todo { background: #6c757d; }
-        .dot-progress { background: #0d6efd; }
-        .dot-blocked { background: #dc3545; }
-        .dot-done { background: #198754; }
 
         .stat-text {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            color: #212529;
         }
 
-        .board {
+        /* MAIN CONTENT */
+        .main-content {
+            padding: 20px 24px;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* KANBAN VIEW */
+        .kanban-view {
             display: flex;
-            gap: 24px;
-            padding: 0 24px;
+            gap: 20px;
             overflow-x: auto;
-            padding-bottom: 24px;
         }
 
         .column {
-            flex: 0 0 320px;
+            flex: 0 0 280px;
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border: 1px solid #dee2e6;
         }
 
         .column-header {
-            padding: 20px 24px;
-            border-bottom: 2px solid #f8f9fa;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f8f9fa;
             background: #f8f9fa;
-            border-radius: 12px 12px 0 0;
+            border-radius: 8px 8px 0 0;
         }
 
         .column-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #212529;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .column-count {
             background: #e9ecef;
             color: #495057;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 600;
-            min-width: 32px;
-            text-align: center;
         }
 
         .column-content {
-            padding: 24px;
-            min-height: 500px;
-            max-height: 70vh;
+            padding: 20px;
+            min-height: 400px;
+            max-height: 60vh;
             overflow-y: auto;
         }
 
+        /* TASK CARDS */
         .task {
             background: #ffffff;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
             transition: all 0.2s ease;
             cursor: pointer;
+            position: relative;
         }
 
         .task:hover {
             border-color: #0d6efd;
-            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
             transform: translateY(-1px);
+        }
+
+        .task.expanded {
+            border-color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
         }
 
         .task-id {
             font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: #6c757d;
             background: #f8f9fa;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .task-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #212529;
-            line-height: 1.5;
-            margin-bottom: 16px;
+            line-height: 1.4;
+            margin-bottom: 12px;
         }
 
         .task-meta {
@@ -187,13 +235,13 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
         }
 
         .task-project {
-            font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 6px;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-weight: 600;
         }
 
@@ -204,40 +252,27 @@
         .project-mr { background: #d1e7dd; color: #0f5132; }
         .project-co { background: #d1ecf1; color: #055160; }
         .project-ai { background: #d4edda; color: #155724; }
-        .project-op { background: #e2e3e5; color: #383d41; }
 
         .priority {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .priority-critical {
-            background: #f5c2c7;
-            color: #842029;
-        }
-
-        .priority-high {
-            background: #ffecb5;
-            color: #664d03;
-        }
-
-        .priority-medium {
-            background: #badbcc;
-            color: #0f5132;
-        }
+        .priority-critical { background: #f5c2c7; color: #842029; }
+        .priority-high { background: #ffecb5; color: #664d03; }
+        .priority-medium { background: #badbcc; color: #0f5132; }
 
         .owner {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 10px;
             font-weight: 700;
             color: white;
         }
@@ -247,118 +282,400 @@
         .owner-shared { background: #6c757d; }
 
         .task-notes {
-            font-size: 14px;
+            font-size: 12px;
             color: #6c757d;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid #e9ecef;
+            border-top: 1px solid #f8f9fa;
             font-style: italic;
             line-height: 1.4;
+            display: none;
         }
 
+        .task.expanded .task-notes {
+            display: block;
+        }
+
+        .expand-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 16px;
+            height: 16px;
+            color: #6c757d;
+            transition: transform 0.2s ease;
+        }
+
+        .task.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* PROJECT VIEW */
+        .project-view {
+            display: none;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .project-card:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .project-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .project-progress {
+            width: 60px;
+            height: 60px: 50%;
+;
+            border-radius            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .progress-circle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(#0d6efd var(--progress, 0%), #e9ecef 0);
+        }
+
+        .progress-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .meta-item {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .stat-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        .project-tasks {
+            list-style: none;
+        }
+
+        .project-task {
+            padding: 8px 0;
+            border-bottom: 1px solid #f8f9fa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-todo { background: #6c757d; }
+        .status-progress { background: #0d6efd; }
+        .status-blocked { background: #dc3545; }
+        .status-done { background: #198754; }
+
+        /* TIMELINE VIEW */
+        .timeline-view {
+            display: none;
+        }
+
+        .timeline-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .timeline-header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-labels {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .timeline-weeks {
+            flex: 1;
+            display: flex;
+        }
+
+        .week-label {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            padding: 8px 0;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .timeline-row {
+            display: flex;
+            margin-bottom: 16px;
+        }
+
+        .task-label {
+            width: 200px;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #212529;
+            flex-shrink: 0;
+        }
+
+        .task-timeline {
+            flex: 1;
+            position: relative;
+            height: 40px;
+        }
+
+        .task-bar {
+            position: absolute;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 11px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .task-bar.todo { background: #6c757d; }
+        .task-bar.progress { background: #0d6efd; }
+        .task-bar.blocked { background: #dc3545; }
+        .task-bar.done { background: #198754; }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .board {
+            .header {
                 flex-direction: column;
-                padding: 0 16px;
+                gap: 12px;
             }
-            
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .priority-items {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .kanban-view {
+                flex-direction: column;
+            }
+
             .column {
                 flex: none;
             }
-            
-            .stats-grid {
-                justify-content: center;
-                gap: 24px;
+
+            .project-grid {
+                grid-template-columns: 1fr;
             }
-            
-            .header, .search-section, .stats {
-                margin-left: 16px;
-                margin-right: 16px;
+
+            .timeline-container {
+                overflow-x: scroll;
             }
         }
 
+        /* LOADING STATES */
         .loading {
             text-align: center;
-            padding: 60px;
-            color: #6c757d;
-            font-size: 18px;
-        }
-
-        .refresh-note {
-            text-align: center;
+            padding: 40px;
             color: #6c757d;
             font-size: 14px;
-            margin-top: 24px;
-            padding: 16px;
         }
 
-        .action-section {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
+        /* ANIMATIONS */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
             border-radius: 8px;
-            padding: 20px;
-            margin: 0 24px 24px 24px;
-            font-size: 14px;
+            padding: 24px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
         }
 
-        .action-title {
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
             font-weight: 700;
-            color: #856404;
-            margin-bottom: 12px;
-            font-size: 16px;
+            color: #212529;
         }
 
-        .action-list {
-            color: #664d03;
-            line-height: 1.6;
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 4px;
         }
 
-        .action-list ul {
-            margin-left: 20px;
-        }
-
-        .action-list li {
-            margin-bottom: 8px;
+        .modal-close:hover {
+            color: #212529;
         }
     </style>
 </head>
 <body>
+    <!-- COMPACT HEADER WITH INTEGRATED SEARCH -->
     <div class="header">
-        <h1>Alex's Project Dashboard</h1>
-        <p>Medical Research & Development Command Center</p>
-    </div>
-
-    <div class="action-section">
-        <div class="action-title">IMMEDIATE PRIORITIES</div>
-        <div class="action-list">
-            <ul>
-                <li><strong>Today:</strong> BitClaw Protocol migration decision (unblocks 3+ tasks)</li>
-                <li><strong>This Week:</strong> Define UGC Creator business model ($24K opportunity)</li>
-                <li><strong>Next Week:</strong> Implement project management workflow improvements</li>
-            </ul>
+        <div class="header-left">
+            <h1>Alex's Project Command Center</h1>
+            <p>Medical Research & Development Hub</p>
+        </div>
+        <div class="header-right">
+            <div class="view-toggle">
+                <button class="active" onclick="switchView('kanban')">Kanban</button>
+                <button onclick="switchView('projects')">Projects</button>
+                <button onclick="switchView('timeline')">Timeline</button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search tasks..." onkeyup="handleSearch(this.value)">
+            </div>
         </div>
     </div>
 
-    <div class="search-section">
-        <input type="text" id="search" placeholder="Search tasks by title, project, or ID..." onkeyup="handleSearch(this.value)">
+    <!-- COMPACT PRIORITY SECTION -->
+    <div class="priority-section">
+        <div class="priority-items">
+            <div class="priority-item">
+                <strong>Today:</strong> BitClaw Protocol decision (unblocks 3+ tasks)
+            </div>
+            <div class="priority-item">
+                <strong>This Week:</strong> UGC Creator business model ($24K opportunity)
+            </div>
+            <div class="priority-item">
+                <strong>Next Week:</strong> Project management improvements
+            </div>
+        </div>
     </div>
 
+    <!-- COMPACT STATS -->
     <div class="stats">
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-dot dot-todo"></div>
+                <div class="stat-dot" style="background: #6c757d;"></div>
                 <div class="stat-text"><span id="count-todo">0</span> To Do</div>
             </div>
             <div class="stat-item">
-                <div class="stat-dot dot-progress"></div>
+                <div class="stat-dot" style="background: #0d6efd;"></div>
                 <div class="stat-text"><span id="count-progress">0</span> In Progress</div>
             </div>
             <div class="stat-item">
-                <div class="stat-dot dot-blocked"></div>
+                <div class="stat-dot" style="background: #dc3545;"></div>
                 <div class="stat-text"><span id="count-blocked">0</span> Blocked</div>
             </div>
             <div class="stat-item">
-                <div class="stat-dot dot-done"></div>
+                <div class="stat-dot" style="background: #198754;"></div>
                 <div class="stat-text"><span id="count-done">0</span> Done</div>
             </div>
             <div class="stat-item">
@@ -367,60 +684,111 @@
         </div>
     </div>
 
-    <div class="board">
-        <div class="column">
-            <div class="column-header">
-                <div class="column-title">
-                    <div class="stat-dot dot-todo"></div>
-                    To Do
-                    <div class="column-count" id="header-todo">0</div>
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-content">
+        <!-- KANBAN VIEW -->
+        <div class="kanban-view" id="kanban-view">
+            <div class="column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="stat-dot" style="background: #6c757d;"></div>
+                        To Do
+                        <div class="column-count" id="header-todo">0</div>
+                    </div>
+                </div>
+                <div class="column-content" id="col-todo">
+                    <div class="loading">Loading tasks...</div>
                 </div>
             </div>
-            <div class="column-content" id="col-todo">
-                <div class="loading">Loading your tasks...</div>
+
+            <div class="column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="stat-dot" style="background: #0d6efd;"></div>
+                        In Progress
+                        <div class="column-count" id="header-progress">0</div>
+                    </div>
+                </div>
+                <div class="column-content" id="col-progress"></div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="stat-dot" style="background: #dc3545;"></div>
+                        Blocked
+                        <div class="column-count" id="header-blocked">0</div>
+                    </div>
+                </div>
+                <div class="column-content" id="col-blocked"></div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <div class="column-title">
+                        <div class="stat-dot" style="background: #198754;"></div>
+                        Done
+                        <div class="column-count" id="header-done">0</div>
+                    </div>
+                </div>
+                <div class="column-content" id="col-done"></div>
             </div>
         </div>
 
-        <div class="column">
-            <div class="column-header">
-                <div class="column-title">
-                    <div class="stat-dot dot-progress"></div>
-                    In Progress
-                    <div class="column-count" id="header-progress">0</div>
-                </div>
+        <!-- PROJECT VIEW -->
+        <div class="project-view" id="project-view">
+            <div class="project-grid" id="project-grid">
+                <!-- Projects will be rendered here -->
             </div>
-            <div class="column-content" id="col-in-progress"></div>
         </div>
 
-        <div class="column">
-            <div class="column-header">
-                <div class="column-title">
-                    <div class="stat-dot dot-blocked"></div>
-                    Blocked
-                    <div class="column-count" id="header-blocked">0</div>
+        <!-- TIMELINE VIEW -->
+        <div class="timeline-view" id="timeline-view">
+            <div class="timeline-container">
+                <div class="timeline-header">
+                    <div class="timeline-labels"></div>
+                    <div class="timeline-weeks">
+                        <div class="week-label">Week 1</div>
+                        <div class="week-label">Week 2</div>
+                        <div class="week-label">Week 3</div>
+                        <div class="week-label">Week 4</div>
+                    </div>
+                </div>
+                <div id="timeline-content">
+                    <!-- Timeline will be rendered here -->
                 </div>
             </div>
-            <div class="column-content" id="col-blocked"></div>
-        </div>
-
-        <div class="column">
-            <div class="column-header">
-                <div class="column-title">
-                    <div class="stat-dot dot-done"></div>
-                    Done
-                    <div class="column-count" id="header-done">0</div>
-                </div>
-            </div>
-            <div class="column-content" id="col-done"></div>
         </div>
     </div>
 
-    <div class="refresh-note">
-        Last updated: February 10, 2026 • Live deployment
+    <!-- TASK DETAILS MODAL -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="task-modal-title">Task Details</div>
+                <button class="modal-close" onclick="closeTaskModal()">&times;</button>
+            </div>
+            <div id="task-modal-content">
+                <!-- Task details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT DETAILS MODAL -->
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="project-modal-title">Project Details</div>
+                <button class="modal-close" onclick="closeProjectModal()">&times;</button>
+            </div>
+            <div id="project-modal-content">
+                <!-- Project details will be populated here -->
+            </div>
+        </div>
     </div>
 
     <script>
-        // Live task data - updated with cleaner, actionable content
+        // Enhanced task data with additional metadata
         const allTasks = [
             // CRITICAL DECISIONS (URGENT - Next 24-48h)
             { 
@@ -430,7 +798,13 @@
                 owner: 'Alex', 
                 status: 'blocked', 
                 priority: 'critical',
-                notes: 'Foundation decision affecting all subsequent work - choose path within 48h'
+                notes: 'Foundation decision affecting all subsequent work - choose path within 48h',
+                dependencies: [],
+                estimatedHours: 2,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-12',
+                projectId: 'bitclaw'
             },
             { 
                 id: 'ALEX-UGC-001', 
@@ -439,7 +813,13 @@
                 owner: 'Alex', 
                 status: 'todo', 
                 priority: 'critical',
-                notes: '$24K/month opportunity - focus on 10K-100K follower creators first'
+                notes: '$24K/month opportunity - focus on 10K-100K follower creators first',
+                dependencies: [],
+                estimatedHours: 8,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-15',
+                projectId: 'ugc-creator'
             },
             { 
                 id: 'ALEX-MR-001', 
@@ -448,7 +828,13 @@
                 owner: 'Alex', 
                 status: 'todo', 
                 priority: 'medium',
-                notes: 'Define 2-3 key research streams before Feb 15'
+                notes: 'Define 2-3 key research streams before Feb 15',
+                dependencies: [],
+                estimatedHours: 4,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-15',
+                projectId: 'medical-research'
             },
             
             // PROJECT MANAGEMENT (CRITICAL EFFICIENCY)
@@ -459,7 +845,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'critical',
-                notes: 'Will multiply efficiency across all projects'
+                notes: 'Will multiply efficiency across all projects',
+                dependencies: [],
+                estimatedHours: 12,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-14',
+                projectId: 'project-management'
             },
             { 
                 id: 'SOLDIER-PM-013', 
@@ -468,7 +860,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'high',
-                notes: 'Streamlines decision-making process'
+                notes: 'Streamlines decision-making process',
+                dependencies: ['SOLDIER-PM-010'],
+                estimatedHours: 6,
+                progress: 0,
+                startDate: '2026-02-14',
+                dueDate: '2026-02-17',
+                projectId: 'project-management'
             },
             { 
                 id: 'SOLDIER-PM-011A', 
@@ -477,7 +875,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'critical',
-                notes: 'Critical for task management and prioritization'
+                notes: 'Critical for task management and prioritization',
+                dependencies: [],
+                estimatedHours: 10,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-13',
+                projectId: 'project-management'
             },
 
             // UGC CREATOR INFRASTRUCTURE (HIGH VALUE)
@@ -488,7 +892,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'high',
-                notes: 'Manageable scale for initial market entry'
+                notes: 'Manageable scale for initial market entry',
+                dependencies: ['ALEX-UGC-001'],
+                estimatedHours: 16,
+                progress: 0,
+                startDate: '2026-02-15',
+                dueDate: '2026-02-22',
+                projectId: 'ugc-creator'
             },
             { 
                 id: 'SOLDIER-UGC-005', 
@@ -497,7 +907,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'high',
-                notes: 'Revenue generation engine - execute after business model definition'
+                notes: 'Revenue generation engine - execute after business model definition',
+                dependencies: ['SOLDIER-UGC-004'],
+                estimatedHours: 20,
+                progress: 0,
+                startDate: '2026-02-22',
+                dueDate: '2026-03-01',
+                projectId: 'ugc-creator'
             },
 
             // UI/UX IMPROVEMENTS (CURRENT WORK)
@@ -506,9 +922,15 @@
                 title: 'Complete advanced filtering and search for kanban board', 
                 project: 'Kanban UI Overhaul', 
                 owner: 'Soldier', 
-                status: 'in-progress', 
+                status: 'progress', 
                 priority: 'critical',
-                notes: 'In progress - complete by end of week'
+                notes: 'In progress - complete by end of week',
+                dependencies: [],
+                estimatedHours: 8,
+                progress: 75,
+                startDate: '2026-02-08',
+                dueDate: '2026-02-12',
+                projectId: 'kanban-ui'
             },
             { 
                 id: 'SOLDIER-UI-016', 
@@ -517,7 +939,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'high',
-                notes: 'Eliminates manual task creation process'
+                notes: 'Eliminates manual task creation process',
+                dependencies: ['SOLDIER-UI-013'],
+                estimatedHours: 12,
+                progress: 0,
+                startDate: '2026-02-12',
+                dueDate: '2026-02-17',
+                projectId: 'kanban-ui'
             },
 
             // AI ECOSYSTEM (STRATEGIC FOUNDATION)
@@ -528,7 +956,13 @@
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'high',
-                notes: 'Strategic foundation needed for all AI initiatives'
+                notes: 'Strategic foundation needed for all AI initiatives',
+                dependencies: [],
+                estimatedHours: 14,
+                progress: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-02-17',
+                projectId: 'ai-ecosystem'
             },
 
             // BLOCKED TASKS (DEPENDENCIES)
@@ -539,7 +973,13 @@
                 owner: 'Soldier', 
                 status: 'blocked', 
                 priority: 'high',
-                notes: 'Blocked by ALEX-BC-001 decision - awaiting direction'
+                notes: 'Blocked by ALEX-BC-001 decision - awaiting direction',
+                dependencies: ['ALEX-BC-001'],
+                estimatedHours: 20,
+                progress: 0,
+                startDate: '2026-02-12',
+                dueDate: '2026-02-19',
+                projectId: 'bitclaw'
             },
             { 
                 id: 'SOLDIER-BC-002', 
@@ -548,7 +988,13 @@
                 owner: 'Soldier', 
                 status: 'blocked', 
                 priority: 'high',
-                notes: 'Depends on migration decision - cannot proceed without path choice'
+                notes: 'Depends on migration decision - cannot proceed without path choice',
+                dependencies: ['ALEX-BC-001'],
+                estimatedHours: 16,
+                progress: 0,
+                startDate: '2026-02-12',
+                dueDate: '2026-02-18',
+                projectId: 'bitclaw'
             },
 
             // COMPLETED TASKS (PROGRESS INDICATORS)
@@ -558,7 +1004,14 @@
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'done', 
-                priority: 'critical'
+                priority: 'critical',
+                notes: 'Foundation documentation completed',
+                dependencies: [],
+                estimatedHours: 8,
+                progress: 100,
+                startDate: '2026-02-05',
+                dueDate: '2026-02-08',
+                projectId: 'project-management'
             },
             { 
                 id: 'SOLDIER-UGC-001', 
@@ -567,7 +1020,13 @@
                 owner: 'Soldier', 
                 status: 'done', 
                 priority: 'high',
-                notes: '$24K/month opportunity validated - ready for execution'
+                notes: '$24K/month opportunity validated - ready for execution',
+                dependencies: [],
+                estimatedHours: 12,
+                progress: 100,
+                startDate: '2026-02-03',
+                dueDate: '2026-02-07',
+                projectId: 'ugc-creator'
             },
             { 
                 id: 'SOLDIER-UI-001', 
@@ -575,7 +1034,14 @@
                 project: 'Kanban UI Overhaul', 
                 owner: 'Soldier', 
                 status: 'done', 
-                priority: 'critical'
+                priority: 'critical',
+                notes: 'Audit completed - implementation ready',
+                dependencies: [],
+                estimatedHours: 6,
+                progress: 100,
+                startDate: '2026-02-01',
+                dueDate: '2026-02-05',
+                projectId: 'kanban-ui'
             },
             { 
                 id: 'SOLDIER-CO-003', 
@@ -583,7 +1049,14 @@
                 project: 'Cost Optimization', 
                 owner: 'Soldier', 
                 status: 'done', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Cost optimization implemented successfully',
+                dependencies: [],
+                estimatedHours: 3,
+                progress: 100,
+                startDate: '2026-02-06',
+                dueDate: '2026-02-07',
+                projectId: 'cost-optimization'
             },
             { 
                 id: 'SOLDIER-PM-001', 
@@ -591,11 +1064,121 @@
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'done', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Audit completed - all projects mapped and organized',
+                dependencies: [],
+                estimatedHours: 10,
+                progress: 100,
+                startDate: '2026-02-01',
+                dueDate: '2026-02-04',
+                projectId: 'project-management'
             }
         ];
 
+        // Project definitions with metadata
+        const projects = {
+            'project-management': {
+                id: 'project-management',
+                name: 'Project Management',
+                description: 'Systematic planning and execution framework',
+                owner: 'Soldier',
+                priority: 'critical',
+                status: 'active',
+                progress: 45,
+                totalTasks: 4,
+                completedTasks: 2,
+                startDate: '2026-02-01',
+                dueDate: '2026-03-01',
+                color: '#cfe2ff'
+            },
+            'bitclaw': {
+                id: 'bitclaw',
+                name: 'BitClaw Protocol',
+                description: 'Professional token deployment with correct tokenomics',
+                owner: 'Alex',
+                priority: 'high',
+                status: 'blocked',
+                progress: 10,
+                totalTasks: 3,
+                completedTasks: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-03-15',
+                color: '#f7d6e6'
+            },
+            'ugc-creator': {
+                id: 'ugc-creator',
+                name: 'UGC Creator Agent',
+                description: 'Automated creator outreach system ($24k/month revenue potential)',
+                owner: 'Alex',
+                priority: 'high',
+                status: 'planning',
+                progress: 25,
+                totalTasks: 3,
+                completedTasks: 1,
+                startDate: '2026-02-03',
+                dueDate: '2026-03-01',
+                color: '#ffe69c'
+            },
+            'kanban-ui': {
+                id: 'kanban-ui',
+                name: 'Kanban UI Overhaul',
+                description: 'Transform functional kanban into fully functional project management system',
+                owner: 'Soldier',
+                priority: 'critical',
+                status: 'in-progress',
+                progress: 60,
+                totalTasks: 2,
+                completedTasks: 1,
+                startDate: '2026-02-01',
+                dueDate: '2026-02-17',
+                color: '#f8d7da'
+            },
+            'medical-research': {
+                id: 'medical-research',
+                name: 'Medical Research Pipeline',
+                description: 'Support Alex\'s academic research (orthopaedics, digital health, AI in medicine)',
+                owner: 'Alex',
+                priority: 'medium',
+                status: 'planning',
+                progress: 15,
+                totalTasks: 1,
+                completedTasks: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-04-01',
+                color: '#d1e7dd'
+            },
+            'ai-ecosystem': {
+                id: 'ai-ecosystem',
+                name: 'AI Agent Ecosystem',
+                description: 'Establish dominant position in emerging agent economy',
+                owner: 'Shared',
+                priority: 'high',
+                status: 'planning',
+                progress: 5,
+                totalTasks: 1,
+                completedTasks: 0,
+                startDate: '2026-02-10',
+                dueDate: '2026-04-01',
+                color: '#d4edda'
+            },
+            'cost-optimization': {
+                id: 'cost-optimization',
+                name: 'Cost Optimization',
+                description: 'Token usage tracking and model optimization',
+                owner: 'Soldier',
+                priority: 'medium',
+                status: 'completed',
+                progress: 100,
+                totalTasks: 1,
+                completedTasks: 1,
+                startDate: '2026-02-06',
+                dueDate: '2026-02-07',
+                color: '#d1ecf1'
+            }
+        };
+
         let currentTasks = [...allTasks];
+        let currentView = 'kanban';
 
         function getProjectClass(project) {
             const projectClasses = {
@@ -605,34 +1188,42 @@
                 'Kanban UI Overhaul': 'project-ui',
                 'Medical Research': 'project-mr',
                 'Cost Optimization': 'project-co',
-                'AI Agent Ecosystem': 'project-ai',
-                'Opportunity Scouting': 'project-op'
+                'AI Agent Ecosystem': 'project-ai'
             };
-            return projectClasses[project] || 'project-op';
+            return projectClasses[project] || 'project-pm';
         }
 
-        function renderBoard() {
+        function switchView(view) {
+            currentView = view;
+            
+            // Update button states
+            document.querySelectorAll('.view-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide views
+            document.getElementById('kanban-view').style.display = view === 'kanban' ? 'flex' : 'none';
+            document.getElementById('project-view').style.display = view === 'projects' ? 'grid' : 'none';
+            document.getElementById('timeline-view').style.display = view === 'timeline' ? 'block' : 'none';
+            
+            if (view === 'projects') {
+                renderProjects();
+            } else if (view === 'timeline') {
+                renderTimeline();
+            }
+        }
+
+        function renderKanban() {
             // Clear all columns
-            ['todo', 'in-progress', 'blocked', 'done'].forEach(status => {
+            ['todo', 'progress', 'blocked', 'done'].forEach(status => {
                 const column = document.getElementById(`col-${status}`);
                 if (column) column.innerHTML = '';
             });
 
             // Render tasks
             currentTasks.forEach(task => {
-                const taskElement = document.createElement('div');
-                taskElement.className = 'task';
-                
-                taskElement.innerHTML = `
-                    <div class="task-id">${task.id}</div>
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-meta">
-                        <div class="task-project ${getProjectClass(task.project)}">${task.project}</div>
-                        <div class="priority priority-${task.priority}">${task.priority}</div>
-                        <div class="owner owner-${task.owner.toLowerCase()}">${task.owner.charAt(0).toUpperCase()}</div>
-                    </div>
-                    ${task.notes ? `<div class="task-notes">${task.notes}</div>` : ''}
-                `;
+                const taskElement = createTaskElement(task);
                 
                 const column = document.getElementById(`col-${task.status}`);
                 if (column) {
@@ -643,26 +1234,225 @@
             updateCounters();
         }
 
+        function createTaskElement(task) {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.onclick = () => openTaskModal(task);
+            
+            taskElement.innerHTML = `
+                <svg class="expand-icon" viewBox="0 0 24 24">
+                    <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+                </svg>
+                <div class="task-id">${task.id}</div>
+                <div class="task-title">${task.title}</div>
+                <div class="task-meta">
+                    <div class="task-project ${getProjectClass(task.project)}">${task.project}</div>
+                    <div class="priority priority-${task.priority}">${task.priority}</div>
+                    <div class="owner owner-${task.owner.toLowerCase()}">${task.owner.charAt(0).toUpperCase()}</div>
+                </div>
+                <div class="task-notes">
+                    ${task.notes}<br><br>
+                    <strong>Estimated:</strong> ${task.estimatedHours}h<br>
+                    <strong>Progress:</strong> ${task.progress}%<br>
+                    ${task.dependencies.length > 0 ? `<strong>Depends on:</strong> ${task.dependencies.join(', ')}` : ''}
+                </div>
+            `;
+            
+            return taskElement;
+        }
+
+        function renderProjects() {
+            const projectGrid = document.getElementById('project-grid');
+            projectGrid.innerHTML = '';
+            
+            Object.values(projects).forEach(project => {
+                const projectTasks = allTasks.filter(task => task.projectId === project.id);
+                const completedTasks = projectTasks.filter(task => task.status === 'done').length;
+                
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.onclick = () => openProjectModal(project);
+                
+                projectCard.innerHTML = `
+                    <div class="project-header">
+                        <div class="project-title">${project.name}</div>
+                        <div class="project-progress" style="--progress: ${project.progress}%">
+                            <div class="progress-circle"></div>
+                            <div class="progress-text">${project.progress}%</div>
+                        </div>
+                    </div>
+                    <div class="project-meta">
+                        <div class="meta-item">Owner: ${project.owner}</div>
+                        <div class="meta-item">Status: ${project.status}</div>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat-box">
+                            <div class="stat-number">${project.totalTasks}</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">${completedTasks}</div>
+                            <div class="stat-label">Done</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">${project.totalTasks - completedTasks}</div>
+                            <div class="stat-label">Remaining</div>
+                        </div>
+                    </div>
+                    <div class="project-tasks">
+                        ${projectTasks.slice(0, 3).map(task => `
+                            <div class="project-task">
+                                <div class="task-status status-${task.status}"></div>
+                                <span>${task.title}</span>
+                            </div>
+                        `).join('')}
+                        ${projectTasks.length > 3 ? `<div class="meta-item">...and ${projectTasks.length - 3} more</div>` : ''}
+                    </div>
+                `;
+                
+                projectGrid.appendChild(projectCard);
+            });
+        }
+
+        function renderTimeline() {
+            const timelineContent = document.getElementById('timeline-content');
+            timelineContent.innerHTML = '';
+            
+            currentTasks.forEach(task => {
+                const row = document.createElement('div');
+                row.className = 'timeline-row';
+                
+                // Calculate timeline position
+                const startWeek = Math.floor((new Date(task.startDate) - new Date('2026-02-10')) / (7 * 24 * 60 * 60 * 1000));
+                const duration = Math.ceil((new Date(task.dueDate) - new Date(task.startDate)) / (7 * 24 * 60 * 60 * 1000));
+                
+                row.innerHTML = `
+                    <div class="task-label">${task.title}</div>
+                    <div class="task-timeline">
+                        <div class="task-bar ${task.status}" style="left: ${startWeek * 25}%; width: ${duration * 25}%;">
+                            ${task.status.toUpperCase()}
+                        </div>
+                    </div>
+                `;
+                
+                timelineContent.appendChild(row);
+            });
+        }
+
+        function openTaskModal(task) {
+            const modal = document.getElementById('task-modal');
+            const title = document.getElementById('task-modal-title');
+            const content = document.getElementById('task-modal-content');
+            
+            title.textContent = task.title;
+            content.innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <strong>ID:</strong> ${task.id}<br>
+                    <strong>Project:</strong> ${task.project}<br>
+                    <strong>Owner:</strong> ${task.owner}<br>
+                    <strong>Priority:</strong> ${task.priority}<br>
+                    <strong>Status:</strong> ${task.status}<br>
+                    <strong>Estimated Hours:</strong> ${task.estimatedHours}h<br>
+                    <strong>Progress:</strong> ${task.progress}%<br>
+                    <strong>Start Date:</strong> ${task.startDate}<br>
+                    <strong>Due Date:</strong> ${task.dueDate}
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <strong>Notes:</strong><br>
+                    ${task.notes}
+                </div>
+                ${task.dependencies.length > 0 ? `
+                    <div>
+                        <strong>Dependencies:</strong><br>
+                        ${task.dependencies.map(dep => `<span style="background: #f8f9fa; padding: 4px 8px; border-radius: 4px; margin-right: 8px; font-size: 12px;">${dep}</span>`).join('')}
+                    </div>
+                ` : ''}
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #dee2e6;">
+                    <strong>Related Tasks in ${task.project}:</strong>
+                    <div style="margin-top: 8px;">
+                        ${allTasks.filter(t => t.project === task.project && t.id !== task.id).map(t => `
+                            <div style="padding: 4px 0; font-size: 14px; color: #6c757d;">
+                                • ${t.id}: ${t.title} (${t.status})
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function openProjectModal(project) {
+            const modal = document.getElementById('project-modal');
+            const title = document.getElementById('project-modal-title');
+            const content = document.getElementById('project-modal-content');
+            const projectTasks = allTasks.filter(task => task.projectId === project.id);
+            
+            title.textContent = project.name;
+            content.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <strong>Description:</strong> ${project.description}<br>
+                    <strong>Owner:</strong> ${project.owner}<br>
+                    <strong>Priority:</strong> ${project.priority}<br>
+                    <strong>Status:</strong> ${project.status}<br>
+                    <strong>Progress:</strong> ${project.progress}%<br>
+                    <strong>Start Date:</strong> ${project.startDate}<br>
+                    <strong>Due Date:</strong> ${project.dueDate}
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <strong>Project Statistics:</strong><br>
+                    Total Tasks: ${project.totalTasks}<br>
+                    Completed: ${projectTasks.filter(t => t.status === 'done').length}<br>
+                    In Progress: ${projectTasks.filter(t => t.status === 'progress').length}<br>
+                    Blocked: ${projectTasks.filter(t => t.status === 'blocked').length}<br>
+                    To Do: ${projectTasks.filter(t => t.status === 'todo').length}
+                </div>
+                <div>
+                    <strong>All Tasks in this Project:</strong>
+                    <div style="margin-top: 12px;">
+                        ${projectTasks.map(task => `
+                            <div style="padding: 8px 12px; margin-bottom: 8px; background: #f8f9fa; border-radius: 4px; border-left: 4px solid ${task.status === 'done' ? '#198754' : task.status === 'progress' ? '#0d6efd' : task.status === 'blocked' ? '#dc3545' : '#6c757d'};">
+                                <div style="font-weight: 600;">${task.id}: ${task.title}</div>
+                                <div style="font-size: 12px; color: #6c757d; margin-top: 4px;">
+                                    Priority: ${task.priority} | Status: ${task.status} | Progress: ${task.progress}%
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeTaskModal() {
+            document.getElementById('task-modal').classList.remove('active');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.remove('active');
+        }
+
         function updateCounters() {
             const counts = {
                 todo: currentTasks.filter(t => t.status === 'todo').length,
-                'in-progress': currentTasks.filter(t => t.status === 'in-progress').length,
+                progress: currentTasks.filter(t => t.status === 'progress').length,
                 blocked: currentTasks.filter(t => t.status === 'blocked').length,
                 done: currentTasks.filter(t => t.status === 'done').length
             };
             
-            counts.total = counts.todo + counts['in-progress'] + counts.blocked + counts.done;
+            counts.total = counts.todo + counts.progress + counts.blocked + counts.done;
 
             // Update stat counters
             document.getElementById('count-todo').textContent = counts.todo;
-            document.getElementById('count-progress').textContent = counts['in-progress'];
+            document.getElementById('count-progress').textContent = counts.progress;
             document.getElementById('count-blocked').textContent = counts.blocked;
             document.getElementById('count-done').textContent = counts.done;
             document.getElementById('count-total').textContent = counts.total;
 
             // Update column header counters
             document.getElementById('header-todo').textContent = counts.todo;
-            document.getElementById('header-progress').textContent = counts['in-progress'];
+            document.getElementById('header-progress').textContent = counts.progress;
             document.getElementById('header-blocked').textContent = counts.blocked;
             document.getElementById('header-done').textContent = counts.done;
         }
@@ -681,12 +1471,46 @@
                 );
             }
             
-            renderBoard();
+            if (currentView === 'kanban') {
+                renderKanban();
+            } else if (currentView === 'projects') {
+                renderProjects();
+            } else if (currentView === 'timeline') {
+                renderTimeline();
+            }
         }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            const taskModal = document.getElementById('task-modal');
+            const projectModal = document.getElementById('project-modal');
+            
+            if (event.target === taskModal) {
+                closeTaskModal();
+            }
+            if (event.target === projectModal) {
+                closeProjectModal();
+            }
+        });
 
         // Initialize the board
         document.addEventListener('DOMContentLoaded', function() {
-            renderBoard();
+            renderKanban();
+        });
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeTaskModal();
+                closeProjectModal();
+            }
+            if (event.key >= '1' && event.key <= '3') {
+                const views = ['kanban', 'projects', 'timeline'];
+                const viewIndex = parseInt(event.key) - 1;
+                if (views[viewIndex]) {
+                    document.querySelectorAll('.view-toggle button')[viewIndex].click();
+                }
+            }
         });
     </script>
 </body>
