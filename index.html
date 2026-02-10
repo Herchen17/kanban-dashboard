@@ -391,6 +391,7 @@
 
     <div class="controls">
         <input type="text" class="search-box" placeholder="Search projects..." id="searchBox">
+        <button onclick="openProjectModal('project-management')" style="margin-left: 16px; padding: 8px 16px; background: #0052cc; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">Test Modal</button>
     </div>
 
     <div class="board">
@@ -585,6 +586,141 @@
 
     <script>
         const projects = {
+            'ai-ecosystem': {
+                title: '🤖 AI Agent Ecosystem',
+                summary: 'Establish dominant position in emerging AI agent economy through strategic partnerships, integrations, and market positioning.',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'Create comprehensive ecosystem strategy document',
+                        description: 'Map current AI agent landscape and identify key opportunities',
+                        status: 'active',
+                        nextAction: { type: 'soldier', text: 'Research and draft ecosystem strategy' }
+                    },
+                    {
+                        number: 2,
+                        title: 'Identify key partnerships and integrations',
+                        description: 'Target strategic alliances with major AI platforms',
+                        status: 'pending',
+                        nextAction: { type: 'soldier', text: 'Map potential partnerships after strategy complete' }
+                    },
+                    {
+                        number: 3,
+                        title: 'Define technical architecture',
+                        description: 'Plan technical foundation for agent ecosystem',
+                        status: 'pending',
+                        nextAction: { type: 'alex', text: 'Review and approve technical direction' }
+                    }
+                ]
+            },
+            'opportunity-scouting': {
+                title: '🎯 Opportunity Scouting',
+                summary: 'Systematically monitor loot-drop.io and similar platforms for autonomous, profitable build opportunities with 12-hour automated scouting pipeline.',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'Research loot-drop.io structure',
+                        description: 'Analyze platform and opportunity types available',
+                        status: 'active',
+                        nextAction: { type: 'soldier', text: 'Complete platform analysis' }
+                    },
+                    {
+                        number: 2,
+                        title: 'Create evaluation framework',
+                        description: 'Build systematic assessment for complexity vs profit',
+                        status: 'active',
+                        nextAction: { type: 'soldier', text: 'Design scoring algorithm' }
+                    },
+                    {
+                        number: 3,
+                        title: 'Build automated monitoring system',
+                        description: 'Set up 12-hour cron job with MiniMax cost efficiency',
+                        status: 'pending',
+                        nextAction: { type: 'soldier', text: 'Implement automated scouting pipeline' }
+                    }
+                ]
+            },
+            'cost-optimization': {
+                title: '💰 Cost Optimization',
+                summary: 'Minimize operational costs through smart automation, strategic model selection, and efficient resource management.',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'Configure MiniMax for automation',
+                        description: 'Set up cost-efficient model for automated tasks',
+                        status: 'complete',
+                        nextAction: null
+                    },
+                    {
+                        number: 2,
+                        title: 'Create strategic model selection framework',
+                        description: 'Guidelines for optimal model choice by task complexity',
+                        status: 'complete',
+                        nextAction: null
+                    },
+                    {
+                        number: 3,
+                        title: 'Test and optimize usage patterns',
+                        description: 'Validate cost-saving effectiveness across all operations',
+                        status: 'active',
+                        nextAction: { type: 'soldier', text: 'Complete pattern testing and validation' }
+                    }
+                ]
+            },
+            'medical-research': {
+                title: '🏥 Medical Research Pipeline',
+                summary: 'Support Alex\'s academic research in orthopaedics, digital health, and AI in medicine with optimized R analysis pipelines and publication tools.',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'Inventory current research assets',
+                        description: 'Catalog R scripts, orthopaedics data, and analysis tools',
+                        status: 'active',
+                        nextAction: { type: 'soldier', text: 'Complete asset inventory and organization' }
+                    },
+                    {
+                        number: 2,
+                        title: 'Define Q1 2026 research priorities',
+                        description: 'Set specific research goals and publication targets',
+                        status: 'pending',
+                        nextAction: { type: 'alex', text: 'Define research priorities and publication targets' }
+                    },
+                    {
+                        number: 3,
+                        title: 'Optimize R analysis pipeline',
+                        description: 'Streamline scripts for publication-ready outputs',
+                        status: 'pending',
+                        nextAction: { type: 'soldier', text: 'Optimize pipeline after priorities defined' }
+                    }
+                ]
+            },
+            'kanban-ui': {
+                title: '🎨 Kanban UI Overhaul',
+                summary: 'Transform functional board into professional project management system matching Linear/Notion quality with full interactivity.',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'UI/UX audit and design research',
+                        description: 'Professional kanban design analysis and requirements',
+                        status: 'complete',
+                        nextAction: null
+                    },
+                    {
+                        number: 2,
+                        title: 'Professional styling implementation',
+                        description: 'Clean, accessible design with proper spacing and typography',
+                        status: 'complete',
+                        nextAction: null
+                    },
+                    {
+                        number: 3,
+                        title: 'Project-level executive view',
+                        description: 'Strategic dashboard with project cards and step breakdowns',
+                        status: 'complete',
+                        nextAction: null
+                    }
+                ]
+            },
             'project-management': {
                 title: '🏗️ Project Management System',
                 summary: 'Building a rigorous systematic planning framework as the fundamental operating system for all work. This replaces ad-hoc task management with structured, accountable project execution.',
@@ -767,21 +903,34 @@
         });
 
         function setupProjectCards() {
-            document.querySelectorAll('.project-card').forEach(card => {
+            const cards = document.querySelectorAll('.project-card');
+            console.log('Setting up', cards.length, 'project cards');
+            
+            cards.forEach((card, index) => {
+                const projectId = card.getAttribute('data-project');
+                console.log(`Card ${index}: ${projectId}`);
+                
                 card.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const projectId = this.getAttribute('data-project');
+                    console.log('Clicked project:', projectId);
                     openProjectModal(projectId);
                 });
+                
+                // Add visual feedback
+                card.style.cursor = 'pointer';
             });
         }
 
         function openProjectModal(projectId) {
+            console.log('Opening modal for:', projectId);
             const project = projects[projectId];
             if (!project) {
-                console.log('Project not found:', projectId);
+                console.error('Project not found:', projectId);
+                alert(`Project data not found for: ${projectId}`);
                 return;
             }
+
+            console.log('Found project:', project.title);
 
             document.getElementById('modalProjectTitle').textContent = project.title;
             document.getElementById('modalSummary').textContent = project.summary;
@@ -807,10 +956,16 @@
                 `;
             }).join('');
             
-            document.getElementById('projectModal').style.display = 'block';
+            const modal = document.getElementById('projectModal');
+            modal.style.display = 'block';
+            console.log('Modal should now be visible');
+            
+            // Ensure modal is on top
+            modal.style.zIndex = '9999';
         }
 
         function closeModal() {
+            console.log('Closing modal');
             document.getElementById('projectModal').style.display = 'none';
         }
 
