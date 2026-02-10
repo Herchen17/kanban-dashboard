@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex's Projects - Interactive Dashboard</title>
+    <title>Alex's Project Dashboard - Live</title>
     <style>
         * {
             margin: 0;
@@ -13,662 +13,681 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #ffffff;
-            color: #000000;
+            background: #f8f9fa;
+            color: #212529;
             line-height: 1.6;
-            padding: 20px;
         }
 
-        h1 {
-            font-size: 36px;
-            color: #000000;
-            margin-bottom: 20px;
-            text-align: center;
+        .header {
+            background: #ffffff;
+            border-bottom: 3px solid #dee2e6;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #212529;
+            margin-bottom: 8px;
             font-weight: 700;
         }
 
-        .board {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-            overflow-x: auto;
+        .header p {
+            color: #6c757d;
+            font-size: 18px;
         }
 
-        .column {
-            flex: 0 0 300px;
-            background: #f8f8f8;
-            border: 2px solid #333333;
+        .search-section {
+            margin: 0 24px 24px 24px;
+        }
+
+        .search-section input {
+            width: 100%;
+            max-width: 500px;
+            padding: 16px 20px;
+            border: 2px solid #ced4da;
             border-radius: 8px;
-            padding: 20px;
-        }
-
-        .column h2 {
-            font-size: 20px;
-            color: #000000;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #333333;
-        }
-
-        .task {
+            font-size: 18px;
             background: #ffffff;
-            border: 2px solid #666666;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .task:hover {
-            border-color: #007bff;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
-            transform: translateY(-1px);
+        .search-section input:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
         }
 
-        .task-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #000000;
-            margin-bottom: 10px;
-            line-height: 1.4;
+        .stats {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 0 24px 24px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .task-meta {
-            font-size: 14px;
-            color: #333333;
+        .stats-grid {
             display: flex;
-            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
             align-items: center;
         }
 
-        .priority-high {
-            background: #ff6b6b;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .priority-critical {
-            background: #ff0000;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .priority-medium {
-            background: #4ecdc4;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            margin: 2% auto;
-            padding: 30px;
-            border: none;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: -10px;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-        }
-
-        .project-header {
-            border-bottom: 3px solid #333;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .project-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 10px;
-        }
-
-        .project-meta {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .meta-item {
-            background: #f0f0f0;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        .status-active { background: #d4edda; color: #155724; }
-        .status-blocked { background: #f8d7da; color: #721c24; }
-        .status-planning { background: #fff3cd; color: #856404; }
-        .status-ready { background: #cce5ff; color: #004085; }
-
-        .objective {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-left: 4px solid #007bff;
-            border-radius: 4px;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h3 {
-            font-size: 20px;
-            color: #000;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .task-list {
-            list-style: none;
-        }
-
-        .task-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #e0e0e0;
+        .stat-item {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .task-item:last-child {
-            border-bottom: none;
+        .stat-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
 
-        .task-status {
-            font-size: 18px;
-            width: 20px;
+        .dot-todo { background: #6c757d; }
+        .dot-progress { background: #0d6efd; }
+        .dot-blocked { background: #dc3545; }
+        .dot-done { background: #198754; }
+
+        .stat-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
         }
 
-        .task-done { color: #28a745; }
-        .task-blocked { color: #dc3545; }
-        .task-todo { color: #6c757d; }
-        .task-progress { color: #007bff; }
-
-        .task-description {
-            flex: 1;
-            font-size: 15px;
-            line-height: 1.4;
+        .board {
+            display: flex;
+            gap: 24px;
+            padding: 0 24px;
+            overflow-x: auto;
+            padding-bottom: 24px;
         }
 
-        .task-owner {
-            font-size: 12px;
+        .column {
+            flex: 0 0 320px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+
+        .column-header {
+            padding: 20px 24px;
+            border-bottom: 2px solid #f8f9fa;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .column-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .column-count {
             background: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .column-content {
+            padding: 24px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .task {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .task:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .task-id {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #6c757d;
+            background: #f8f9fa;
             padding: 4px 8px;
             border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .task-project {
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-weight: 600;
         }
 
-        .progress-bar {
-            background: #e9ecef;
-            border-radius: 10px;
-            height: 20px;
-            margin: 15px 0;
-            overflow: hidden;
+        .project-pm { background: #cfe2ff; color: #084298; }
+        .project-bc { background: #f7d6e6; color: #6f2c91; }
+        .project-ugc { background: #ffe69c; color: #b45309; }
+        .project-ui { background: #f8d7da; color: #842029; }
+        .project-mr { background: #d1e7dd; color: #0f5132; }
+        .project-co { background: #d1ecf1; color: #055160; }
+        .project-ai { background: #d4edda; color: #155724; }
+        .project-op { background: #e2e3e5; color: #383d41; }
+
+        .priority {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: #28a745;
-            transition: width 0.3s ease;
+        .priority-critical {
+            background: #f5c2c7;
+            color: #842029;
+        }
+
+        .priority-high {
+            background: #ffecb5;
+            color: #664d03;
+        }
+
+        .priority-medium {
+            background: #badbcc;
+            color: #0f5132;
+        }
+
+        .owner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
             color: white;
-            font-weight: bold;
-            font-size: 12px;
         }
 
-        .next-steps {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
+        .owner-soldier { background: #0d6efd; }
+        .owner-alex { background: #fd7e14; }
+        .owner-shared { background: #6c757d; }
 
-        .next-steps h4 {
-            color: #856404;
-            margin-bottom: 10px;
+        .task-notes {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+            font-style: italic;
+            line-height: 1.4;
         }
 
         @media (max-width: 768px) {
             .board {
                 flex-direction: column;
+                padding: 0 16px;
             }
+            
             .column {
                 flex: none;
             }
-            .modal-content {
-                width: 95%;
-                padding: 20px;
-                margin: 5% auto;
+            
+            .stats-grid {
+                justify-content: center;
+                gap: 24px;
             }
-            .project-meta {
-                flex-direction: column;
-                gap: 10px;
+            
+            .header, .search-section, .stats {
+                margin-left: 16px;
+                margin-right: 16px;
             }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .refresh-note {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 24px;
+            padding: 16px;
+        }
+
+        .action-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 24px 24px 24px;
+            font-size: 14px;
+        }
+
+        .action-title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .action-list {
+            color: #664d03;
+            line-height: 1.6;
+        }
+
+        .action-list ul {
+            margin-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
-    <h1>🪖 Alex's Project Dashboard</h1>
+    <div class="header">
+        <h1>Alex's Project Dashboard</h1>
+        <p>Medical Research & Development Command Center</p>
+    </div>
+
+    <div class="action-section">
+        <div class="action-title">IMMEDIATE PRIORITIES</div>
+        <div class="action-list">
+            <ul>
+                <li><strong>Today:</strong> BitClaw Protocol migration decision (unblocks 3+ tasks)</li>
+                <li><strong>This Week:</strong> Define UGC Creator business model ($24K opportunity)</li>
+                <li><strong>Next Week:</strong> Implement project management workflow improvements</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <input type="text" id="search" placeholder="Search tasks by title, project, or ID..." onkeyup="handleSearch(this.value)">
+    </div>
+
+    <div class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-dot dot-todo"></div>
+                <div class="stat-text"><span id="count-todo">0</span> To Do</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-dot dot-progress"></div>
+                <div class="stat-text"><span id="count-progress">0</span> In Progress</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-dot dot-blocked"></div>
+                <div class="stat-text"><span id="count-blocked">0</span> Blocked</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-dot dot-done"></div>
+                <div class="stat-text"><span id="count-done">0</span> Done</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-text">Total: <span id="count-total">0</span></div>
+            </div>
+        </div>
+    </div>
 
     <div class="board">
         <div class="column">
-            <h2>🔴 URGENT - Need Alex</h2>
-            
-            <div class="task" onclick="openProject('bitclaw')">
-                <div class="task-title">DECISION: BitClaw Protocol migration vs new deployment</div>
-                <div class="task-meta">
-                    <span>BitClaw Protocol</span>
-                    <span class="priority-critical">CRITICAL</span>
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="stat-dot dot-todo"></div>
+                    To Do
+                    <div class="column-count" id="header-todo">0</div>
                 </div>
             </div>
-
-            <div class="task" onclick="openProject('ugc')">
-                <div class="task-title">Define UGC Creator Agent business priorities and target market</div>
-                <div class="task-meta">
-                    <span>$24K/month opportunity</span>
-                    <span class="priority-high">HIGH</span>
-                </div>
-            </div>
-
-            <div class="task" onclick="openProject('medical')">
-                <div class="task-title">Define medical research priorities for Q1 2026</div>
-                <div class="task-meta">
-                    <span>Medical Research</span>
-                    <span class="priority-medium">MEDIUM</span>
-                </div>
+            <div class="column-content" id="col-todo">
+                <div class="loading">Loading your tasks...</div>
             </div>
         </div>
 
         <div class="column">
-            <h2>⚡ READY TO WORK</h2>
-            
-            <div class="task" onclick="openProject('project-mgmt')">
-                <div class="task-title">Implement actionable step requirement for every plan</div>
-                <div class="task-meta">
-                    <span>Project Management</span>
-                    <span class="priority-critical">CRITICAL</span>
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="stat-dot dot-progress"></div>
+                    In Progress
+                    <div class="column-count" id="header-progress">0</div>
                 </div>
             </div>
-
-            <div class="task" onclick="openProject('project-mgmt')">
-                <div class="task-title">Create "refer to Alex" workflow for unclear items</div>
-                <div class="task-meta">
-                    <span>Project Management</span>
-                    <span class="priority-high">HIGH</span>
-                </div>
-            </div>
-
-            <div class="task" onclick="openProject('ugc')">
-                <div class="task-title">Develop creator database structure (10K-100K followers)</div>
-                <div class="task-meta">
-                    <span>UGC Creator Agent</span>
-                    <span class="priority-high">HIGH</span>
-                </div>
-            </div>
-
-            <div class="task" onclick="openProject('ai-ecosystem')">
-                <div class="task-title">Create comprehensive AI ecosystem strategy document</div>
-                <div class="task-meta">
-                    <span>AI Ecosystem</span>
-                    <span class="priority-high">HIGH</span>
-                </div>
-            </div>
+            <div class="column-content" id="col-in-progress"></div>
         </div>
 
         <div class="column">
-            <h2>🔧 IN PROGRESS</h2>
-            
-            <div class="task" onclick="openProject('kanban-ui')">
-                <div class="task-title">Advanced filtering and search for kanban board</div>
-                <div class="task-meta">
-                    <span>UI Overhaul</span>
-                    <span class="priority-critical">CRITICAL</span>
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="stat-dot dot-blocked"></div>
+                    Blocked
+                    <div class="column-count" id="header-blocked">0</div>
                 </div>
             </div>
+            <div class="column-content" id="col-blocked"></div>
         </div>
 
         <div class="column">
-            <h2>🚫 BLOCKED</h2>
-            
-            <div class="task" onclick="openProject('bitclaw')">
-                <div class="task-title">Enhanced CLAWNCH research + Warren-deploy testing</div>
-                <div class="task-meta">
-                    <span>Awaiting Alex decision</span>
-                    <span class="priority-high">HIGH</span>
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="stat-dot dot-done"></div>
+                    Done
+                    <div class="column-count" id="header-done">0</div>
                 </div>
             </div>
-
-            <div class="task" onclick="openProject('bitclaw')">
-                <div class="task-title">Smart contract deployment strategy comparison</div>
-                <div class="task-meta">
-                    <span>Depends on migration decision</span>
-                    <span class="priority-high">HIGH</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-            <h2>✅ COMPLETED</h2>
-            
-            <div class="task" onclick="openProject('project-mgmt')">
-                <div class="task-title">Create systematic planning methodology</div>
-                <div class="task-meta">
-                    <span>Project Management</span>
-                    <span class="priority-critical">DONE</span>
-                </div>
-            </div>
-
-            <div class="task" onclick="openProject('ugc')">
-                <div class="task-title">UGC market research (28+ platforms)</div>
-                <div class="task-meta">
-                    <span>$24K opportunity validated</span>
-                    <span class="priority-high">DONE</span>
-                </div>
-            </div>
-
-            <div class="task" onclick="openProject('kanban-ui')">
-                <div class="task-title">UI/UX audit with screenshots</div>
-                <div class="task-meta">
-                    <span>Kanban UI Overhaul</span>
-                    <span class="priority-critical">DONE</span>
-                </div>
-            </div>
+            <div class="column-content" id="col-done"></div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
+    <div class="refresh-note">
+        Last updated: February 10, 2026 • Live deployment
     </div>
 
     <script>
-        // Project data
-        const projects = {
-            'project-mgmt': {
-                title: "🏗️ Systematic Planning & Execution Core",
-                objective: "Make rigorous systematic planning the fundamental operating system for all work",
-                owner: "Soldier (AI)",
-                priority: "CRITICAL",
-                status: "ACTIVE_DEVELOPMENT",
-                progress: 65,
-                completed: [
-                    "SOLDIER-PM-001: Audit all existing project directories",
-                    "SOLDIER-PM-002: Create editable kanban interface (Alex + AI access)",
-                    "SOLDIER-PM-003: Implement job categorization system",
-                    "SOLDIER-PM-009: Create rigorous systematic planning methodology documentation"
-                ],
-                inProgress: [
-                    "SOLDIER-PM-011A: Advanced filtering system (Owner, Project, Priority, Status)",
-                    "SOLDIER-PM-011B: Search functionality (Job ID, Title, Notes, Project)"
-                ],
-                todo: [
-                    "SOLDIER-PM-010: Implement actionable step requirement for every plan/discussion",
-                    "SOLDIER-PM-013: Create 'refer to Alex' workflow for unclear action items",
-                    "ALEX-PM-001: Review systematic planning approach and kanban functionality"
-                ],
-                blocked: [],
-                nextSteps: "Focus on SOLDIER-PM-010 (actionable step requirement) as it's foundational for all other systematic planning work."
+        // Live task data - updated with cleaner, actionable content
+        const allTasks = [
+            // CRITICAL DECISIONS (URGENT - Next 24-48h)
+            { 
+                id: 'ALEX-BC-001', 
+                title: 'DECISION: BitClaw Protocol migration vs new deployment strategy', 
+                project: 'BitClaw Protocol', 
+                owner: 'Alex', 
+                status: 'blocked', 
+                priority: 'critical',
+                notes: 'Foundation decision affecting all subsequent work - choose path within 48h'
             },
-            'bitclaw': {
-                title: "🪙 BitClaw Protocol",
-                objective: "Complete professional token deployment with correct tokenomics",
-                owner: "Shared",
-                priority: "HIGH",
-                status: "BLOCKED",
-                progress: 15,
-                completed: [],
-                inProgress: [],
-                todo: [
-                    "SOLDIER-BC-002: Smart contract deployment strategy comparison (multiple chains)",
-                    "SOLDIER-BC-003: Test tokenomics implementation using warren-deploy",
-                    "SOLDIER-BC-004: Execute approved deployment plan",
-                    "SOLDIER-BC-005: Complete brand rollout (logo implementation)"
-                ],
-                blocked: [
-                    "SOLDIER-BC-001: Enhanced CLAWNCH research + Warren-deploy testing on MegaETH",
-                    "ALEX-BC-001: DECISION NEEDED - Migration strategy vs new deployment"
-                ],
-                nextSteps: "Alex needs to decide on migration strategy vs new deployment. This is blocking 3 other tasks."
+            { 
+                id: 'ALEX-UGC-001', 
+                title: 'Define UGC Creator Agent business priorities and target market', 
+                project: 'UGC Creator Agent', 
+                owner: 'Alex', 
+                status: 'todo', 
+                priority: 'critical',
+                notes: '$24K/month opportunity - focus on 10K-100K follower creators first'
             },
-            'ugc': {
-                title: "🎨 UGC Creator Agent",
-                objective: "Build automated creator outreach system ($24k+/month revenue potential)",
-                owner: "Shared",
-                priority: "HIGH",
-                status: "READY_TO_START",
-                progress: 45,
-                completed: [
-                    "SOLDIER-UGC-001: Enhanced market research using Postiz (28+ platform analysis) - AU$24K+/month opportunity validated",
-                    "SOLDIER-UGC-002: Creator ecosystem mapping across all major platforms - 100+ creators mapped",
-                    "SOLDIER-UGC-003: LinkedIn automation setup for B2B creator outreach - 50+ target companies identified"
-                ],
-                inProgress: [],
-                todo: [
-                    "SOLDIER-UGC-004: Develop creator database structure (10K-100K followers)",
-                    "SOLDIER-UGC-005: Design multi-platform outreach automation system",
-                    "ALEX-UGC-001: Define business priorities and target market specifics",
-                    "ALEX-UGC-002: Review automation level requirements (targeting 95%+)"
-                ],
-                blocked: [],
-                nextSteps: "Ready to build! Need Alex to define business priorities and target market specifics. High-value opportunity with validated $24K+/month potential."
+            { 
+                id: 'ALEX-MR-001', 
+                title: 'Set medical research priorities for Q1 2026', 
+                project: 'Medical Research', 
+                owner: 'Alex', 
+                status: 'todo', 
+                priority: 'medium',
+                notes: 'Define 2-3 key research streams before Feb 15'
             },
-            'medical': {
-                title: "🏥 Medical Research Pipeline",
-                objective: "Support Alex's academic research (orthopaedics, digital health, AI in medicine)",
-                owner: "Alex (primary) + AI (analysis support)",
-                priority: "MEDIUM",
-                status: "ONGOING_RESEARCH",
-                progress: 20,
-                completed: [],
-                inProgress: [],
-                todo: [
-                    "SOLDIER-MR-001: Inventory current research assets and R analysis scripts",
-                    "SOLDIER-MR-002: Organize current orthopaedics data and publications",
-                    "ALEX-MR-001: Define research priorities for Q1 2026",
-                    "SOLDIER-MR-003: Optimize R analysis pipeline for publication-ready outputs",
-                    "ALEX-MR-002: Clinical rotation preparation requirements"
-                ],
-                blocked: [],
-                nextSteps: "Alex to define research priorities for Q1 2026, then Soldier can inventory and organize current research assets."
-            },
-            'kanban-ui': {
-                title: "🎨 Kanban UI/UX Overhaul",
-                objective: "Transform functional kanban into FULLY FUNCTIONAL project management system",
-                owner: "Soldier (AI) + Sub-Agents",
-                priority: "CRITICAL",
-                status: "PHASE_4_COMPLETE",
-                progress: 85,
-                completed: [
-                    "SOLDIER-UI-001: UI/UX audit with detailed screenshots and issue catalog",
-                    "SOLDIER-UI-002: Research professional kanban designs (Linear, Notion, Jira)",
-                    "SOLDIER-UI-003: Create design requirements based on workflow needs",
-                    "SOLDIER-UI-008: Fix container spacing and text overflow issues",
-                    "SOLDIER-UI-009: Optimize mobile responsiveness",
-                    "SOLDIER-UI-013: Advanced filtering and search functionality",
-                    "SOLDIER-UI-015: Bulk operations (multi-select, batch status changes)"
-                ],
-                inProgress: [
-                    "Making kanban board functional with click-to-view project details"
-                ],
-                todo: [
-                    "SOLDIER-UI-016: Automated job creation from systematic plans",
-                    "SOLDIER-UI-017: Integration with cron job system",
-                    "ALEX-UI-001: User testing and feedback on enhanced functionality"
-                ],
-                blocked: [],
-                nextSteps: "Currently implementing clickable project details. Next: automated job creation from systematic plans."
-            },
-            'ai-ecosystem': {
-                title: "🤖 AI Agent Ecosystem",
-                objective: "Establish dominant position in emerging agent economy",
-                owner: "Shared",
-                priority: "HIGH",
-                status: "STRATEGIC_PLANNING",
-                progress: 10,
-                completed: [],
-                inProgress: [],
-                todo: [
-                    "SOLDIER-AI-001: Create comprehensive ecosystem strategy document",
-                    "SOLDIER-AI-002: Identify key partnerships and integrations needed",
-                    "ALEX-AI-001: Review strategy and provide direction",
-                    "SOLDIER-AI-003: Execute approved strategy elements"
-                ],
-                blocked: [],
-                nextSteps: "Start with comprehensive ecosystem strategy document, then get Alex's strategic direction."
-            }
-        };
-
-        function openProject(projectKey) {
-            const project = projects[projectKey];
-            if (!project) return;
-
-            const statusClass = project.status.toLowerCase().replace(/_/g, '-');
             
-            const modalContent = `
-                <div class="project-header">
-                    <div class="project-title">${project.title}</div>
-                    <div class="project-meta">
-                        <div class="meta-item">Owner: ${project.owner}</div>
-                        <div class="meta-item priority-${project.priority.toLowerCase()}">${project.priority}</div>
-                        <div class="meta-item status-${statusClass.includes('active') ? 'active' : statusClass.includes('blocked') ? 'blocked' : statusClass.includes('planning') ? 'planning' : 'ready'}">${project.status.replace(/_/g, ' ')}</div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${project.progress}%">${project.progress}%</div>
-                    </div>
-                </div>
+            // PROJECT MANAGEMENT (CRITICAL EFFICIENCY)
+            { 
+                id: 'SOLDIER-PM-010', 
+                title: 'Implement actionable step requirement for every plan', 
+                project: 'Project Management', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'critical',
+                notes: 'Will multiply efficiency across all projects'
+            },
+            { 
+                id: 'SOLDIER-PM-013', 
+                title: 'Create "refer to Alex" workflow for unclear items', 
+                project: 'Project Management', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'high',
+                notes: 'Streamlines decision-making process'
+            },
+            { 
+                id: 'SOLDIER-PM-011A', 
+                title: 'Build advanced filtering system (Owner, Project, Priority, Status)', 
+                project: 'Project Management', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'critical',
+                notes: 'Critical for task management and prioritization'
+            },
 
-                <div class="objective">
-                    <strong>Objective:</strong> ${project.objective}
-                </div>
+            // UGC CREATOR INFRASTRUCTURE (HIGH VALUE)
+            { 
+                id: 'SOLDIER-UGC-004', 
+                title: 'Develop creator database structure for 10K-100K followers', 
+                project: 'UGC Creator Agent', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'high',
+                notes: 'Manageable scale for initial market entry'
+            },
+            { 
+                id: 'SOLDIER-UGC-005', 
+                title: 'Design multi-platform outreach automation system', 
+                project: 'UGC Creator Agent', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'high',
+                notes: 'Revenue generation engine - execute after business model definition'
+            },
 
-                ${project.completed.length > 0 ? `
-                <div class="section">
-                    <h3>✅ Completed (${project.completed.length})</h3>
-                    <ul class="task-list">
-                        ${project.completed.map(task => `
-                            <li class="task-item">
-                                <span class="task-status task-done">✓</span>
-                                <span class="task-description">${task}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-                ` : ''}
+            // UI/UX IMPROVEMENTS (CURRENT WORK)
+            { 
+                id: 'SOLDIER-UI-013', 
+                title: 'Complete advanced filtering and search for kanban board', 
+                project: 'Kanban UI Overhaul', 
+                owner: 'Soldier', 
+                status: 'in-progress', 
+                priority: 'critical',
+                notes: 'In progress - complete by end of week'
+            },
+            { 
+                id: 'SOLDIER-UI-016', 
+                title: 'Build automated job creation from systematic plans', 
+                project: 'Kanban UI Overhaul', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'high',
+                notes: 'Eliminates manual task creation process'
+            },
 
-                ${project.inProgress.length > 0 ? `
-                <div class="section">
-                    <h3>🔧 In Progress (${project.inProgress.length})</h3>
-                    <ul class="task-list">
-                        ${project.inProgress.map(task => `
-                            <li class="task-item">
-                                <span class="task-status task-progress">⚡</span>
-                                <span class="task-description">${task}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-                ` : ''}
+            // AI ECOSYSTEM (STRATEGIC FOUNDATION)
+            { 
+                id: 'SOLDIER-AI-001', 
+                title: 'Create comprehensive AI ecosystem strategy document', 
+                project: 'AI Agent Ecosystem', 
+                owner: 'Soldier', 
+                status: 'todo', 
+                priority: 'high',
+                notes: 'Strategic foundation needed for all AI initiatives'
+            },
 
-                ${project.blocked.length > 0 ? `
-                <div class="section">
-                    <h3>🚫 Blocked (${project.blocked.length})</h3>
-                    <ul class="task-list">
-                        ${project.blocked.map(task => `
-                            <li class="task-item">
-                                <span class="task-status task-blocked">⛔</span>
-                                <span class="task-description">${task}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-                ` : ''}
+            // BLOCKED TASKS (DEPENDENCIES)
+            { 
+                id: 'SOLDIER-BC-001', 
+                title: 'Enhanced CLAWNCH research + Warren-deploy testing', 
+                project: 'BitClaw Protocol', 
+                owner: 'Soldier', 
+                status: 'blocked', 
+                priority: 'high',
+                notes: 'Blocked by ALEX-BC-001 decision - awaiting direction'
+            },
+            { 
+                id: 'SOLDIER-BC-002', 
+                title: 'Smart contract deployment strategy comparison (multiple chains)', 
+                project: 'BitClaw Protocol', 
+                owner: 'Soldier', 
+                status: 'blocked', 
+                priority: 'high',
+                notes: 'Depends on migration decision - cannot proceed without path choice'
+            },
 
-                ${project.todo.length > 0 ? `
-                <div class="section">
-                    <h3>📋 To Do (${project.todo.length})</h3>
-                    <ul class="task-list">
-                        ${project.todo.map(task => `
-                            <li class="task-item">
-                                <span class="task-status task-todo">○</span>
-                                <span class="task-description">${task}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-                ` : ''}
-
-                <div class="next-steps">
-                    <h4>🎯 Next Steps</h4>
-                    <p>${project.nextSteps}</p>
-                </div>
-            `;
-
-            document.getElementById('modalContent').innerHTML = modalContent;
-            document.getElementById('projectModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('projectModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('projectModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            // COMPLETED TASKS (PROGRESS INDICATORS)
+            { 
+                id: 'SOLDIER-PM-009', 
+                title: 'Create systematic planning methodology documentation', 
+                project: 'Project Management', 
+                owner: 'Soldier', 
+                status: 'done', 
+                priority: 'critical'
+            },
+            { 
+                id: 'SOLDIER-UGC-001', 
+                title: 'Enhanced market research using Postiz (28+ platform analysis)', 
+                project: 'UGC Creator Agent', 
+                owner: 'Soldier', 
+                status: 'done', 
+                priority: 'high',
+                notes: '$24K/month opportunity validated - ready for execution'
+            },
+            { 
+                id: 'SOLDIER-UI-001', 
+                title: 'UI/UX audit with detailed screenshots and issue catalog', 
+                project: 'Kanban UI Overhaul', 
+                owner: 'Soldier', 
+                status: 'done', 
+                priority: 'critical'
+            },
+            { 
+                id: 'SOLDIER-CO-003', 
+                title: 'Configure MiniMax model for cost-efficient automation', 
+                project: 'Cost Optimization', 
+                owner: 'Soldier', 
+                status: 'done', 
+                priority: 'high'
+            },
+            { 
+                id: 'SOLDIER-PM-001', 
+                title: 'Comprehensive audit of all existing project directories', 
+                project: 'Project Management', 
+                owner: 'Soldier', 
+                status: 'done', 
+                priority: 'high'
             }
+        ];
+
+        let currentTasks = [...allTasks];
+
+        function getProjectClass(project) {
+            const projectClasses = {
+                'Project Management': 'project-pm',
+                'BitClaw Protocol': 'project-bc', 
+                'UGC Creator Agent': 'project-ugc',
+                'Kanban UI Overhaul': 'project-ui',
+                'Medical Research': 'project-mr',
+                'Cost Optimization': 'project-co',
+                'AI Agent Ecosystem': 'project-ai',
+                'Opportunity Scouting': 'project-op'
+            };
+            return projectClasses[project] || 'project-op';
         }
+
+        function renderBoard() {
+            // Clear all columns
+            ['todo', 'in-progress', 'blocked', 'done'].forEach(status => {
+                const column = document.getElementById(`col-${status}`);
+                if (column) column.innerHTML = '';
+            });
+
+            // Render tasks
+            currentTasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task';
+                
+                taskElement.innerHTML = `
+                    <div class="task-id">${task.id}</div>
+                    <div class="task-title">${task.title}</div>
+                    <div class="task-meta">
+                        <div class="task-project ${getProjectClass(task.project)}">${task.project}</div>
+                        <div class="priority priority-${task.priority}">${task.priority}</div>
+                        <div class="owner owner-${task.owner.toLowerCase()}">${task.owner.charAt(0).toUpperCase()}</div>
+                    </div>
+                    ${task.notes ? `<div class="task-notes">${task.notes}</div>` : ''}
+                `;
+                
+                const column = document.getElementById(`col-${task.status}`);
+                if (column) {
+                    column.appendChild(taskElement);
+                }
+            });
+
+            updateCounters();
+        }
+
+        function updateCounters() {
+            const counts = {
+                todo: currentTasks.filter(t => t.status === 'todo').length,
+                'in-progress': currentTasks.filter(t => t.status === 'in-progress').length,
+                blocked: currentTasks.filter(t => t.status === 'blocked').length,
+                done: currentTasks.filter(t => t.status === 'done').length
+            };
+            
+            counts.total = counts.todo + counts['in-progress'] + counts.blocked + counts.done;
+
+            // Update stat counters
+            document.getElementById('count-todo').textContent = counts.todo;
+            document.getElementById('count-progress').textContent = counts['in-progress'];
+            document.getElementById('count-blocked').textContent = counts.blocked;
+            document.getElementById('count-done').textContent = counts.done;
+            document.getElementById('count-total').textContent = counts.total;
+
+            // Update column header counters
+            document.getElementById('header-todo').textContent = counts.todo;
+            document.getElementById('header-progress').textContent = counts['in-progress'];
+            document.getElementById('header-blocked').textContent = counts.blocked;
+            document.getElementById('header-done').textContent = counts.done;
+        }
+
+        function handleSearch(searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+            
+            if (!term) {
+                currentTasks = [...allTasks];
+            } else {
+                currentTasks = allTasks.filter(task => 
+                    task.title.toLowerCase().includes(term) ||
+                    task.id.toLowerCase().includes(term) ||
+                    task.project.toLowerCase().includes(term) ||
+                    (task.notes && task.notes.toLowerCase().includes(term))
+                );
+            }
+            
+            renderBoard();
+        }
+
+        // Initialize the board
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBoard();
+        });
     </script>
 </body>
 </html>
