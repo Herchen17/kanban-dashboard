@@ -307,6 +307,7 @@
 
     <div class="controls">
         <input type="text" class="search-box" placeholder="Search projects, jobs, or notes..." id="searchBox">
+        <button onclick="addNewTask()" style="margin-left: 16px; padding: 8px 16px; background: #36b37e; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">+ Add Task</button>
     </div>
 
     <div class="board">
@@ -318,7 +319,7 @@
                 </div>
             </div>
             <div class="column-content">
-                <div class="task-card priority-critical">
+                <div class="task-card priority-critical" data-task-id="SOLDIER-PM-011">
                     <div class="task-id">SOLDIER-PM-011</div>
                     <div class="task-title">Complete Kanban Board Enhancement</div>
                     <div class="task-project">Project Management</div>
@@ -342,7 +343,7 @@
                     </div>
                 </div>
 
-                <div class="task-card priority-high">
+                <div class="task-card priority-high" data-task-id="ALEX-BC-001">
                     <div class="task-id">ALEX-BC-001</div>
                     <div class="task-title">BitClaw Token Migration Decision</div>
                     <div class="task-project">BitClaw Protocol</div>
@@ -360,7 +361,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-UGC-004">
                     <div class="task-id">SOLDIER-UGC-004</div>
                     <div class="task-title">Build Creator Database Structure</div>
                     <div class="task-project">UGC Creator Agent</div>
@@ -378,7 +379,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="ALEX-UGC-001">
                     <div class="task-id">ALEX-UGC-001</div>
                     <div class="task-title">Define UGC Business Priorities</div>
                     <div class="task-project">UGC Creator Agent</div>
@@ -390,7 +391,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="ALEX-UGC-001">
                     <div class="task-id">SOLDIER-AI-001</div>
                     <div class="task-title">Create AI Ecosystem Strategy</div>
                     <div class="task-project">AI Agent Ecosystem</div>
@@ -402,7 +403,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-AI-001">
                     <div class="task-id">SOLDIER-MR-001</div>
                     <div class="task-title">Medical Research Asset Inventory</div>
                     <div class="task-project">Medical Research</div>
@@ -414,7 +415,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-MR-001">
                     <div class="task-id">ALEX-MR-001</div>
                     <div class="task-title">Define Q1 2026 Research Priorities</div>
                     <div class="task-project">Medical Research</div>
@@ -426,7 +427,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="ALEX-MR-001">
                     <div class="task-id">SOLDIER-OP-001</div>
                     <div class="task-title">Research Loot-Drop Opportunities</div>
                     <div class="task-project">Opportunity Scouting</div>
@@ -448,7 +449,7 @@
                 </div>
             </div>
             <div class="column-content">
-                <div class="task-card priority-critical">
+                <div class="task-card priority-critical" data-task-id="SOLDIER-PM-012">
                     <div class="task-id">SOLDIER-PM-012</div>
                     <div class="task-title">Set Up 8-Hour Cron Job Review</div>
                     <div class="task-project">Project Management</div>
@@ -490,7 +491,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-OP-001">
                     <div class="task-id">SOLDIER-UGC-005</div>
                     <div class="task-title">Design Multi-Platform Outreach System</div>
                     <div class="task-project">UGC Creator Agent</div>
@@ -508,7 +509,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-CO-007">
                     <div class="task-id">SOLDIER-BC-001</div>
                     <div class="task-title">Enhanced CLAWNCH Research</div>
                     <div class="task-project">BitClaw Protocol</div>
@@ -526,7 +527,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-UGC-005">
                     <div class="task-id">SOLDIER-OP-002</div>
                     <div class="task-title">Create Opportunity Evaluation Framework</div>
                     <div class="task-project">Opportunity Scouting</div>
@@ -573,7 +574,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-BC-001">
                     <div class="blocked-indicator">BLOCKED</div>
                     <div class="task-id">SOLDIER-MR-003</div>
                     <div class="task-title">Optimize R Analysis Pipeline</div>
@@ -602,7 +603,7 @@
                 </div>
             </div>
             <div class="column-content">
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-OP-002">
                     <div class="task-id">SOLDIER-UGC-001</div>
                     <div class="task-title">UGC Market Research Complete</div>
                     <div class="task-project">UGC Creator Agent</div>
@@ -620,7 +621,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-BC-004">
                     <div class="task-id">SOLDIER-CO-005</div>
                     <div class="task-title">Strategic Model Selection Framework</div>
                     <div class="task-project">Cost Optimization</div>
@@ -638,7 +639,7 @@
                     </div>
                 </div>
 
-                <div class="task-card">
+                <div class="task-card" data-task-id="SOLDIER-MR-003">
                     <div class="task-id">SOLDIER-UI-015</div>
                     <div class="task-title">Professional UI Foundation</div>
                     <div class="task-project">Kanban Enhancement</div>
@@ -659,34 +660,381 @@
         </div>
     </div>
 
-    <script>
-        // Simple search functionality
-        document.getElementById('searchBox').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.task-card');
+    <!-- Task Detail Modal -->
+    <div id="taskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 24px; border-radius: 12px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 id="modalTitle" style="color: #172b4d; margin: 0;">Task Details</h2>
+                <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #8993a4;">×</button>
+            </div>
             
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+            <div id="modalContent">
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Task ID:</label>
+                    <span id="modalTaskId" style="font-family: monospace; color: #8993a4;"></span>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Project:</label>
+                    <span id="modalProject" style="background: #deebff; color: #0052cc; padding: 4px 8px; border-radius: 4px; font-size: 12px;"></span>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Owner:</label>
+                    <span id="modalOwner" style="padding: 4px 8px; border-radius: 4px; font-size: 12px;"></span>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Description:</label>
+                    <p id="modalDescription" style="color: #172b4d; line-height: 1.4;"></p>
+                </div>
+                
+                <div style="margin-bottom: 16px; padding: 16px; background: #f4f5f7; border-radius: 8px; border-left: 3px solid #0052cc;">
+                    <h3 style="font-size: 12px; color: #8993a4; text-transform: uppercase; margin-bottom: 8px;">Ultimate Goal</h3>
+                    <p id="modalGoal" style="color: #172b4d; font-weight: 500;"></p>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Progress:</label>
+                    <div id="modalProgress" style="display: flex; align-items: center; gap: 8px;">
+                        <div style="flex: 1; height: 6px; background: #dfe1e6; border-radius: 3px;">
+                            <div id="modalProgressBar" style="height: 100%; background: #36b37e; border-radius: 3px; transition: width 0.3s;"></div>
+                        </div>
+                        <span id="modalProgressText" style="font-size: 12px; color: #5e6c84;"></span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 8px;">Steps:</label>
+                    <div id="modalSteps"></div>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: 600; color: #5e6c84; display: block; margin-bottom: 4px;">Move to:</label>
+                    <select id="statusSelect" style="padding: 8px 12px; border: 2px solid #dfe1e6; border-radius: 6px; font-size: 14px;">
+                        <option value="todo">To Do</option>
+                        <option value="progress">In Progress</option>
+                        <option value="blocked">Blocked</option>
+                        <option value="done">Done</option>
+                    </select>
+                    <button onclick="updateTaskStatus()" style="margin-left: 8px; padding: 8px 16px; background: #0052cc; color: white; border: none; border-radius: 6px; cursor: pointer;">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Task data structure
+        const tasks = {
+            'SOLDIER-PM-011': {
+                id: 'SOLDIER-PM-011',
+                title: 'Complete Kanban Board Enhancement',
+                project: 'Project Management',
+                owner: 'SOLDIER',
+                description: 'Make this board fully functional with advanced filtering, search, bulk operations, and automated job creation',
+                goal: 'Replace janky functional board with professional project management system matching Linear/Notion quality',
+                progress: 70,
+                steps: [
+                    { text: 'UI/UX research & design', complete: true },
+                    { text: 'Professional styling', complete: true },
+                    { text: 'Advanced functionality', active: true },
+                    { text: 'Automation integration', complete: false }
+                ],
+                status: 'todo',
+                priority: 'critical'
+            },
+            'ALEX-BC-001': {
+                id: 'ALEX-BC-001',
+                title: 'BitClaw Token Migration Decision',
+                project: 'BitClaw Protocol', 
+                owner: 'ALEX',
+                description: 'Decide: migrate existing token or deploy fresh? Current supply issue blocking progress',
+                goal: 'Launch professional token with correct tokenomics on chosen blockchain',
+                progress: 0,
+                steps: [
+                    { text: 'Review current token issues', complete: false },
+                    { text: 'Research migration vs fresh deploy', complete: false },
+                    { text: 'Make final decision', complete: false },
+                    { text: 'Execute chosen strategy', complete: false }
+                ],
+                status: 'todo',
+                priority: 'high'
+            },
+            'SOLDIER-PM-012': {
+                id: 'SOLDIER-PM-012',
+                title: 'Set Up 8-Hour Cron Job Review',
+                project: 'Project Management',
+                owner: 'SOLDIER',
+                description: 'Automate regular kanban board reviews using MiniMax for cost efficiency',
+                goal: 'Ensure continuous project progress through automated oversight',
+                progress: 90,
+                steps: [
+                    { text: 'Cron job syntax research', complete: true },
+                    { text: 'MiniMax model setup', complete: true },
+                    { text: 'Testing execution', active: true },
+                    { text: 'Final validation', complete: false }
+                ],
+                status: 'progress',
+                priority: 'critical'
+            },
+            'SOLDIER-UGC-001': {
+                id: 'SOLDIER-UGC-001', 
+                title: 'UGC Market Research Complete',
+                project: 'UGC Creator Agent',
+                owner: 'SOLDIER',
+                description: 'Validated $24K+/month revenue opportunity through Postiz platform analysis',
+                goal: 'Generate $24K+/month through automated creator outreach',
+                progress: 100,
+                steps: [
+                    { text: 'Platform analysis', complete: true },
+                    { text: 'Revenue validation', complete: true },
+                    { text: 'Opportunity mapping', complete: true }
+                ],
+                status: 'done',
+                priority: 'high'
+            }
+        };
+
+        let currentTask = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTaskCards();
+            setupSearch();
         });
 
-        // Update column counts when cards are hidden/shown
+        function setupTaskCards() {
+            document.querySelectorAll('.task-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const taskId = this.querySelector('.task-id').textContent;
+                    openTaskModal(taskId);
+                });
+            });
+        }
+
+        function openTaskModal(taskId) {
+            const task = tasks[taskId];
+            if (!task) {
+                // If task not in our data structure, extract from DOM
+                const cardElement = document.querySelector(`[data-task-id="${taskId}"]`) || 
+                                  Array.from(document.querySelectorAll('.task-card')).find(card => 
+                                      card.querySelector('.task-id').textContent === taskId);
+                
+                if (cardElement) {
+                    task = extractTaskFromCard(cardElement);
+                }
+            }
+
+            if (!task) return;
+
+            currentTask = task;
+            
+            document.getElementById('modalTitle').textContent = task.title;
+            document.getElementById('modalTaskId').textContent = task.id;
+            document.getElementById('modalProject').textContent = task.project;
+            document.getElementById('modalOwner').textContent = task.owner;
+            document.getElementById('modalOwner').className = `owner-${task.owner.toLowerCase()}`;
+            document.getElementById('modalDescription').textContent = task.description;
+            document.getElementById('modalGoal').textContent = task.goal;
+            
+            // Progress
+            const progressBar = document.getElementById('modalProgressBar');
+            const progressText = document.getElementById('modalProgressText');
+            progressBar.style.width = `${task.progress || 0}%`;
+            progressText.textContent = `${task.progress || 0}% complete`;
+            
+            // Steps
+            const stepsContainer = document.getElementById('modalSteps');
+            if (task.steps && task.steps.length > 0) {
+                stepsContainer.innerHTML = task.steps.map(step => 
+                    `<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: ${
+                        step.complete ? '#36b37e' : step.active ? '#ffab00' : '#5e6c84'
+                    };">
+                        ${step.complete ? '✓' : step.active ? '→' : '○'} ${step.text}
+                    </div>`
+                ).join('');
+            } else {
+                stepsContainer.innerHTML = '<div style="color: #8993a4; font-style: italic;">No steps defined yet</div>';
+            }
+            
+            // Status selector
+            document.getElementById('statusSelect').value = task.status || 'todo';
+            
+            document.getElementById('taskModal').style.display = 'block';
+        }
+
+        function extractTaskFromCard(cardElement) {
+            return {
+                id: cardElement.querySelector('.task-id')?.textContent || 'Unknown',
+                title: cardElement.querySelector('.task-title')?.textContent || 'Unknown Task',
+                project: cardElement.querySelector('.task-project')?.textContent || 'Unknown Project',
+                owner: cardElement.querySelector('.task-owner')?.textContent || 'Unknown',
+                description: cardElement.querySelector('.task-description')?.textContent || 'No description',
+                goal: cardElement.querySelector('.ultimate-goal-text')?.textContent || 'No goal defined',
+                progress: 0,
+                steps: [],
+                status: 'todo'
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').style.display = 'none';
+            currentTask = null;
+        }
+
+        function updateTaskStatus() {
+            if (!currentTask) return;
+            
+            const newStatus = document.getElementById('statusSelect').value;
+            const taskCard = Array.from(document.querySelectorAll('.task-card')).find(card => 
+                card.querySelector('.task-id').textContent === currentTask.id);
+            
+            if (taskCard) {
+                // Remove from current column
+                taskCard.remove();
+                
+                // Add to new column
+                const targetColumn = document.querySelector(`[data-status="${newStatus}"] .column-content`);
+                if (targetColumn) {
+                    targetColumn.appendChild(taskCard);
+                }
+                
+                // Update counts
+                updateCounts();
+                
+                closeModal();
+                
+                // Show success message
+                showNotification(`Task ${currentTask.id} moved to ${newStatus}`);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 2000;
+                background: #36b37e; color: white; padding: 12px 16px;
+                border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                font-size: 14px; font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function setupSearch() {
+            document.getElementById('searchBox').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.task-card');
+                
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                updateCounts();
+            });
+        }
+
         function updateCounts() {
             const columns = document.querySelectorAll('.column');
             columns.forEach(column => {
                 const visibleCards = column.querySelectorAll('.task-card:not([style*="display: none"])');
                 const countElement = column.querySelector('.column-count');
-                countElement.textContent = visibleCards.length;
+                if (countElement) {
+                    countElement.textContent = visibleCards.length;
+                }
             });
         }
 
-        // Call updateCounts after search
-        document.getElementById('searchBox').addEventListener('input', updateCounts);
+        function addNewTask() {
+            const taskId = prompt("Enter new task ID (e.g., ALEX-PROJECT-001):");
+            if (!taskId) return;
+            
+            const title = prompt("Enter task title:");
+            if (!title) return;
+            
+            const project = prompt("Enter project name:");
+            if (!project) return;
+            
+            const owner = prompt("Enter owner (ALEX or SOLDIER):").toUpperCase();
+            if (!owner || (owner !== 'ALEX' && owner !== 'SOLDIER')) {
+                alert("Owner must be either ALEX or SOLDIER");
+                return;
+            }
+            
+            const description = prompt("Enter task description:");
+            const goal = prompt("Enter ultimate goal:");
+            
+            // Create new task card
+            const newCard = document.createElement('div');
+            newCard.className = 'task-card';
+            newCard.setAttribute('data-task-id', taskId);
+            
+            newCard.innerHTML = `
+                <div class="task-id">${taskId}</div>
+                <div class="task-title">${title}</div>
+                <div class="task-project">${project}</div>
+                <div class="task-owner owner-${owner.toLowerCase()}">${owner}</div>
+                <div class="task-description">${description || 'No description provided'}</div>
+                <div class="ultimate-goal">
+                    <div class="ultimate-goal-label">Ultimate Goal</div>
+                    <div class="ultimate-goal-text">${goal || 'No goal defined'}</div>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">0% complete</div>
+                </div>
+            `;
+            
+            // Add click handler
+            newCard.addEventListener('click', function(e) {
+                e.preventDefault();
+                openTaskModal(taskId);
+            });
+            
+            // Add to To Do column
+            const todoColumn = document.querySelector('[data-status="todo"] .column-content');
+            todoColumn.appendChild(newCard);
+            
+            // Update task data
+            tasks[taskId] = {
+                id: taskId,
+                title: title,
+                project: project,
+                owner: owner,
+                description: description || 'No description provided',
+                goal: goal || 'No goal defined',
+                progress: 0,
+                steps: [],
+                status: 'todo',
+                priority: 'medium'
+            };
+            
+            updateCounts();
+            showNotification(`Task ${taskId} added successfully!`);
+        }
+
+        // Add data-status attributes to columns for easier targeting
+        document.addEventListener('DOMContentLoaded', function() {
+            const columns = document.querySelectorAll('.column');
+            const statuses = ['todo', 'progress', 'blocked', 'done'];
+            columns.forEach((column, index) => {
+                if (statuses[index]) {
+                    column.setAttribute('data-status', statuses[index]);
+                }
+            });
+        });
     </script>
 </body>
 </html>
