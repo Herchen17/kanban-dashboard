@@ -291,12 +291,52 @@
             margin-top: 24px;
             padding: 16px;
         }
+
+        .action-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 24px 24px 24px;
+            font-size: 14px;
+        }
+
+        .action-title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .action-list {
+            color: #664d03;
+            line-height: 1.6;
+        }
+
+        .action-list ul {
+            margin-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🪖 Alex's Project Dashboard</h1>
+        <h1>Alex's Project Dashboard</h1>
         <p>Medical Research & Development Command Center</p>
+    </div>
+
+    <div class="action-section">
+        <div class="action-title">IMMEDIATE PRIORITIES</div>
+        <div class="action-list">
+            <ul>
+                <li><strong>Today:</strong> BitClaw Protocol migration decision (unblocks 3+ tasks)</li>
+                <li><strong>This Week:</strong> Define UGC Creator business model ($24K opportunity)</li>
+                <li><strong>Next Week:</strong> Implement project management workflow improvements</li>
+            </ul>
+        </div>
     </div>
 
     <div class="search-section">
@@ -376,75 +416,79 @@
     </div>
 
     <div class="refresh-note">
-        Last updated: February 9, 2026 • Live deployment
+        Last updated: February 10, 2026 • Live deployment
     </div>
 
     <script>
-        // Live task data - embedded to ensure loading
+        // Live task data - updated with cleaner, actionable content
         const allTasks = [
-            // IMMEDIATE HIGH PRIORITY
+            // CRITICAL DECISIONS (URGENT - Next 24-48h)
+            { 
+                id: 'ALEX-BC-001', 
+                title: 'DECISION: BitClaw Protocol migration vs new deployment strategy', 
+                project: 'BitClaw Protocol', 
+                owner: 'Alex', 
+                status: 'blocked', 
+                priority: 'critical',
+                notes: 'Foundation decision affecting all subsequent work - choose path within 48h'
+            },
+            { 
+                id: 'ALEX-UGC-001', 
+                title: 'Define UGC Creator Agent business priorities and target market', 
+                project: 'UGC Creator Agent', 
+                owner: 'Alex', 
+                status: 'todo', 
+                priority: 'critical',
+                notes: '$24K/month opportunity - focus on 10K-100K follower creators first'
+            },
+            { 
+                id: 'ALEX-MR-001', 
+                title: 'Set medical research priorities for Q1 2026', 
+                project: 'Medical Research', 
+                owner: 'Alex', 
+                status: 'todo', 
+                priority: 'medium',
+                notes: 'Define 2-3 key research streams before Feb 15'
+            },
+            
+            // PROJECT MANAGEMENT (CRITICAL EFFICIENCY)
             { 
                 id: 'SOLDIER-PM-010', 
-                title: 'Implement actionable step requirement for every plan and discussion', 
+                title: 'Implement actionable step requirement for every plan', 
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'todo', 
                 priority: 'critical',
-                notes: 'Foundation for systematic planning methodology'
+                notes: 'Will multiply efficiency across all projects'
             },
-            { 
-                id: 'ALEX-BC-001', 
-                title: 'DECISION NEEDED: Migration strategy vs new deployment for BitClaw Protocol', 
-                project: 'BitClaw Protocol', 
-                owner: 'Alex', 
-                status: 'blocked', 
-                priority: 'high',
-                notes: 'Blocks 3 other BitClaw tasks - needs decision'
-            },
-            { 
-                id: 'ALEX-UGC-001', 
-                title: 'Define business priorities and target market for UGC Creator Agent', 
-                project: 'UGC Creator Agent', 
-                owner: 'Alex', 
-                status: 'todo', 
-                priority: 'high',
-                notes: 'AU$24K+/month opportunity validated, needs direction'
-            },
-            
-            // PROJECT MANAGEMENT CORE
             { 
                 id: 'SOLDIER-PM-013', 
-                title: 'Create "refer to Alex" workflow for unclear action items', 
+                title: 'Create "refer to Alex" workflow for unclear items', 
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Streamlines decision-making process'
             },
             { 
                 id: 'SOLDIER-PM-011A', 
-                title: 'Advanced filtering system (Owner, Project, Priority, Status)', 
+                title: 'Build advanced filtering system (Owner, Project, Priority, Status)', 
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'critical'
-            },
-            { 
-                id: 'ALEX-PM-001', 
-                title: 'Review systematic planning approach and kanban functionality', 
-                project: 'Project Management', 
-                owner: 'Alex', 
-                status: 'todo', 
-                priority: 'high'
+                priority: 'critical',
+                notes: 'Critical for task management and prioritization'
             },
 
-            // UGC CREATOR AGENT - HIGH VALUE OPPORTUNITY
+            // UGC CREATOR INFRASTRUCTURE (HIGH VALUE)
             { 
                 id: 'SOLDIER-UGC-004', 
-                title: 'Develop creator database structure for 10K-100K follower range', 
+                title: 'Develop creator database structure for 10K-100K followers', 
                 project: 'UGC Creator Agent', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Manageable scale for initial market entry'
             },
             { 
                 id: 'SOLDIER-UGC-005', 
@@ -452,73 +496,50 @@
                 project: 'UGC Creator Agent', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Revenue generation engine - execute after business model definition'
             },
 
-            // UI/UX IMPROVEMENTS
+            // UI/UX IMPROVEMENTS (CURRENT WORK)
             { 
                 id: 'SOLDIER-UI-013', 
-                title: 'Advanced filtering and search functionality for kanban board', 
+                title: 'Complete advanced filtering and search for kanban board', 
                 project: 'Kanban UI Overhaul', 
                 owner: 'Soldier', 
                 status: 'in-progress', 
                 priority: 'critical',
-                notes: 'Currently implementing - critical for usability'
+                notes: 'In progress - complete by end of week'
             },
             { 
                 id: 'SOLDIER-UI-016', 
-                title: 'Automated job creation from systematic plans', 
+                title: 'Build automated job creation from systematic plans', 
                 project: 'Kanban UI Overhaul', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Eliminates manual task creation process'
             },
 
-            // MEDICAL RESEARCH
-            { 
-                id: 'ALEX-MR-001', 
-                title: 'Define research priorities for Q1 2026', 
-                project: 'Medical Research', 
-                owner: 'Alex', 
-                status: 'todo', 
-                priority: 'medium'
-            },
-            { 
-                id: 'SOLDIER-MR-001', 
-                title: 'Inventory current research assets and R analysis scripts', 
-                project: 'Medical Research', 
-                owner: 'Soldier', 
-                status: 'todo', 
-                priority: 'medium'
-            },
-            { 
-                id: 'SOLDIER-MR-002', 
-                title: 'Organize current orthopaedics data and publications', 
-                project: 'Medical Research', 
-                owner: 'Soldier', 
-                status: 'todo', 
-                priority: 'medium'
-            },
-
-            // AI ECOSYSTEM
+            // AI ECOSYSTEM (STRATEGIC FOUNDATION)
             { 
                 id: 'SOLDIER-AI-001', 
-                title: 'Create comprehensive ecosystem strategy document', 
+                title: 'Create comprehensive AI ecosystem strategy document', 
                 project: 'AI Agent Ecosystem', 
                 owner: 'Soldier', 
                 status: 'todo', 
-                priority: 'high'
+                priority: 'high',
+                notes: 'Strategic foundation needed for all AI initiatives'
             },
 
-            // BLOCKED TASKS
+            // BLOCKED TASKS (DEPENDENCIES)
             { 
                 id: 'SOLDIER-BC-001', 
-                title: 'Enhanced CLAWNCH research + Warren-deploy testing on MegaETH', 
+                title: 'Enhanced CLAWNCH research + Warren-deploy testing', 
                 project: 'BitClaw Protocol', 
                 owner: 'Soldier', 
                 status: 'blocked', 
                 priority: 'high',
-                notes: 'Supply issue - awaiting Alex decision on ALEX-BC-001'
+                notes: 'Blocked by ALEX-BC-001 decision - awaiting direction'
             },
             { 
                 id: 'SOLDIER-BC-002', 
@@ -527,13 +548,13 @@
                 owner: 'Soldier', 
                 status: 'blocked', 
                 priority: 'high',
-                notes: 'Depends on ALEX-BC-001 decision'
+                notes: 'Depends on migration decision - cannot proceed without path choice'
             },
 
-            // COMPLETED TASKS (showing progress)
+            // COMPLETED TASKS (PROGRESS INDICATORS)
             { 
                 id: 'SOLDIER-PM-009', 
-                title: 'Create rigorous systematic planning methodology documentation', 
+                title: 'Create systematic planning methodology documentation', 
                 project: 'Project Management', 
                 owner: 'Soldier', 
                 status: 'done', 
@@ -546,7 +567,7 @@
                 owner: 'Soldier', 
                 status: 'done', 
                 priority: 'high',
-                notes: 'AU$24K+/month opportunity validated'
+                notes: '$24K/month opportunity validated - ready for execution'
             },
             { 
                 id: 'SOLDIER-UI-001', 
