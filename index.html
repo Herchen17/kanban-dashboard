@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex's Project Portfolio - Executive View</title>
+    <title>Task Management - Kanban Board</title>
     <style>
         * {
             margin: 0;
@@ -107,83 +107,39 @@
             min-height: 0;
         }
 
-        .project-card {
+        .task-card {
             background: #ffffff;
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             border: 1px solid #dfe1e6;
-            cursor: pointer;
             transition: all 0.2s;
+            position: relative;
         }
 
-        .project-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
+        .task-card:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
         }
 
-        .project-title {
-            font-weight: 700;
-            color: #172b4d;
-            font-size: 16px;
+        .task-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 8px;
         }
 
-        .project-goal {
-            color: #5e6c84;
-            font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .project-progress {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 6px;
-            background: #dfe1e6;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #36b37e, #00875a);
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            font-size: 12px;
-            color: #5e6c84;
-            font-weight: 600;
-        }
-
-        .project-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+        .task-id {
+            font-family: 'Monaco', 'Consolas', monospace;
             font-size: 11px;
             font-weight: 600;
+            color: #6b778c;
+            background: #f4f5f7;
+            padding: 2px 6px;
+            border-radius: 4px;
             text-transform: uppercase;
         }
-
-        .status-active { background: #e3fcef; color: #006644; }
-        .status-planning { background: #deebff; color: #0052cc; }
-        .status-blocked { background: #ffebe6; color: #de350b; }
-        .status-complete { background: #e3fcef; color: #006644; }
 
         .priority-indicator {
             width: 4px;
@@ -194,922 +150,349 @@
             border-radius: 8px 0 0 8px;
         }
 
-        .priority-critical { background: #de350b; }
-        .priority-high { background: #ff8b00; }
-        .priority-medium { background: #0052cc; }
-        .priority-low { background: #6b7280; }
+        .priority-critical { background-color: #de350b; }
+        .priority-high { background-color: #ff5630; }
+        .priority-medium { background-color: #ffab00; }
+        .priority-low { background-color: #36b37e; }
 
-        .project-card {
-            position: relative;
+        .task-title {
+            font-weight: 600;
+            color: #172b4d;
+            font-size: 14px;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
 
-        /* Project Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            max-width: 900px;
-            width: 95%;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
+        .task-meta {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #f4f5f7;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #172b4d;
-            margin: 0;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #8993a4;
-            padding: 4px;
-        }
-
-        .executive-summary {
-            background: #f8f9ff;
-            border: 2px solid #deebff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .summary-title {
-            font-size: 14px;
-            color: #0052cc;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .summary-text {
-            color: #172b4d;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
-        .steps-section {
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #172b4d;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
             gap: 8px;
-        }
-
-        .step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 16px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            border: 1px solid #dfe1e6;
-        }
-
-        .step-number {
-            flex-shrink: 0;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .step-complete .step-number {
-            background: #36b37e;
-            color: white;
-        }
-
-        .step-active .step-number {
-            background: #ffab00;
-            color: white;
-        }
-
-        .step-pending .step-number {
-            background: #f4f5f7;
-            color: #8993a4;
-            border: 2px solid #dfe1e6;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-title {
-            font-weight: 600;
-            color: #172b4d;
-            margin-bottom: 4px;
-        }
-
-        .step-description {
-            color: #5e6c84;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .next-action {
             margin-top: 8px;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
+        }
+
+        .task-project {
+            font-size: 11px;
+            color: #6b778c;
+            background: #ebecf0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .task-owner {
+            font-size: 11px;
+            color: #5243aa;
+            background: #eae6ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .priority-label {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
             font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .action-alex {
-            background: #e3fcef;
-            color: #006644;
-        }
-
-        .action-soldier {
-            background: #fff4e6;
-            color: #974f00;
-        }
-
-        .action-stalled {
+        .priority-label.critical {
             background: #ffebe6;
             color: #de350b;
         }
 
-        .step-complete {
-            background: #f8fff9;
-            border-color: #36b37e;
+        .priority-label.high {
+            background: #fff4e6;
+            color: #ff5630;
         }
 
-        .step-active {
-            background: #fffbf0;
-            border-color: #ffab00;
+        .priority-label.medium {
+            background: #fffae6;
+            color: #ff8b00;
         }
 
-        .step-pending {
-            background: #fafbfc;
+        .priority-label.low {
+            background: #e3fcef;
+            color: #00875a;
+        }
+
+        /* Status-specific column styling */
+        .column[data-status="todo"] .column-header {
+            background: #e3fcef;
+        }
+
+        .column[data-status="in-progress"] .column-header {
+            background: #fff4e6;
+        }
+
+        .column[data-status="done"] .column-header {
+            background: #e3fcef;
+        }
+
+        .column[data-status="blocked"] .column-header {
+            background: #ffebe6;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .board {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            
+            .column {
+                min-height: 200px;
+                flex: none;
+            }
+            
+            .column-content {
+                max-height: 300px;
+            }
+        }
+
+        /* Search highlighting */
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🪖 Project Portfolio</h1>
-        <p>Strategic overview • 8 active projects • Click any project for executive breakdown</p>
+        <h1>Task Management</h1>
+        <p>Individual task tracking and status management</p>
     </div>
 
     <div class="controls">
-        <input type="text" class="search-box" placeholder="Search projects..." id="searchBox">
-        <button onclick="openProjectModal('project-management')" style="margin-left: 16px; padding: 8px 16px; background: #0052cc; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">Test Modal</button>
+        <input type="text" id="searchBox" class="search-box" placeholder="Search tasks by ID, title, project, or owner...">
     </div>
 
     <div class="board">
-        <div class="column">
+        <div class="column" data-status="todo">
             <div class="column-header">
                 <div class="column-title">
-                    Planning
-                    <div class="column-count">2</div>
+                    Todo
+                    <div class="column-count" id="todo-count">0</div>
                 </div>
             </div>
-            <div class="column-content">
-                <div class="project-card" data-project="ai-ecosystem">
-                    <div class="priority-indicator priority-high"></div>
-                    <div class="project-title">🤖 AI Agent Ecosystem</div>
-                    <div class="project-goal">Establish dominant position in emerging AI agent economy</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 10%"></div>
-                        </div>
-                        <div class="progress-text">1/8 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-planning">Planning</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Strategy Document</div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-project="opportunity-scouting">
-                    <div class="priority-indicator priority-medium"></div>
-                    <div class="project-title">🎯 Opportunity Scouting</div>
-                    <div class="project-goal">Systematically monitor and capture profitable build opportunities</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 15%"></div>
-                        </div>
-                        <div class="progress-text">2/8 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-planning">Planning</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Framework Design</div>
-                    </div>
-                </div>
+            <div class="column-content" id="todo-tasks">
+                <!-- Todo tasks will be populated here -->
             </div>
         </div>
 
-        <div class="column">
+        <div class="column" data-status="in-progress">
             <div class="column-header">
                 <div class="column-title">
-                    Active Development
-                    <div class="column-count">4</div>
+                    In Progress
+                    <div class="column-count" id="in-progress-count">0</div>
                 </div>
             </div>
-            <div class="column-content">
-                <div class="project-card" data-project="project-management">
-                    <div class="priority-indicator priority-critical"></div>
-                    <div class="project-title">🏗️ Project Management System</div>
-                    <div class="project-goal">Rigorous systematic planning as fundamental operating system for all work</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 80%"></div>
-                        </div>
-                        <div class="progress-text">8/10 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-active">Active</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Full Functionality</div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-project="ugc-creator">
-                    <div class="priority-indicator priority-high"></div>
-                    <div class="project-title">🎨 UGC Creator Agent</div>
-                    <div class="project-goal">Generate $24K+/month through automated creator outreach system</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
-                        </div>
-                        <div class="progress-text">3/6 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-active">Active</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Database Build</div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-project="cost-optimization">
-                    <div class="priority-indicator priority-high"></div>
-                    <div class="project-title">💰 Cost Optimization</div>
-                    <div class="project-goal">Minimize operational costs through smart automation</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
-                        </div>
-                        <div class="progress-text">6/7 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-active">Active</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Pattern Testing</div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-project="medical-research">
-                    <div class="priority-indicator priority-medium"></div>
-                    <div class="project-title">🏥 Medical Research Pipeline</div>
-                    <div class="project-goal">Support Alex's academic research in orthopaedics, digital health, and AI</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 25%"></div>
-                        </div>
-                        <div class="progress-text">1/6 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-active">Active</div>
-                        <div style="font-size: 11px; color: #8993a4;">Next: Research Priorities</div>
-                    </div>
-                </div>
+            <div class="column-content" id="in-progress-tasks">
+                <!-- In Progress tasks will be populated here -->
             </div>
         </div>
 
-        <div class="column">
+        <div class="column" data-status="done">
+            <div class="column-header">
+                <div class="column-title">
+                    Done
+                    <div class="column-count" id="done-count">0</div>
+                </div>
+            </div>
+            <div class="column-content" id="done-tasks">
+                <!-- Done tasks will be populated here -->
+            </div>
+        </div>
+
+        <div class="column" data-status="blocked">
             <div class="column-header">
                 <div class="column-title">
                     Blocked
-                    <div class="column-count">1</div>
+                    <div class="column-count" id="blocked-count">0</div>
                 </div>
             </div>
-            <div class="column-content">
-                <div class="project-card" data-project="bitclaw">
-                    <div class="priority-indicator priority-high"></div>
-                    <div class="project-title">🪙 BitClaw Protocol</div>
-                    <div class="project-goal">Launch professional token with correct tokenomics on chosen blockchain</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 30%"></div>
-                        </div>
-                        <div class="progress-text">2/6 steps</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-blocked">Blocked</div>
-                        <div style="font-size: 11px; color: #de350b;">Waiting: Migration Decision</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="column-header">
-                <div class="column-title">
-                    Complete
-                    <div class="column-count">1</div>
-                </div>
-            </div>
-            <div class="column-content">
-                <div class="project-card" data-project="kanban-ui">
-                    <div class="priority-indicator priority-high"></div>
-                    <div class="project-title">🎨 Kanban UI Overhaul</div>
-                    <div class="project-goal">Transform functional board into professional project management system</div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 100%"></div>
-                        </div>
-                        <div class="progress-text">Complete ✓</div>
-                    </div>
-                    <div class="project-status">
-                        <div class="status-badge status-complete">Complete</div>
-                        <div style="font-size: 11px; color: #36b37e;">Done</div>
-                    </div>
-                </div>
+            <div class="column-content" id="blocked-tasks">
+                <!-- Blocked tasks will be populated here -->
             </div>
         </div>
     </div>
 
-    <!-- Project Detail Modal -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalProjectTitle" class="modal-title">Project Details</h2>
-                <button class="close-btn" onclick="closeModal()">×</button>
-            </div>
-
-            <div class="executive-summary">
-                <div class="summary-title">Executive Summary</div>
-                <div id="modalSummary" class="summary-text"></div>
-            </div>
-
-            <div class="steps-section">
-                <div class="section-title">🎯 Project Steps</div>
-                <div id="modalSteps"></div>
-            </div>
-        </div>
-    </div>
-
+    <script src="kanban-current-tasks.js"></script>
     <script>
-        const projects = {
-            'ai-ecosystem': {
-                title: '🤖 AI Agent Ecosystem',
-                summary: 'Establish dominant position in emerging AI agent economy through strategic partnerships, integrations, and market positioning.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Create comprehensive ecosystem strategy document',
-                        description: 'Map current AI agent landscape and identify key opportunities',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Research and draft ecosystem strategy' }
-                    },
-                    {
-                        number: 2,
-                        title: 'Identify key partnerships and integrations',
-                        description: 'Target strategic alliances with major AI platforms',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Map potential partnerships after strategy complete' }
-                    },
-                    {
-                        number: 3,
-                        title: 'Define technical architecture',
-                        description: 'Plan technical foundation for agent ecosystem',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Review and approve technical direction' }
-                    },
-                    {
-                        number: 4,
-                        title: 'Market positioning strategy',
-                        description: 'Position as leading AI agent development platform',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Develop positioning after ecosystem strategy' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Build strategic partnerships',
-                        description: 'Execute partnership agreements with key AI platforms',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Approve partnership approach' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Develop technical integrations',
-                        description: 'Build technical connectors to partner platforms',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Execute integrations after partnerships' }
-                    },
-                    {
-                        number: 7,
-                        title: 'Launch ecosystem platform',
-                        description: 'Public launch of AI agent ecosystem',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Review and approve launch plan' }
-                    },
-                    {
-                        number: 8,
-                        title: 'Scale and optimize',
-                        description: 'Grow ecosystem and optimize based on usage',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Monitor and optimize after launch' }
-                    }
-                ]
-            },
-            'opportunity-scouting': {
-                title: '🎯 Opportunity Scouting',
-                summary: 'Systematically monitor loot-drop.io and similar platforms for autonomous, profitable build opportunities with 12-hour automated scouting pipeline.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Research loot-drop.io structure',
-                        description: 'Analyze platform and opportunity types available',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Complete platform analysis' }
-                    },
-                    {
-                        number: 2,
-                        title: 'Create evaluation framework',
-                        description: 'Build systematic assessment for complexity vs profit',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Design scoring algorithm' }
-                    },
-                    {
-                        number: 3,
-                        title: 'Develop automated web scraping system',
-                        description: 'Build scraper to monitor opportunities',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build scraping system after framework complete' }
-                    },
-                    {
-                        number: 4,
-                        title: 'Set up 12-hour cron job monitoring',
-                        description: 'Automated scouting with MiniMax cost efficiency',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Implement cron job after scraper ready' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Create opportunity assessment scoring',
-                        description: 'Algorithm to score opportunities by profit vs complexity',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build scoring after evaluation framework' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Design automated reporting system',
-                        description: 'Alert system for high-value opportunities',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build alerts after scoring system' }
-                    },
-                    {
-                        number: 7,
-                        title: 'Test and optimize detection accuracy',
-                        description: 'Validate opportunity detection and reduce false positives',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Optimize after full system operational' }
-                    },
-                    {
-                        number: 8,
-                        title: 'Implement full automated scouting pipeline',
-                        description: 'Deploy complete system for autonomous opportunity detection',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Review and approve scouting methodology' }
-                    }
-                ]
-            },
-            'cost-optimization': {
-                title: '💰 Cost Optimization',
-                summary: 'Minimize operational costs through smart automation, strategic model selection, and efficient resource management.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Configure MiniMax for automation',
-                        description: 'Set up cost-efficient model for automated tasks',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 2,
-                        title: 'Create automation guidelines',
-                        description: 'Document when to use automation vs manual processes',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 3,
-                        title: 'Create strategic model selection framework',
-                        description: 'Guidelines for optimal model choice by task complexity',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 4,
-                        title: 'Implement mandatory pre-task model decision process',
-                        description: 'Applied throughout UI work and project management',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 5,
-                        title: 'Implement actual cron jobs for cost monitoring',
-                        description: 'Set up automated monitoring of resource usage',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Create cost monitoring cron jobs' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Set up automated disk space management',
-                        description: 'Prevent storage costs from growing unchecked',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Implement disk cleanup automation' }
-                    },
-                    {
-                        number: 7,
-                        title: 'Test and optimize usage patterns',
-                        description: 'Validate cost-saving effectiveness across all operations',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Complete pattern testing and validation' }
-                    }
-                ]
-            },
-            'medical-research': {
-                title: '🏥 Medical Research Pipeline',
-                summary: 'Support Alex\'s academic research in orthopaedics, digital health, and AI in medicine with optimized R analysis pipelines and publication tools.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Inventory current research assets',
-                        description: 'Catalog R scripts, orthopaedics data, and analysis tools',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Complete asset inventory and organization' }
-                    },
-                    {
-                        number: 2,
-                        title: 'Organize orthopaedics data',
-                        description: 'Structure current research data for easy access',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Organize data after asset inventory' }
-                    },
-                    {
-                        number: 3,
-                        title: 'Define Q1 2026 research priorities',
-                        description: 'Set specific research goals and publication targets',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Define research priorities and publication targets' }
-                    },
-                    {
-                        number: 4,
-                        title: 'Optimize R analysis pipeline',
-                        description: 'Streamline scripts for publication-ready outputs',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Optimize pipeline after priorities defined' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Clinical rotation preparation',
-                        description: 'Prepare for upcoming clinical rotations',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Identify upcoming rotation requirements' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Publication pipeline setup',
-                        description: 'Create system for manuscript preparation and submission',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build publication workflow after research priorities set' }
-                    }
-                ]
-            },
-            'kanban-ui': {
-                title: '🎨 Kanban UI Overhaul',
-                summary: 'Transform functional board into professional project management system matching Linear/Notion quality with full interactivity.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'UI/UX audit and design research',
-                        description: 'Professional kanban design analysis and requirements',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 2,
-                        title: 'Professional styling implementation',
-                        description: 'Clean, accessible design with proper spacing and typography',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 3,
-                        title: 'Project-level executive view',
-                        description: 'Strategic dashboard with project cards and step breakdowns',
-                        status: 'complete',
-                        nextAction: null
-                    }
-                ]
-            },
-            'project-management': {
-                title: '🏗️ Project Management System',
-                summary: 'Building a rigorous systematic planning framework as the fundamental operating system for all work. This replaces ad-hoc task management with structured, accountable project execution.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Audit all existing project directories',
-                        description: 'Complete inventory of current work and project status',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 2, 
-                        title: 'Create editable kanban interface',
-                        description: 'Build interactive project management dashboard with Alex + AI access',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 3,
-                        title: 'Implement job categorization system', 
-                        description: 'Structure for ALEX vs SOLDIER task ownership and handoffs',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 4,
-                        title: 'Enhance kanban with full functionality',
-                        description: 'Advanced filtering, bulk operations, automated job creation',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Add interactive features and automation' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Set up automated progress monitoring',
-                        description: '8-hour cron job for continuous project oversight using MiniMax',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Test and validate cron job execution' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Create systematic planning enforcement',
-                        description: 'Ensure every discussion results in actionable, trackable steps',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Design enforcement workflow' }
-                    },
-                    {
-                        number: 7,
-                        title: 'Implement "refer to Alex" workflow',
-                        description: 'Clear escalation path for unclear or blocked action items',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build escalation system' }
-                    },
-                    {
-                        number: 8,
-                        title: 'Test systematic planning approach',
-                        description: 'Validate effectiveness and identify improvement areas',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Review and provide feedback on system' }
-                    },
-                    {
-                        number: 9,
-                        title: 'Deploy full project management OS',
-                        description: 'Make systematic planning the default for all work',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Approve final system deployment' }
-                    },
-                    {
-                        number: 10,
-                        title: 'Continuous improvement framework',
-                        description: 'Regular refinement based on usage patterns and feedback',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Establish improvement process' }
-                    }
-                ]
-            },
-            
-            'bitclaw': {
-                title: '🪙 BitClaw Protocol',
-                summary: 'Deploy a professional cryptocurrency token with correct tokenomics and proper branding. Currently blocked on fundamental decision about token migration vs fresh deployment due to supply issues.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Review current token problems',
-                        description: 'Analyze existing BitClaw token issues and supply problems',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 2,
-                        title: 'Research deployment strategies',
-                        description: 'Compare warren-deploy on MegaETH vs other blockchain options',
-                        status: 'active',
-                        nextAction: { type: 'soldier', text: 'Complete multi-chain strategy analysis' }
-                    },
-                    {
-                        number: 3,
-                        title: 'CRITICAL DECISION: Migration vs Fresh Deploy',
-                        description: 'Choose between migrating existing token or starting fresh deployment',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Make final decision on token strategy' }
-                    },
-                    {
-                        number: 4,
-                        title: 'Execute approved deployment plan',
-                        description: 'Deploy token using chosen strategy and blockchain',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Execute deployment once decision made' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Complete professional branding rollout',
-                        description: 'Implement logo, update documentation, create brand assets',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Brand rollout after successful deployment' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Launch and marketing activation',
-                        description: 'Public launch with proper tokenomics documentation',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Approve launch strategy and timing' }
-                    }
-                ]
-            },
-            
-            'ugc-creator': {
-                title: '🎨 UGC Creator Agent',
-                summary: 'Build automated creator outreach system targeting $24K+/month revenue through systematic engagement with 10K-100K follower creators across all major platforms.',
-                steps: [
-                    {
-                        number: 1,
-                        title: 'Market research and opportunity validation',
-                        description: 'Validated $24K+/month opportunity through Postiz platform analysis',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 2,
-                        title: 'Creator ecosystem mapping',
-                        description: 'Mapped 100+ creators across major platforms for targeting',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 3,
-                        title: 'LinkedIn B2B outreach setup',
-                        description: 'LinkedIn automation for B2B creator outreach with 50+ target companies identified',
-                        status: 'complete',
-                        nextAction: null
-                    },
-                    {
-                        number: 4,
-                        title: 'Define business model and priorities',
-                        description: 'Specify target markets, pricing, and outreach approach',
-                        status: 'pending',
-                        nextAction: { type: 'alex', text: 'Define target market and business model specifics' }
-                    },
-                    {
-                        number: 5,
-                        title: 'Build creator database structure',
-                        description: 'Design and populate database for 10K-100K follower creators',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build creator database after business model defined' }
-                    },
-                    {
-                        number: 6,
-                        title: 'Design multi-platform outreach automation',
-                        description: 'Create scalable outreach system across all major platforms',
-                        status: 'pending',
-                        nextAction: { type: 'soldier', text: 'Build automation system after business model and database complete' }
-                    }
-                ]
-            }
-        };
+        let currentTasks = [];
 
         document.addEventListener('DOMContentLoaded', function() {
-            setupProjectCards();
+            console.log('DOM loaded, initializing kanban board...');
+            initializeKanbanBoard();
             setupSearch();
         });
 
-        function setupProjectCards() {
-            const cards = document.querySelectorAll('.project-card');
-            console.log('Setting up', cards.length, 'project cards');
-            
-            cards.forEach((card, index) => {
-                const projectId = card.getAttribute('data-project');
-                console.log(`Card ${index}: ${projectId}`);
-                
-                card.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Clicked project:', projectId);
-                    openProjectModal(projectId);
-                });
-                
-                // Add visual feedback
-                card.style.cursor = 'pointer';
-            });
-        }
-
-        function openProjectModal(projectId) {
-            console.log('Opening modal for:', projectId);
-            const project = projects[projectId];
-            if (!project) {
-                console.error('Project not found:', projectId);
-                alert(`Project data not found for: ${projectId}`);
+        function initializeKanbanBoard() {
+            // Check if allCurrentTasks is available
+            if (typeof allCurrentTasks === 'undefined') {
+                console.error('allCurrentTasks not found. Make sure kanban-current-tasks.js is loaded.');
                 return;
             }
 
-            console.log('Found project:', project.title);
-
-            document.getElementById('modalProjectTitle').textContent = project.title;
-            document.getElementById('modalSummary').textContent = project.summary;
+            currentTasks = allCurrentTasks;
+            console.log(`Loaded ${currentTasks.length} tasks`);
             
-            const stepsContainer = document.getElementById('modalSteps');
-            stepsContainer.innerHTML = project.steps.map(step => {
-                let actionHtml = '';
-                if (step.nextAction) {
-                    const actionClass = step.nextAction.type === 'alex' ? 'action-alex' : 'action-soldier';
-                    const actionText = step.nextAction.type === 'alex' ? 'ALEX ACTION' : 'SOLDIER ACTION';
-                    actionHtml = `<div class="next-action ${actionClass}">${actionText}: ${step.nextAction.text}</div>`;
-                }
-
-                return `
-                    <div class="step-item step-${step.status}">
-                        <div class="step-number">${step.number}</div>
-                        <div class="step-content">
-                            <div class="step-title">${step.title}</div>
-                            <div class="step-description">${step.description}</div>
-                            ${actionHtml}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            const modal = document.getElementById('projectModal');
-            modal.style.display = 'block';
-            console.log('Modal should now be visible');
-            
-            // Ensure modal is on top
-            modal.style.zIndex = '9999';
+            renderTasks();
         }
 
-        function closeModal() {
-            console.log('Closing modal');
-            document.getElementById('projectModal').style.display = 'none';
+        function renderTasks() {
+            // Clear all columns
+            document.getElementById('todo-tasks').innerHTML = '';
+            document.getElementById('in-progress-tasks').innerHTML = '';
+            document.getElementById('done-tasks').innerHTML = '';
+            document.getElementById('blocked-tasks').innerHTML = '';
+
+            // Count tasks by status
+            const statusCounts = {
+                'todo': 0,
+                'in-progress': 0,
+                'done': 0,
+                'blocked': 0
+            };
+
+            // Group tasks by status and render
+            currentTasks.forEach(task => {
+                const taskElement = createTaskCard(task);
+                const status = task.status || 'todo';
+                
+                // Map status values to column IDs
+                let columnId;
+                switch(status) {
+                    case 'todo':
+                        columnId = 'todo-tasks';
+                        statusCounts['todo']++;
+                        break;
+                    case 'in-progress':
+                        columnId = 'in-progress-tasks';
+                        statusCounts['in-progress']++;
+                        break;
+                    case 'done':
+                        columnId = 'done-tasks';
+                        statusCounts['done']++;
+                        break;
+                    case 'blocked':
+                        columnId = 'blocked-tasks';
+                        statusCounts['blocked']++;
+                        break;
+                    default:
+                        columnId = 'todo-tasks';
+                        statusCounts['todo']++;
+                }
+
+                document.getElementById(columnId).appendChild(taskElement);
+            });
+
+            // Update column counts
+            document.getElementById('todo-count').textContent = statusCounts['todo'];
+            document.getElementById('in-progress-count').textContent = statusCounts['in-progress'];
+            document.getElementById('done-count').textContent = statusCounts['done'];
+            document.getElementById('blocked-count').textContent = statusCounts['blocked'];
+
+            console.log('Tasks rendered:', statusCounts);
+        }
+
+        function createTaskCard(task) {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task-card';
+            taskElement.setAttribute('data-task-id', task.id);
+            taskElement.setAttribute('data-project', task.project);
+            taskElement.setAttribute('data-owner', task.owner);
+            taskElement.setAttribute('data-priority', task.priority);
+            taskElement.setAttribute('data-status', task.status);
+
+            const priorityClass = task.priority || 'medium';
+            
+            taskElement.innerHTML = `
+                <div class="priority-indicator priority-${priorityClass}"></div>
+                <div class="task-header">
+                    <div class="task-id">${task.id}</div>
+                </div>
+                <div class="task-title">${task.title}</div>
+                <div class="task-meta">
+                    <div class="task-project">${task.project}</div>
+                    <div class="task-owner">${task.owner}</div>
+                    <div class="priority-label ${priorityClass}">${priorityClass}</div>
+                </div>
+            `;
+
+            return taskElement;
         }
 
         function setupSearch() {
-            document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchBox = document.getElementById('searchBox');
+            searchBox.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase();
-                const cards = document.querySelectorAll('.project-card');
+                const taskCards = document.querySelectorAll('.task-card');
                 
-                cards.forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    if (text.includes(searchTerm)) {
+                taskCards.forEach(card => {
+                    const taskId = card.getAttribute('data-task-id').toLowerCase();
+                    const title = card.querySelector('.task-title').textContent.toLowerCase();
+                    const project = card.getAttribute('data-project').toLowerCase();
+                    const owner = card.getAttribute('data-owner').toLowerCase();
+                    
+                    const isMatch = taskId.includes(searchTerm) || 
+                                   title.includes(searchTerm) || 
+                                   project.includes(searchTerm) || 
+                                   owner.includes(searchTerm);
+                    
+                    if (isMatch) {
                         card.style.display = 'block';
+                        highlightSearchTerm(card, searchTerm);
                     } else {
                         card.style.display = 'none';
+                        removeHighlights(card);
                     }
                 });
             });
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('projectModal');
-            if (event.target === modal) {
-                closeModal();
+        function highlightSearchTerm(card, searchTerm) {
+            if (!searchTerm) return;
+            
+            // Remove existing highlights first
+            removeHighlights(card);
+            
+            const textNodes = getTextNodes(card);
+            textNodes.forEach(node => {
+                if (node.textContent.toLowerCase().includes(searchTerm)) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    const highlightedText = node.textContent.replace(regex, '<span class="highlight">$1</span>');
+                    
+                    const wrapper = document.createElement('span');
+                    wrapper.innerHTML = highlightedText;
+                    node.parentNode.replaceChild(wrapper, node);
+                }
+            });
+        }
+
+        function removeHighlights(card) {
+            const highlights = card.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                highlight.outerHTML = highlight.innerHTML;
+            });
+        }
+
+        function getTextNodes(element) {
+            const textNodes = [];
+            const walker = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let node;
+            while (node = walker.nextNode()) {
+                textNodes.push(node);
             }
+            
+            return textNodes;
         }
     </script>
 </body>
