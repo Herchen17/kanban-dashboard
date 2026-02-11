@@ -7,10 +7,10 @@ const allCurrentTasks = [
     // OBJECTIVE: Get planning-first methodology working with proper AntFarm integration and visible dashboard
     
     // PHASE 1: FOUNDATION SETUP
-    { id: 'SOLDIER-SETUP-001', title: 'Verify AntFarm Installation Status', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Check current installation state and requirements' },
-    { id: 'SOLDIER-SETUP-002', title: 'Install/Fix AntFarm Dependencies', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Install AntFarm properly following official documentation' },
-    { id: 'SOLDIER-SETUP-003', title: 'Configure OpenClaw Integration', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Fix cron/gateway authorization issues for AntFarm' },
-    { id: 'SOLDIER-SETUP-004', title: 'Test AntFarm Basic Functionality', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Validate AntFarm core workflows work' },
+    { id: 'SOLDIER-SETUP-001', title: 'Verify AntFarm Installation Status', project: 'AntFarm Setup', owner: 'Soldier', status: 'done', priority: 'high', notes: '✅ COMPLETE: Node.js v22.22.0, AntFarm v0.2.1 functional, minor version compatibility noted' },
+    { id: 'SOLDIER-SETUP-002', title: 'Install/Fix AntFarm Dependencies', project: 'AntFarm Setup', owner: 'Soldier', status: 'done', priority: 'high', notes: '✅ COMPLETE: npm install/build/link verified, global access working, 4 workflows available' },
+    { id: 'SOLDIER-SETUP-003', title: 'Configure OpenClaw Integration', project: 'AntFarm Setup', owner: 'Soldier', status: 'done', priority: 'high', notes: '✅ COMPLETE: 10 agents integrated, cron jobs active, dashboard on :3333, no auth issues' },
+    { id: 'SOLDIER-SETUP-004', title: 'Test AntFarm Basic Functionality', project: 'AntFarm Setup', owner: 'Soldier', status: 'done', priority: 'medium', notes: '✅ COMPLETE: Workflows tested, agent handoffs verified, 7-step chain working correctly' },
     
     // PHASE 2: PLANNING SYSTEM INTEGRATION  
     { id: 'SOLDIER-PLAN-001', title: 'Create Planning Workflow Definition', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Design AntFarm workflow for systematic planning process' },
