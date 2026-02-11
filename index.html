@@ -46,6 +46,10 @@
             background: #ffffff;
             border-bottom: 1px solid #dfe1e6;
             flex-shrink: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
         }
 
         .search-box {
@@ -54,6 +58,132 @@
             border: 2px solid #dfe1e6;
             border-radius: 6px;
             font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5e6c84;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-dropdown {
+            position: relative;
+            min-width: 120px;
+        }
+
+        .filter-button {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #dfe1e6;
+            border-radius: 6px;
+            background: #ffffff;
+            font-size: 14px;
+            color: #172b4d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .filter-button:hover {
+            border-color: #b3d4ff;
+        }
+
+        .filter-button.active {
+            border-color: #0052cc;
+            background: #f4f8ff;
+        }
+
+        .filter-button::after {
+            content: '▼';
+            font-size: 10px;
+            color: #5e6c84;
+            transition: transform 0.2s;
+        }
+
+        .filter-button.active::after {
+            transform: rotate(180deg);
+        }
+
+        .filter-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 2px solid #dfe1e6;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-options.active {
+            display: block;
+        }
+
+        .filter-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .filter-option:hover {
+            background: #f4f5f7;
+        }
+
+        .filter-option.selected {
+            background: #e3fcef;
+            color: #00875a;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin: 0;
+            width: 16px;
+            height: 16px;
+            accent-color: #0052cc;
+        }
+
+        .filter-summary {
+            font-size: 12px;
+            color: #5e6c84;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .clear-filters {
+            padding: 6px 12px;
+            background: #fafbfc;
+            border: 1px solid #dfe1e6;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #5e6c84;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-filters:hover {
+            background: #ebecf0;
+            color: #172b4d;
         }
 
         .board {
@@ -251,6 +381,28 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .search-box {
+                width: 100%;
+                order: -1;
+            }
+
+            .filter-group {
+                min-width: auto;
+            }
+
+            .clear-filters {
+                align-self: center;
+                margin-top: 8px;
+            }
+        }
+
         /* Search highlighting */
         .highlight {
             background-color: yellow;
@@ -266,6 +418,56 @@
 
     <div class="controls">
         <input type="text" id="searchBox" class="search-box" placeholder="Search tasks by ID, title, project, or owner...">
+        
+        <div class="filter-group">
+            <label class="filter-label" for="ownerFilter">Owner</label>
+            <div class="filter-dropdown" id="ownerFilter" aria-label="Filter by owner">
+                <button class="filter-button" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="filter-summary">All</span>
+                </button>
+                <div class="filter-options" role="listbox" aria-multiselectable="true">
+                    <!-- Options populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label" for="projectFilter">Project</label>
+            <div class="filter-dropdown" id="projectFilter" aria-label="Filter by project">
+                <button class="filter-button" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="filter-summary">All</span>
+                </button>
+                <div class="filter-options" role="listbox" aria-multiselectable="true">
+                    <!-- Options populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label" for="priorityFilter">Priority</label>
+            <div class="filter-dropdown" id="priorityFilter" aria-label="Filter by priority">
+                <button class="filter-button" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="filter-summary">All</span>
+                </button>
+                <div class="filter-options" role="listbox" aria-multiselectable="true">
+                    <!-- Options populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label" for="statusFilter">Status</label>
+            <div class="filter-dropdown" id="statusFilter" aria-label="Filter by status">
+                <button class="filter-button" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="filter-summary">All</span>
+                </button>
+                <div class="filter-options" role="listbox" aria-multiselectable="true">
+                    <!-- Options populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <button class="clear-filters" type="button" aria-label="Clear all filters">Clear Filters</button>
     </div>
 
     <div class="board">
@@ -321,11 +523,19 @@
     <script src="kanban-current-tasks.js"></script>
     <script>
         let currentTasks = [];
+        let filteredTasks = [];
+        let activeFilters = {
+            owner: [],
+            project: [],
+            priority: [],
+            status: []
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing kanban board...');
             initializeKanbanBoard();
             setupSearch();
+            setupFilters();
         });
 
         function initializeKanbanBoard() {
@@ -336,8 +546,10 @@
             }
 
             currentTasks = allCurrentTasks;
+            filteredTasks = [...currentTasks];
             console.log(`Loaded ${currentTasks.length} tasks`);
             
+            populateFilterOptions();
             renderTasks();
         }
 
@@ -356,8 +568,8 @@
                 'blocked': 0
             };
 
-            // Group tasks by status and render
-            currentTasks.forEach(task => {
+            // Group tasks by status and render (using filtered tasks)
+            filteredTasks.forEach(task => {
                 const taskElement = createTaskCard(task);
                 const status = task.status || 'todo';
                 
@@ -428,28 +640,213 @@
             const searchBox = document.getElementById('searchBox');
             searchBox.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase();
-                const taskCards = document.querySelectorAll('.task-card');
                 
-                taskCards.forEach(card => {
-                    const taskId = card.getAttribute('data-task-id').toLowerCase();
-                    const title = card.querySelector('.task-title').textContent.toLowerCase();
-                    const project = card.getAttribute('data-project').toLowerCase();
-                    const owner = card.getAttribute('data-owner').toLowerCase();
+                // Apply search to filtered tasks and re-render
+                applyFiltersAndSearch();
+            });
+        }
+
+        function populateFilterOptions() {
+            // Get unique values for each filter type
+            const owners = [...new Set(currentTasks.map(task => task.owner))].sort();
+            const projects = [...new Set(currentTasks.map(task => task.project))].sort();
+            const priorities = ['critical', 'high', 'medium', 'low']; // Ordered by importance
+            const statuses = ['todo', 'in-progress', 'done', 'blocked']; // Ordered by workflow
+
+            populateFilterDropdown('ownerFilter', owners);
+            populateFilterDropdown('projectFilter', projects);
+            populateFilterDropdown('priorityFilter', priorities);
+            populateFilterDropdown('statusFilter', statuses);
+        }
+
+        function populateFilterDropdown(filterId, options) {
+            const filterDropdown = document.getElementById(filterId);
+            const optionsContainer = filterDropdown.querySelector('.filter-options');
+            
+            // Clear existing options
+            optionsContainer.innerHTML = '';
+            
+            // Add "All" option
+            const allOption = document.createElement('div');
+            allOption.className = 'filter-option';
+            allOption.innerHTML = `
+                <input type="checkbox" id="${filterId}-all" data-value="all" checked>
+                <label for="${filterId}-all">All</label>
+            `;
+            optionsContainer.appendChild(allOption);
+            
+            // Add individual options
+            options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'filter-option';
+                optionElement.innerHTML = `
+                    <input type="checkbox" id="${filterId}-${option}" data-value="${option}">
+                    <label for="${filterId}-${option}">${option}</label>
+                `;
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        function setupFilters() {
+            const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+            
+            filterDropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('.filter-button');
+                const options = dropdown.querySelector('.filter-options');
+                
+                // Toggle dropdown
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isActive = dropdown.classList.contains('active');
                     
-                    const isMatch = taskId.includes(searchTerm) || 
-                                   title.includes(searchTerm) || 
-                                   project.includes(searchTerm) || 
-                                   owner.includes(searchTerm);
+                    // Close all other dropdowns
+                    filterDropdowns.forEach(d => d.classList.remove('active'));
                     
-                    if (isMatch) {
-                        card.style.display = 'block';
-                        highlightSearchTerm(card, searchTerm);
+                    // Toggle current dropdown
+                    if (!isActive) {
+                        dropdown.classList.add('active');
+                        button.setAttribute('aria-expanded', 'true');
                     } else {
-                        card.style.display = 'none';
-                        removeHighlights(card);
+                        dropdown.classList.remove('active');
+                        button.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Handle option selection
+                options.addEventListener('change', function(e) {
+                    if (e.target.type === 'checkbox') {
+                        handleFilterChange(dropdown.id, e.target);
                     }
                 });
             });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.filter-dropdown')) {
+                    filterDropdowns.forEach(d => {
+                        d.classList.remove('active');
+                        d.querySelector('.filter-button').setAttribute('aria-expanded', 'false');
+                    });
+                }
+            });
+            
+            // Clear filters button
+            document.querySelector('.clear-filters').addEventListener('click', clearAllFilters);
+        }
+
+        function handleFilterChange(filterId, checkbox) {
+            const filterType = filterId.replace('Filter', '');
+            const value = checkbox.dataset.value;
+            const isChecked = checkbox.checked;
+            const optionsContainer = checkbox.closest('.filter-options');
+            const allCheckbox = optionsContainer.querySelector('[data-value="all"]');
+            
+            if (value === 'all') {
+                // If "All" is clicked, uncheck all other options
+                if (isChecked) {
+                    const otherCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]:not([data-value="all"])');
+                    otherCheckboxes.forEach(cb => cb.checked = false);
+                    activeFilters[filterType] = [];
+                }
+            } else {
+                // If a specific option is clicked, uncheck "All"
+                if (isChecked) {
+                    allCheckbox.checked = false;
+                    if (!activeFilters[filterType].includes(value)) {
+                        activeFilters[filterType].push(value);
+                    }
+                } else {
+                    activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
+                    // If no specific options are selected, check "All"
+                    if (activeFilters[filterType].length === 0) {
+                        allCheckbox.checked = true;
+                    }
+                }
+            }
+            
+            updateFilterSummary(filterId, filterType);
+            applyFiltersAndSearch();
+        }
+
+        function updateFilterSummary(filterId, filterType) {
+            const dropdown = document.getElementById(filterId);
+            const summary = dropdown.querySelector('.filter-summary');
+            const activeCount = activeFilters[filterType].length;
+            
+            if (activeCount === 0) {
+                summary.textContent = 'All';
+                dropdown.querySelector('.filter-button').classList.remove('active');
+            } else if (activeCount === 1) {
+                summary.textContent = activeFilters[filterType][0];
+                dropdown.querySelector('.filter-button').classList.add('active');
+            } else {
+                summary.textContent = `${activeCount} selected`;
+                dropdown.querySelector('.filter-button').classList.add('active');
+            }
+        }
+
+        function applyFiltersAndSearch() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            
+            // Start with all tasks
+            filteredTasks = currentTasks.filter(task => {
+                // Apply filters
+                const ownerMatch = activeFilters.owner.length === 0 || activeFilters.owner.includes(task.owner);
+                const projectMatch = activeFilters.project.length === 0 || activeFilters.project.includes(task.project);
+                const priorityMatch = activeFilters.priority.length === 0 || activeFilters.priority.includes(task.priority);
+                const statusMatch = activeFilters.status.length === 0 || activeFilters.status.includes(task.status);
+                
+                // Apply search
+                const searchMatch = !searchTerm || 
+                    task.id.toLowerCase().includes(searchTerm) ||
+                    task.title.toLowerCase().includes(searchTerm) ||
+                    task.project.toLowerCase().includes(searchTerm) ||
+                    task.owner.toLowerCase().includes(searchTerm);
+                
+                return ownerMatch && projectMatch && priorityMatch && statusMatch && searchMatch;
+            });
+            
+            renderTasks();
+            
+            // Apply highlighting if search term exists
+            if (searchTerm) {
+                const taskCards = document.querySelectorAll('.task-card');
+                taskCards.forEach(card => {
+                    highlightSearchTerm(card, searchTerm);
+                });
+            }
+        }
+
+        function clearAllFilters() {
+            // Reset active filters
+            activeFilters = {
+                owner: [],
+                project: [],
+                priority: [],
+                status: []
+            };
+            
+            // Reset all checkboxes
+            const allCheckboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
+            allCheckboxes.forEach(checkbox => {
+                if (checkbox.dataset.value === 'all') {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
+            });
+            
+            // Update all summaries
+            ['ownerFilter', 'projectFilter', 'priorityFilter', 'statusFilter'].forEach(filterId => {
+                const filterType = filterId.replace('Filter', '');
+                updateFilterSummary(filterId, filterType);
+            });
+            
+            // Clear search box
+            document.getElementById('searchBox').value = '';
+            
+            // Apply filters and re-render
+            applyFiltersAndSearch();
         }
 
         function highlightSearchTerm(card, searchTerm) {
