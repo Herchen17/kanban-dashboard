@@ -2,6 +2,36 @@
 // This will be loaded into the kanban board to show actual project status
 
 const allCurrentTasks = [
+    // ANTFARM SETUP PROJECT - SYSTEMATIC PLAN CREATED Feb 11, 2026
+    // Following CORE AXIOM: "Every discussion about achieving something must result in rigorous, systematic list of actionable steps"
+    // OBJECTIVE: Get planning-first methodology working with proper AntFarm integration and visible dashboard
+    
+    // PHASE 1: FOUNDATION SETUP
+    { id: 'SOLDIER-SETUP-001', title: 'Verify AntFarm Installation Status', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Check current installation state and requirements' },
+    { id: 'SOLDIER-SETUP-002', title: 'Install/Fix AntFarm Dependencies', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Install AntFarm properly following official documentation' },
+    { id: 'SOLDIER-SETUP-003', title: 'Configure OpenClaw Integration', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Fix cron/gateway authorization issues for AntFarm' },
+    { id: 'SOLDIER-SETUP-004', title: 'Test AntFarm Basic Functionality', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Validate AntFarm core workflows work' },
+    
+    // PHASE 2: PLANNING SYSTEM INTEGRATION  
+    { id: 'SOLDIER-PLAN-001', title: 'Create Planning Workflow Definition', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Design AntFarm workflow for systematic planning process' },
+    { id: 'SOLDIER-PLAN-002', title: 'Create Planner Agent Configuration', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Build agent that creates systematic job breakdowns' },
+    { id: 'SOLDIER-PLAN-003', title: 'Create Executor Agent Configuration', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Build agent that executes SOLDIER jobs systematically' },
+    { id: 'SOLDIER-PLAN-004', title: 'Create Review Agent Configuration', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Build agent that validates job completion' },
+    { id: 'SOLDIER-PLAN-005', title: 'Install Planning Workflow in AntFarm', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Deploy our custom planning workflow' },
+    { id: 'SOLDIER-PLAN-006', title: 'Test Planning Workflow End-to-End', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Validate complete planning workflow functionality' },
+    
+    // PHASE 3: DASHBOARD & VISIBILITY
+    { id: 'SOLDIER-DASH-001', title: 'Start AntFarm Dashboard', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Get AntFarm web dashboard running' },
+    { id: 'SOLDIER-DASH-002', title: 'Integrate Kanban Board with AntFarm', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Connect existing kanban to AntFarm workflow status' },
+    { id: 'SOLDIER-DASH-003', title: 'Create Unified Dashboard View', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Build single dashboard showing all agent activity' },
+    { id: 'SOLDIER-DASH-004', title: 'Deploy Dashboard to GitHub Pages', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Make dashboard publicly accessible to Alex' },
+    { id: 'SOLDIER-DASH-005', title: 'Set Up Dashboard Monitoring', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'low', notes: 'Create automated dashboard health checks' },
+    
+    // PHASE 4: VALIDATION & DEPLOYMENT
+    { id: 'SOLDIER-VALID-001', title: 'Conduct End-to-End System Test', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'high', notes: 'Test complete planning → execution → tracking workflow' },
+    { id: 'ALEX-VALID-002', title: 'Review and Approve System Functionality', project: 'AntFarm Setup', owner: 'Alex', status: 'todo', priority: 'high', notes: 'Alex tests and validates the complete system' },
+    { id: 'SOLDIER-VALID-003', title: 'Document Final System and Procedures', project: 'AntFarm Setup', owner: 'Soldier', status: 'todo', priority: 'medium', notes: 'Create comprehensive documentation for ongoing use' },
+
     // SYSTEMATIC PLANNING CORE PROJECT
     { id: 'SOLDIER-PM-010', title: 'Implement actionable step requirement for every plan/discussion', project: 'Project Management', owner: 'Soldier', status: 'todo', priority: 'critical' },
     { id: 'SOLDIER-PM-011A', title: 'Advanced filtering system (Owner, Project, Priority, Status)', project: 'Project Management', owner: 'Soldier', status: 'todo', priority: 'critical' },
